@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: kontursvet-postgres
+    environment:
+      POSTGRES_DB: kontursvet
+      POSTGRES_USER: kontursvet
+      POSTGRES_PASSWORD: kontursvet
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./src/Kontursvet.Infrastructure/Migrations:/docker-entrypoint-initdb.d
+
+volumes:
+  pgdata:
