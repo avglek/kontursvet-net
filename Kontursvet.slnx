@@ -1,0 +1,11 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Kontursvet.Api/Kontursvet.Api.csproj" />
+    <Project Path="src/Kontursvet.Application/Kontursvet.Application.csproj" />
+    <Project Path="src/Kontursvet.Domain/Kontursvet.Domain.csproj" />
+    <Project Path="src/Kontursvet.Infrastructure/Kontursvet.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Kontursvet.Application.Tests/Kontursvet.Application.Tests.csproj" />
+  </Folder>
+</Solution>

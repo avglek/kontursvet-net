@@ -1,0 +1,23 @@
+mkdir kontursvet-net && cd kontursvet-net
+
+dotnet new sln -n Kontursvet
+
+dotnet new classlib -n Kontursvet.Domain          -o src/Kontursvet.Domain          -f net10.0
+dotnet new classlib -n Kontursvet.Application     -o src/Kontursvet.Application     -f net10.0
+dotnet new classlib -n Kontursvet.Infrastructure  -o src/Kontursvet.Infrastructure  -f net10.0
+dotnet new web       -n Kontursvet.Api           -o src/Kontursvet.Api            -f net10.0
+dotnet new xunit     -n Kontursvet.Application.Tests -o tests/Kontursvet.Application.Tests -f net10.0
+
+dotnet sln add src/Kontursvet.Domain src/Kontursvet.Application src/Kontursvet.Infrastructure src/Kontursvet.Api tests/Kontursvet.Application.Tests
+
+# Ссылки между проектами
+dotnet add src/Kontursvet.Application    reference src/Kontursvet.Domain
+dotnet add src/Kontursvet.Infrastructure reference src/Kontursvet.Application
+dotnet add src/Kontursvet.Api            reference src/Kontursvet.Application src/Kontursvet.Infrastructure
+dotnet add tests/Kontursvet.Application.Tests reference src/Kontursvet.Application
+
+dotnet add src/Kontursvet.Infrastructure package Dapper
+dotnet add src/Kontursvet.Infrastructure package Npgsql
+dotnet add src/Kontursvet.Infrastructure package Microsoft.Extensions.DependencyInjection.Abstractions
+dotnet add src/Kontursvet.Infrastructure package Microsoft.Extensions.Configuration.Abstractions
+dotnet add src/Kontursvet.Infrastructure package Microsoft.Extensions.Logging.Abstractions

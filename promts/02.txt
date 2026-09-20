@@ -1,0 +1,64 @@
+Можешь NET 10, если нет - то на NET 9. ORM - Dupper, Аутентификация пока не нужна, позже сделаем на JWT. Модели для портфолио : """ export interface ICardView {
+  id: number;
+  name: string;
+  case: string;
+  title: string;
+  description: string;
+  task: string;
+  works: string[];
+  location: string;
+  term: string;
+  team: string;
+  period: string;
+  features: string;
+  meta: string[];
+  photos?: IGallery[];
+}
+
+export interface ICard {
+  id: number;
+  link: string;
+  title: string;
+  subTitle: string;
+  description: string;
+  img: {
+    src: string;
+    alt: string;
+  };
+}
+
+export interface IPhoto {
+  id: number;
+  case: string;
+  gallery: IGallery[];
+}
+
+interface IGallery {
+  key: number;
+  src: string;
+  alt: string;
+  figcaption: string;
+} """ Нужно будет только заменить наименование ключа case(задачи, кейсы) на что ни будь другое, подходящее по смыслу. Для сообщений будет передаваться json из след. обьектов - """ export interface ILead {
+  name: string;
+  phone: ILeadPhone;
+  home: string;
+  location: string;
+  message: string;
+}
+
+export interface ILeadPhone {
+  digital: string;
+  format: string;
+}
+
+export interface ILeadAttachment {
+  filename: string;
+  content: Buffer | undefined;
+  contentType?: string | undefined;
+  encoding: 'base64';
+}
+
+export interface ILeadMessage {
+  text: ILead;
+  attachments: ILeadAttachment[];
+} """ Сообщения будут передаваться в мессенждер. Предусмотреть DI если нужно будет заменить. Остальное по дефолту.
