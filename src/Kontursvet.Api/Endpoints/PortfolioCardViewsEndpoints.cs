@@ -1,6 +1,6 @@
 using Kontursvet.Api.Common;
 using Kontursvet.Application.Dtos;
-using Kontursvet.Application.Features.PortfolioCardView;
+using Kontursvet.Application.Features.Portfolio.CardView;
 
 namespace Kontursvet.Api.Endpoints;
 
@@ -36,22 +36,6 @@ public static class PortfolioCardViewsEndpoints
         .WithName("GetPortfolioCardView")
         .Produces<PortfolioCardViewDto>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status404NotFound);
-
-        // POST /api/profiles
-        group.MapPost("/", async (
-            PortfolioCardViewDto dto,
-            CreatePortfolioCardViewHandler handler,
-            CancellationToken ct) =>
-        {
-            var result = await handler.HandleAsync(new CreatePortfolioCardViewCommand(dto), ct);
-
-            return result.IsSuccess
-                ? Results.Created($"/api/profiles/{result.Value}", new { id = result.Value })
-                : result.ToHttp();
-        })
-        .WithName("CreatePortfolioCardView")
-        .Produces(StatusCodes.Status201Created)
-        .ProducesProblem(StatusCodes.Status400BadRequest);
 
         // PUT /api/profile/cardviews{id}
         group.MapPut("/{id:long}", async (

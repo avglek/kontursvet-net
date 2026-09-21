@@ -1,6 +1,6 @@
 using Kontursvet.Api.Common;
 using Kontursvet.Application.Dtos;
-using Kontursvet.Application.Features.PortfolioCard;
+using Kontursvet.Application.Features.Portfolio.Card;
 
 namespace Kontursvet.Api.Endpoints;
 

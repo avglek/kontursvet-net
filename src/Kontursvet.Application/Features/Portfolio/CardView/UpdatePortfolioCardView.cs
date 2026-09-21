@@ -2,11 +2,11 @@ using Kontursvet.Application.Abstractions;
 using Kontursvet.Application.Dtos;
 using Kontursvet.Domain.Common;
 
-namespace Kontursvet.Application.Features.PortfolioCardView;
+namespace Kontursvet.Application.Features.Portfolio.CardView;
 
 public sealed record UpdatePortfolioCardViewCommand(long Id, PortfolioCardViewDto Card);
 
-public sealed class UpdatePortfolioCardViewHandler(IPortfolioCardViewRepository repository)
+public sealed class UpdatePortfolioCardViewHandler(IPortfolioRepository repository)
 {
     public async Task<Result> HandleAsync(UpdatePortfolioCardViewCommand cmd, CancellationToken ct)
     {
@@ -22,12 +22,12 @@ public sealed class UpdatePortfolioCardViewHandler(IPortfolioCardViewRepository 
             return Result.Failure("Поле Title обязательно", "CARD_TITLE_REQUIRED");
 
         // Проверяем существование — чтобы отдать 404, а не молчаливый no-op
-        var existing = await repository.GetByIdAsync(cmd.Id, ct);
+        var existing = await repository.GetViewByIdAsync(cmd.Id, ct);
         if (existing is null)
             return Result.Failure("Карточка не найдена", "CARD_NOT_FOUND");
 
         dto.Id = cmd.Id;
-        var ok = await repository.UpdateAsync(dto.ToDomain(), ct);
+        var ok = await repository.UpsertViewAsync(dto.ToDomain(), ct);
 
         return ok
             ? Result.Success()

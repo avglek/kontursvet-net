@@ -1,9 +1,5 @@
 namespace Kontursvet.Application.Dtos;
 
-/// <summary>
-/// DTO для передачи PortfolioCardView между слоями.
-/// Отделён от домена, чтобы JSON-контракт не зависел от доменных сущностей.
-/// </summary>
 public sealed class PortfolioCardViewDto
 {
     public long Id { get; set; }
@@ -19,20 +15,13 @@ public sealed class PortfolioCardViewDto
     public string Period { get; set; } = string.Empty;
     public string Features { get; set; } = string.Empty;
     public List<string> Meta { get; set; } = [];
-    public List<PortfolioPhotoDto> Photos { get; set; } = [];
-}
-
-public sealed class PortfolioPhotoDto
-{
-    public long Id { get; set; }
-    public string Part { get; set; } = string.Empty;
     public List<GalleryItemDto> Gallery { get; set; } = [];
 }
 
 public sealed class GalleryItemDto
 {
     public int Key { get; set; }
-    public string Src { get; set; } = string.Empty;
-    public string Alt { get; set; } = string.Empty;
-    public string Figcaption { get; set; } = string.Empty;
+    public string Src { get; set; } = string.Empty;          // путь до картинки
+    public string Alt { get; set; } = string.Empty;          // описание картинки
+    public string Figcaption { get; set; } = string.Empty;   // описание вида
 }

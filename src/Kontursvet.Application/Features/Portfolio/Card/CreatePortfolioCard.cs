@@ -2,11 +2,11 @@ using Kontursvet.Application.Abstractions;
 using Kontursvet.Application.Dtos;
 using Kontursvet.Domain.Common;
 
-namespace Kontursvet.Application.Features.PortfolioCard;
+namespace Kontursvet.Application.Features.Portfolio.Card;
 
 public sealed record CreatePortfolioCardCommand(PortfolioCardDto Card);
 
-public sealed class CreatePortfolioCardHandler(IPortfolioCardRepository repository)
+public sealed class CreatePortfolioCardHandler(IPortfolioRepository repository)
 {
     public async Task<Result<long>> HandleAsync(CreatePortfolioCardCommand cmd, CancellationToken ct)
     {
@@ -18,7 +18,7 @@ public sealed class CreatePortfolioCardHandler(IPortfolioCardRepository reposito
         if (string.IsNullOrWhiteSpace(dto.Title))
             return Result<long>.Failure("Поле Title обязательно", "CARD_TITLE_REQUIRED");
 
-        var id = await repository.CreateAsync(dto.ToDomain(), ct);
+        var id = await repository.CreateCardAsync(dto.ToDomain(), ct);
         return Result<long>.Success(id);
     }
 }

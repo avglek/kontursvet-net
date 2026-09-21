@@ -19,7 +19,7 @@ public static class PortfolioCardViewMapping
         Period = dto.Period,
         Features = dto.Features,
         Meta = dto.Meta,
-        Photos = dto.Photos.Select(ToDomain).ToList()
+        Gallery = dto.Gallery.Select(ToDomain).ToList()
     };
 
     public static PortfolioCardViewDto ToDto(this PortfolioCardView e) => new()
@@ -37,24 +37,9 @@ public static class PortfolioCardViewMapping
         Period = e.Period,
         Features = e.Features,
         Meta = e.Meta,
-        Photos = e.Photos.Select(ToDto).ToList()
-    };
-
-    private static PortfolioPhoto ToDomain(this PortfolioPhotoDto dto) => new()
-    {
-        Id = dto.Id,
-        Part = dto.Part,
-        Gallery = dto.Gallery.Select(ToDomain).ToList()
-    };
-
-    private static PortfolioPhotoDto ToDto(this PortfolioPhoto e) => new()
-    {
-        Id = e.Id,
-        Part = e.Part,
         Gallery = e.Gallery.Select(ToDto).ToList()
     };
 
-    // GalleryItem — record struct, поэтому создаётся позиционно
     private static GalleryItem ToDomain(this GalleryItemDto dto)
         => new(dto.Key, dto.Src, dto.Alt, dto.Figcaption);
 

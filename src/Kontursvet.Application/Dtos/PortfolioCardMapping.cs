@@ -11,8 +11,8 @@ public static class PortfolioCardMapping
         Title = dto.Title,
         SubTitle = dto.SubTitle,
         Description = dto.Description,
-        ImgSrc = dto.ImgSrc,
-        ImgAlt = dto.ImgAlt,
+        ImgSrc = dto.Img.Src,
+        ImgAlt = dto.Img.Alt
     };
 
     public static PortfolioCardDto ToDto(this PortfolioCard e) => new()
@@ -22,8 +22,6 @@ public static class PortfolioCardMapping
         Title = e.Title,
         SubTitle = e.SubTitle,
         Description = e.Description,
-        ImgSrc = e.ImgSrc,
-        ImgAlt = e.ImgAlt,
+        Img = new ImgDto { Src = e.ImgSrc, Alt = e.ImgAlt }
     };
-
 }

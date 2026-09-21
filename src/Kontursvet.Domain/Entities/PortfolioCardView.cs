@@ -1,5 +1,9 @@
 namespace Kontursvet.Domain.Entities;
 
+/// <summary>
+/// ICardView — подробное представление объекта портфолио.
+/// Связь 1:1 с PortfolioCard: Id совпадает.
+/// </summary>
 public sealed class PortfolioCardView
 {
     public long Id { get; set; }
@@ -15,5 +19,5 @@ public sealed class PortfolioCardView
     public string Period { get; set; } = string.Empty;
     public string Features { get; set; } = string.Empty;
     public List<string> Meta { get; set; } = [];
-    public List<PortfolioPhoto> Photos { get; set; } = [];
+    public List<GalleryItem> Gallery { get; set; } = [];
 }

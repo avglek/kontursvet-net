@@ -16,8 +16,7 @@ public static class DependencyInjection
 
         services.AddSingleton<IDbConnectionFactory>(_ => new NpgsqlConnectionFactory(cs));
 
-        services.AddScoped<IPortfolioCardRepository, PortfolioCardRepository>();
-        services.AddScoped<IPortfolioCardViewRepository, PortfolioCardViewRepository>();
+        services.AddScoped<IPortfolioRepository, PortfolioRepository>();
 
         services.AddScoped<ILeadRepository, LeadRepository>();
 

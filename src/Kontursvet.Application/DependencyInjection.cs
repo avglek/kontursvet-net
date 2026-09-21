@@ -1,6 +1,7 @@
 using Kontursvet.Application.Features.Leads;
-using Kontursvet.Application.Features.PortfolioCard;
-using Kontursvet.Application.Features.PortfolioCardView;
+using Kontursvet.Application.Features.Portfolio.Card;
+using Kontursvet.Application.Features.Portfolio.CardView;
+using Kontursvet.Application.Features.Portfolio.Gallery;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kontursvet.Application;
@@ -17,14 +18,20 @@ public static class DependencyInjection
         services.AddScoped<DeletePortfolioCardHandler>();
 
         // PortfolioCardView
-        services.AddScoped<CreatePortfolioCardViewHandler>();
         services.AddScoped<GetPortfolioCardViewHandler>();
         services.AddScoped<GetPortfolioCardViewsHandler>();
         services.AddScoped<UpdatePortfolioCardViewHandler>();
         services.AddScoped<DeletePortfolioCardViewHandler>();
 
+        // Галерея
+        services.AddScoped<AddGalleryItemHandler>();
+        services.AddScoped<UpdateGalleryItemHandler>();
+        services.AddScoped<DeleteGalleryItemHandler>();
+
         // Leads
         services.AddScoped<SendLeadHandler>();
+
+
 
         return services;
     }
