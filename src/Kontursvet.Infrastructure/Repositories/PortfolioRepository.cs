@@ -8,7 +8,7 @@ namespace Kontursvet.Infrastructure.Repositories;
 
 public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfolioRepository
 {
-    private static readonly JsonSerializerOptions JsonOpts = new() { PropertyNamingPolicy = null };
+    private static readonly JsonSerializerOptions JsonOpts = new() { PropertyNamingPolicy = null, PropertyNameCaseInsensitive = true };
 
     // -------- Card (превью) --------
 
