@@ -1,7 +1,9 @@
 using Kontursvet.Application.Abstractions;
+using Kontursvet.Application.Abstractions.Users;
 using Kontursvet.Infrastructure.Data;
 using Kontursvet.Infrastructure.Messaging;
 using Kontursvet.Infrastructure.Repositories;
+using Kontursvet.Infrastructure.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +24,10 @@ public static class DependencyInjection
 
         // Заменить одной строкой на TelegramDispatcher, когда понадобится
         services.AddScoped<IMessageDispatcher, NoOpMessageDispatcher>();
+
+        services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
+        services.AddSingleton<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IAdminUserRepository, AdminUserRepository>();
 
         return services;
     }

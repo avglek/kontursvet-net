@@ -24,6 +24,9 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.UseCors();
 
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));

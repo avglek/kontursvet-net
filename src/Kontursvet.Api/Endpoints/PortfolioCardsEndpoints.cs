@@ -22,7 +22,8 @@ public static class PortfolioCardsEndpoints
             return result.ToHttp();
         })
         .WithName("GetPortfolioCards")
-        .Produces<IReadOnlyList<PortfolioCardViewDto>>(StatusCodes.Status200OK);
+        .Produces<IReadOnlyList<PortfolioCardViewDto>>(StatusCodes.Status200OK)
+        .AllowAnonymous();
 
         // GET /api/profile/cards{id}
         group.MapGet("/{id:long}", async (
@@ -35,7 +36,8 @@ public static class PortfolioCardsEndpoints
         })
         .WithName("GetPortfolioCard")
         .Produces<PortfolioCardViewDto>(StatusCodes.Status200OK)
-        .ProducesProblem(StatusCodes.Status404NotFound);
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .AllowAnonymous();
 
         // POST /api/profile/cards
         group.MapPost("/", async (
@@ -51,7 +53,8 @@ public static class PortfolioCardsEndpoints
         })
         .WithName("CreatePortfolioCard")
         .Produces(StatusCodes.Status201Created)
-        .ProducesProblem(StatusCodes.Status400BadRequest);
+        .ProducesProblem(StatusCodes.Status400BadRequest)
+        .RequireAuthorization();
 
         // PUT /api/profile/cards/{id}
         group.MapPut("/{id:long}", async (
@@ -66,7 +69,8 @@ public static class PortfolioCardsEndpoints
         .WithName("UpdatePortfolioCard")
         .Produces(StatusCodes.Status204NoContent)
         .ProducesProblem(StatusCodes.Status400BadRequest)
-        .ProducesProblem(StatusCodes.Status404NotFound);
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .RequireAuthorization();
 
         // DELETE /api/profile/cards/{id}
         group.MapDelete("/{id:long}", async (
@@ -79,7 +83,8 @@ public static class PortfolioCardsEndpoints
         })
         .WithName("DeletePortfolioCard")
         .Produces(StatusCodes.Status204NoContent)
-        .ProducesProblem(StatusCodes.Status404NotFound);
+        .ProducesProblem(StatusCodes.Status404NotFound)
+        .RequireAuthorization();
 
         return app;
     }

@@ -1,4 +1,7 @@
+using System.Text;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Kontursvet.Configuration;
 
@@ -8,6 +11,28 @@ public static class ApiServiceExtensions
         this IServiceCollection services,
         IConfiguration configuration)
     {
+        var jwtSecret = configuration["Jwt:SecretKey"] ?? throw new InvalidOperationException("Jwt:SecretKey не задан");
+
+        services
+            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidAudience = configuration["Jwt:Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret)),
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
+
+        services.AddAuthorization();
+
+
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(c =>
         {
