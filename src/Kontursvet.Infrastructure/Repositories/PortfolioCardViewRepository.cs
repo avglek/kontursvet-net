@@ -17,7 +17,7 @@ public sealed class PortfolioCardViewRepository(IDbConnectionFactory factory) : 
         const string sql = """
             SELECT id, name, part, title, description, task, works, location,
                    term, team, period, features, meta, photos
-            FROM portfolio_cards WHERE id = @Id;
+            FROM portfolio_card_views WHERE id = @Id;
             """;
 
         var row = await db.QuerySingleOrDefaultAsync<PortfolioCardViewRow>(
@@ -33,7 +33,7 @@ public sealed class PortfolioCardViewRepository(IDbConnectionFactory factory) : 
         const string sql = """
             SELECT id, name, part, title, description, task, works, location,
                    term, team, period, features, meta, photos
-            FROM portfolio_cards
+            FROM portfolio_card_views
             ORDER BY id
             OFFSET @Skip LIMIT @Take;
             """;
@@ -49,7 +49,7 @@ public sealed class PortfolioCardViewRepository(IDbConnectionFactory factory) : 
         using var db = factory.Create();
 
         const string sql = """
-            INSERT INTO portfolio_cards
+            INSERT INTO portfolio_card_views
                 (name, part, title, description, task, works, location, term, team, period, features, meta, photos)
             VALUES
                 (@Name, @Part, @Title, @Description, @Task, @Works::jsonb, @Location, @Term, @Team, @Period,
@@ -80,7 +80,7 @@ public sealed class PortfolioCardViewRepository(IDbConnectionFactory factory) : 
         using var db = factory.Create();
 
         const string sql = """
-            UPDATE portfolio_cards SET
+            UPDATE portfolio_card_views SET
                 name = @Name, part = @Part, title = @Title, description = @Description,
                 task = @Task, works = @Works::jsonb, location = @Location, term = @Term,
                 team = @Team, period = @Period, features = @Features,
@@ -113,7 +113,7 @@ public sealed class PortfolioCardViewRepository(IDbConnectionFactory factory) : 
     {
         using var db = factory.Create();
         var affected = await db.ExecuteAsync(
-            new CommandDefinition("DELETE FROM portfolio_cards WHERE id = @Id",
+            new CommandDefinition("DELETE FROM portfolio_card_views WHERE id = @Id",
                 new { Id = id }, cancellationToken: ct));
         return affected > 0;
     }

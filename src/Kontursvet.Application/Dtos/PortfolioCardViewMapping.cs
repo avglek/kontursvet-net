@@ -40,19 +40,29 @@ public static class PortfolioCardViewMapping
         Photos = e.Photos.Select(ToDto).ToList()
     };
 
-    private static GalleryItem ToDomain(this GalleryItemDto dto) => new()
+    private static PortfolioPhoto ToDomain(this PortfolioPhotoDto dto) => new()
     {
-        Key = dto.Key,
-        Src = dto.Src,
-        Alt = dto.Alt,
-        Figcaption = dto.Figcaption
+        Id = dto.Id,
+        Part = dto.Part,
+        Gallery = dto.Gallery.Select(ToDomain).ToList()
     };
 
-    private static GalleryItemDto ToDto(this GalleryItem e) => new()
+    private static PortfolioPhotoDto ToDto(this PortfolioPhoto e) => new()
     {
-        Key = e.Key,
-        Src = e.Src,
-        Alt = e.Alt,
-        Figcaption = e.Figcaption
+        Id = e.Id,
+        Part = e.Part,
+        Gallery = e.Gallery.Select(ToDto).ToList()
+    };
+
+    // GalleryItem — record struct, поэтому создаётся позиционно
+    private static GalleryItem ToDomain(this GalleryItemDto dto)
+        => new(dto.Key, dto.Src, dto.Alt, dto.Figcaption);
+
+    private static GalleryItemDto ToDto(this GalleryItem vo) => new()
+    {
+        Key = vo.Key,
+        Src = vo.Src,
+        Alt = vo.Alt,
+        Figcaption = vo.Figcaption
     };
 }

@@ -16,7 +16,7 @@ public class PortfolioCardRepository(IDbConnectionFactory factory) : IPortfolioC
 
         const string sql = """
             SELECT link ,title ,sub_title ,description ,img_src ,img_alt  
-            FROM portfolio_card_meta WHERE id = @Id
+            FROM portfolio_cards WHERE id = @Id
             """;
 
         var row = await db.QuerySingleOrDefaultAsync<PortfolioCardRow>(
@@ -31,7 +31,7 @@ public class PortfolioCardRepository(IDbConnectionFactory factory) : IPortfolioC
 
         const string sql = """
             SELECT link ,title ,sub_title ,description ,img_src ,img_alt  
-            FROM portfolio_card_meta 
+            FROM portfolio_cards 
             ORDER BY id
             OFFSET @Skip LIMIT @Take;
             """;
@@ -47,7 +47,7 @@ public class PortfolioCardRepository(IDbConnectionFactory factory) : IPortfolioC
         using var db = factory.Create();
 
         const string sql = """
-            INSERT INTO portfolio_card_meta
+            INSERT INTO portfolio_cards
                 (link ,title ,sub_title ,description ,img_src ,img_alt)
             VALUES
                 (@Link, @Title, @SubTitle, @Description, @ImgSrc, @ImgAlt)
@@ -70,7 +70,7 @@ public class PortfolioCardRepository(IDbConnectionFactory factory) : IPortfolioC
         using var db = factory.Create();
 
         const string sql = """
-            UPDATE portfolio_card_meta SET
+            UPDATE portfolio_cards SET
                 link = @Link, title = @Title, sub_title = @SubTitle, description = @Description,
                 img_src = @ImgSrc, img_alt = @ImgAlt
             WHERE id = @Id;
@@ -94,7 +94,7 @@ public class PortfolioCardRepository(IDbConnectionFactory factory) : IPortfolioC
     {
         using var db = factory.Create();
         var affected = await db.ExecuteAsync(
-            new CommandDefinition("DELETE FROM portfolio_card_meta WHERE id = @Id",
+            new CommandDefinition("DELETE FROM portfolio_cards WHERE id = @Id",
                 new { Id = id }, cancellationToken: ct));
         return affected > 0;
     }

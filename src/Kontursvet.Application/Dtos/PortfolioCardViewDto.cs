@@ -19,7 +19,14 @@ public sealed class PortfolioCardViewDto
     public string Period { get; set; } = string.Empty;
     public string Features { get; set; } = string.Empty;
     public List<string> Meta { get; set; } = [];
-    public List<GalleryItemDto> Photos { get; set; } = [];
+    public List<PortfolioPhotoDto> Photos { get; set; } = [];
+}
+
+public sealed class PortfolioPhotoDto
+{
+    public long Id { get; set; }
+    public string Part { get; set; } = string.Empty;
+    public List<GalleryItemDto> Gallery { get; set; } = [];
 }
 
 public sealed class GalleryItemDto
