@@ -6,6 +6,7 @@ using Kontursvet.Infrastructure.Repositories;
 using Kontursvet.Infrastructure.Security;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Kontursvet.Infrastructure.Storage;
 
 namespace Kontursvet.Infrastructure;
 
@@ -28,6 +29,9 @@ public static class DependencyInjection
         services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
         services.AddSingleton<IJwtTokenService, JwtTokenService>();
         services.AddScoped<IAdminUserRepository, AdminUserRepository>();
+
+
+        services.AddSingleton<IFileStorage, LocalFileStorage>();
 
         return services;
     }

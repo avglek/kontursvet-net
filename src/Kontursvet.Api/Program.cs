@@ -2,6 +2,7 @@ using Kontursvet.Api.Endpoints;
 using Kontursvet.Application;
 using Kontursvet.Infrastructure;
 using Kontursvet.Configuration;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,21 @@ if (app.Environment.IsDevelopment())
         c.RoutePrefix = "swagger";
     });
 }
+;
+
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "wwwroot")),
+    RequestPath = "",
+    OnPrepareResponse = ctx =>
+    {
+        // Кэш на год — файлы с Guid в имени, никогда не перезаписываются
+        ctx.Context.Response.Headers.Append(
+            "Cache-Control", "public, max-age=31536000, immutable");
+    }
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
@@ -34,5 +50,6 @@ app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 app.MapPortfolioCardsEndpoints();
 app.MapPortfolioCardViewsEndpoints();
 app.MapLeadEndpoints();
+app.MapFileEndpoints();
 
 app.Run();

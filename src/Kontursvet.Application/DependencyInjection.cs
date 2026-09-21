@@ -1,4 +1,5 @@
 using Kontursvet.Application.Features.Auth;
+using Kontursvet.Application.Features.Files;
 using Kontursvet.Application.Features.Leads;
 using Kontursvet.Application.Features.Portfolio.Card;
 using Kontursvet.Application.Features.Portfolio.CardView;
@@ -34,6 +35,8 @@ public static class DependencyInjection
 
         // Auth
         services.AddScoped<LoginHandler>();
+
+        services.AddScoped<UploadFileHandler>();
 
 
         return services;
