@@ -98,3 +98,6 @@ pgdata/
 *.dump
 *.backup
 temp
+## 4 node
+node_modules
+package-lock.json

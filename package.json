@@ -1,0 +1,13 @@
+{
+  "name": "kontursvet-net",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --names 'API,NUXT' --prefix-colors 'blue,green' --kill-others \"npm run dev:api\" \"npm run dev:nuxt\"",
+    "dev:api": "dotnet watch --project ./src/Kontursvet.Api/Kontursvet.Api.csproj --non-interactive",
+    "dev:nuxt": "npm run dev --prefix ./WebApp",
+    "install:all": "npm install && npm install --prefix ./WebApp"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
