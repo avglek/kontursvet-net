@@ -6,7 +6,7 @@ using Kontursvet.Infrastructure.Data;
 
 namespace Kontursvet.Infrastructure.Repositories;
 
-public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfolioRepository
+public sealed class PortfolioCardViewRepository(IDbConnectionFactory factory) : IPortfolioCardViewRepository
 {
     private static readonly JsonSerializerOptions JsonOpts = new() { PropertyNamingPolicy = null };
 
@@ -20,7 +20,7 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
             FROM portfolio_cards WHERE id = @Id;
             """;
 
-        var row = await db.QuerySingleOrDefaultAsync<PortfolioCardRow>(
+        var row = await db.QuerySingleOrDefaultAsync<PortfolioCardViewRow>(
             new CommandDefinition(sql, new { Id = id }, cancellationToken: ct));
 
         return row?.ToEntity();
@@ -38,7 +38,7 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
             OFFSET @Skip LIMIT @Take;
             """;
 
-        var rows = await db.QueryAsync<PortfolioCardRow>(
+        var rows = await db.QueryAsync<PortfolioCardViewRow>(
             new CommandDefinition(sql, new { Skip = skip, Take = take }, cancellationToken: ct));
 
         return rows.Select(r => r.ToEntity()).ToList();
@@ -118,7 +118,7 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
         return affected > 0;
     }
 
-    private sealed class PortfolioCardRow
+    private sealed class PortfolioCardViewRow
     {
         public long Id { get; set; }
         public string Name { get; set; } = "";

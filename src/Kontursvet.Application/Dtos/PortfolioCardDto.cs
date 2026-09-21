@@ -1,6 +1,10 @@
-namespace Kontursvet.Domain.Entities;
+namespace Kontursvet.Application.Dtos;
 
-public sealed class PortfolioCard
+/// <summary>
+/// DTO для передачи PortfolioCard между слоями.
+/// Отделён от домена, чтобы JSON-контракт не зависел от доменных сущностей.
+/// </summary>
+public sealed class PortfolioCardDto
 {
     public long Id { get; set; }
     public string Link { get; set; } = string.Empty;
@@ -10,4 +14,3 @@ public sealed class PortfolioCard
     public string ImgSrc { get; set; } = string.Empty;
     public string ImgAlt { get; set; } = string.Empty;
 }
-

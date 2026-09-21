@@ -1,12 +1,14 @@
 using Kontursvet.Api.Endpoints;
 using Kontursvet.Application;
 using Kontursvet.Infrastructure;
+using Kontursvet.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddApplication()
-    .AddInfrastructure(builder.Configuration);
+    .AddInfrastructure(builder.Configuration)
+    .AddApiServices(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 //builder.Services.AddSwaggerGen();
@@ -23,9 +25,12 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+app.UseCors();
+
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
-app.MapPortfolioEndpoints();
+app.MapPortfolioCardsEndpoints();
+app.MapPortfolioCardViewsEndpoints();
 app.MapLeadEndpoints();
 
 app.Run();

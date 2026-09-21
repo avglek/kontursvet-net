@@ -16,7 +16,9 @@ public static class DependencyInjection
 
         services.AddSingleton<IDbConnectionFactory>(_ => new NpgsqlConnectionFactory(cs));
 
-        services.AddScoped<IPortfolioRepository, PortfolioRepository>();
+        services.AddScoped<IPortfolioCardRepository, PortfolioCardRepository>();
+        services.AddScoped<IPortfolioCardViewRepository, PortfolioCardViewRepository>();
+
         services.AddScoped<ILeadRepository, LeadRepository>();
 
         // Заменить одной строкой на TelegramDispatcher, когда понадобится
