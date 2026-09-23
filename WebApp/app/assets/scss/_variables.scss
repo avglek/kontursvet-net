@@ -18,17 +18,29 @@ $color-primary-light: #dbeafe;
 $color-error: #dc2626;
 $color-error-bg: #fee2e2;
 
+//---- Color site
+
+$color-night: #04111f;
+$color-blue: #06182c;
+$color-blue-soft: #0a223b;
+$color-panel: #0b2743;
+$color-panel-2: #0d2d4d;
+$color-line: rgba(109, 177, 219, 0.22);
+$color-line-strong: rgba(109, 177, 219, 0.42);
+$color-cyan: #16afe7;
+$color-cyan-light: #55cef5;
+$color-ice: #f1f7fb;
+$color-muted: #9fb7ca;
+$color-muted-2: #7596b0;
+$color-shadow: 0 28px 75px rgba(0, 0, 0, 0.28);
+
 // Шрифты
 $font-sans:
   -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
   Cantarell, "Helvetica Neue", sans-serif;
 
-@font-face {
-  font-family: "Inter Display";
-  font-weight: 700;
-  font-display: swap;
-}
-
+$font-inter: "Inter", $font-sans;
+$font-body: "Open Sans", "Segoe UI", sans-serif;
 // Отступы
 $space-xs: 0.25rem;
 $space-sm: 0.5rem;
