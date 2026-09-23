@@ -6,7 +6,8 @@
     "dev:api": "dotnet watch --project ./src/Kontursvet.Api/Kontursvet.Api.csproj --non-interactive",
     "dev:nuxt": "npm run dev --prefix ./WebApp",
     "install:all": "npm install && npm install --prefix ./WebApp",
-    "net": "dotnet run --project ./src/Kontursvet.Api/Kontursvet.Api.csproj"
+    "net": "dotnet run --project ./src/Kontursvet.Api/Kontursvet.Api.csproj",
+    "all": "concurrently --names 'API,NUXT' --prefix-colors 'blue,green' --kill-others \"npm run net\" \"npm run dev:nuxt\""
   },
   "devDependencies": {
     "concurrently": "^9.1.0"

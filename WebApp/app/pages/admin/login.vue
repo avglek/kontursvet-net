@@ -1,87 +1,167 @@
 <script setup lang="ts">
-import { ApiError } from "~/composables/useApi";
-
-definePageMeta({ layout: false });
-
-const { login } = useAuth();
-const route = useRoute();
+const { user, logout } = useAuth();
 const router = useRouter();
 
-const form = reactive({ username: "", password: "" });
-const pending = ref(false);
-const error = ref<string | null>(null);
+const links = [
+  { to: "/admin", label: "Дашборд" },
+  { to: "/admin/portfolio", label: "Портфолио" },
+  { to: "/admin/leads", label: "Лиды" },
+];
 
-const onSubmit = async () => {
-  error.value = null;
-  pending.value = true;
-
-  try {
-    await login(form);
-    const redirect = (route.query.redirect as string) || "/admin";
-    await router.push(redirect);
-  } catch (err) {
-    if (err instanceof ApiError) {
-      error.value = err.problem?.detail || err.problem?.title || err.message;
-    } else {
-      error.value = "Не удалось войти";
-    }
-  } finally {
-    pending.value = false;
-  }
+const handleLogout = async () => {
+  logout();
+  await router.push("/admin/login");
 };
 </script>
 
 <template>
-  <div
-    class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-950 px-4"
-  >
-    <form
-      class="w-full max-w-sm bg-white dark:bg-gray-900 rounded-lg shadow-sm border border-gray-200 dark:border-gray-800 p-6 space-y-4"
-      @submit.prevent="onSubmit"
-    >
-      <div>
-        <h1 class="text-xl font-semibold">Вход в админку</h1>
-        <p class="text-sm text-gray-500 mt-1">Kontursvet</p>
+  <div class="admin">
+    <aside class="admin__sidebar">
+      <div class="admin__brand">
+        <h1 class="admin__brand-title">Kontursvet</h1>
+        <p class="admin__brand-subtitle">Админка</p>
       </div>
 
-      <div
-        v-if="error"
-        class="text-sm text-red-600 bg-red-50 dark:bg-red-950 rounded-md px-3 py-2"
-      >
-        {{ error }}
-      </div>
+      <nav class="admin__nav">
+        <NuxtLink
+          v-for="link in links"
+          :key="link.to"
+          :to="link.to"
+          class="admin__nav-link"
+          active-class="admin__nav-link--active"
+        >
+          {{ link.label }}
+        </NuxtLink>
+      </nav>
 
-      <div class="space-y-1">
-        <label for="username" class="text-sm font-medium">Логин</label>
-        <input
-          id="username"
-          v-model="form.username"
-          type="text"
-          autocomplete="username"
-          required
-          class="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-        />
+      <div class="admin__footer">
+        <div class="admin__user">
+          {{ user?.username ?? "—" }} ({{ user?.role ?? "—" }})
+        </div>
+        <button class="admin__logout" @click="handleLogout">Выйти</button>
       </div>
+    </aside>
 
-      <div class="space-y-1">
-        <label for="password" class="text-sm font-medium">Пароль</label>
-        <input
-          id="password"
-          v-model="form.password"
-          type="password"
-          autocomplete="current-password"
-          required
-          class="w-full rounded-md border border-gray-300 dark:border-gray-700 bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-        />
-      </div>
+    <div class="admin__content">
+      <header class="admin__topbar">
+        <h2 class="admin__page-title">{{ $route.meta.title ?? "" }}</h2>
+      </header>
 
-      <button
-        type="submit"
-        :disabled="pending"
-        class="w-full rounded-md bg-primary-600 hover:bg-primary-700 disabled:opacity-50 text-white text-sm font-medium py-2 transition"
-      >
-        {{ pending ? "Вход…" : "Войти" }}
-      </button>
-    </form>
+      <main class="admin__main">
+        <slot />
+      </main>
+    </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.admin {
+  min-height: 100vh;
+  display: flex;
+  background: $color-bg;
+}
+
+.admin__sidebar {
+  width: 16rem;
+  display: flex;
+  flex-direction: column;
+  background: $color-surface;
+  border-right: 1px solid $color-border;
+}
+
+.admin__brand {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid $color-border;
+}
+
+.admin__brand-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.admin__brand-subtitle {
+  font-size: 0.75rem;
+  color: $color-text-muted;
+  margin-top: 0.125rem;
+}
+
+.admin__nav {
+  flex: 1;
+  padding: 1rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.admin__nav-link {
+  display: block;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  color: $color-text;
+  border-radius: $radius-md;
+  transition: background 0.15s;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.04);
+  }
+
+  &--active {
+    background: $color-primary-light;
+    color: $color-primary;
+    font-weight: 500;
+  }
+}
+
+.admin__footer {
+  padding: 1rem 0.75rem;
+  border-top: 1px solid $color-border;
+}
+
+.admin__user {
+  padding: 0 0.75rem 0.5rem;
+  font-size: 0.75rem;
+  color: $color-text-muted;
+}
+
+.admin__logout {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  font-size: 0.875rem;
+  color: $color-error;
+  border-radius: $radius-md;
+  transition: background 0.15s;
+
+  &:hover {
+    background: rgba($color-error, 0.08);
+  }
+}
+
+.admin__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.admin__topbar {
+  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  padding: 0 1.5rem;
+  background: $color-surface;
+  border-bottom: 1px solid $color-border;
+}
+
+.admin__page-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: $color-text-muted;
+}
+
+.admin__main {
+  flex: 1;
+  padding: 1.5rem;
+  overflow: auto;
+}
+</style>

@@ -1,0 +1,15 @@
+@use "variables" as *;
+@use "reset";
+@use "mixins" as *;
+@use "forms";
+
+html,
+body {
+  font-family: $font-sans;
+  color: $color-text;
+  background: $color-bg;
+}
+
+#__nuxt {
+  min-height: 100vh;
+}
