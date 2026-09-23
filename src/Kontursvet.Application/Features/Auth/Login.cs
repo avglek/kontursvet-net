@@ -18,7 +18,7 @@ public sealed class LoginHandler(
             return Result<LoginResult>.Failure("Логин и пароль обязательны", "AUTH_CREDENTIALS_REQUIRED");
 
         var user = await repository.GetByUsernameAsync(cmd.Username, ct);
-        if (user is null)
+        if (user is null || String.IsNullOrEmpty(user.PasswordHash))
             return Result<LoginResult>.Failure("Неверный логин или пароль", "AUTH_INVALID");
 
         if (!hasher.Verify(cmd.Password, user.PasswordHash))

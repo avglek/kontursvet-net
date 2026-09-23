@@ -13,6 +13,6 @@ INSERT INTO
 VALUES
     (
         'admin',
-        '$2a$11$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy',
+        '$2a$11$wnE.LvJsHiUARhRZ/EzZvOrVmDSjiRrWoaDJypJxp1GFWULHaFupq',
         'Admin'
     ) ON CONFLICT (username) DO NOTHING;

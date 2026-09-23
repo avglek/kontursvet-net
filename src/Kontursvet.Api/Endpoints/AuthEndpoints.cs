@@ -14,6 +14,7 @@ public static class AuthEndpoints
             LoginHandler handler,
             CancellationToken ct) =>
         {
+            
             var result = await handler.HandleAsync(
                 new LoginCommand(req.Username, req.Password), ct);
             return result.ToHttp();

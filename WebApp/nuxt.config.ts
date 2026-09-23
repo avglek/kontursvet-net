@@ -1,6 +1,23 @@
 export default defineNuxtConfig({
   compatibilityDate: "2026-09-01",
+  devtools: { enabled: false },
 
+  // Отключаем загрузку шрифтов по сети
+  // Устанавливаем шрифт npm install @fontsource-variable/inter
+  modules: ["@nuxt/fonts"],
+
+  fonts: {
+    // 1. Указываем, какие шрифты брать из установленных npm-пакетов
+    families: [{ name: "Inter", provider: "npm" }],
+    // 2. Отключаем сетевой поиск unifont по реестру Fontsource, чтобы убрать ошибку
+    // 1. Отключаем ВСЕ внешние сетевые API, которые вызывают ошибки
+    providers: {
+      google: false,
+      fontsource: false,
+      fontshare: false,
+      bunny: false,
+    },
+  },
   // Проксирование API на .NET backend (в dev-режиме)
   $development: {
     runtimeConfig: {
@@ -9,8 +26,8 @@ export default defineNuxtConfig({
       },
     },
     routeRules: {
-      "/api/**": { proxy: "http://localhost:5096/api/**" },
-      "/uploads/**": { proxy: "http://localhost:5096/uploads/**" },
+      "/api/**": { proxy: "http://localhost:5136/api/**" },
+      "/uploads/**": { proxy: "http://localhost:5136/uploads/**" },
     },
   },
 
@@ -21,10 +38,6 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: [// опционально, если позже понадобится
-  "@pinia/nuxt", "@nuxt/ui"],
-
-  css: ["~/assets/css/main.css"],
-
-  devtools: { enabled: true },
+  // Глобальные стили
+  css: ["~/assets/scss/main.scss"],
 });

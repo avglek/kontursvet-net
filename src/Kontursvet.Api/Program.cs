@@ -3,8 +3,11 @@ using Kontursvet.Application;
 using Kontursvet.Infrastructure;
 using Kontursvet.Configuration;
 using Microsoft.Extensions.FileProviders;
+using Dapper;
 
 var builder = WebApplication.CreateBuilder(args);
+
+DefaultTypeMap.MatchNamesWithUnderscores = true;
 
 builder.Services
     .AddApplication()
@@ -39,7 +42,7 @@ app.UseStaticFiles(new StaticFileOptions
             "Cache-Control", "public, max-age=31536000, immutable");
     }
 });
-
+//Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("admin123"));
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -47,6 +50,8 @@ app.UseCors();
 
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
+app.MapAdminEndpoints();
+app.MapAuthEndpoints();
 app.MapPortfolioCardsEndpoints();
 app.MapPortfolioCardViewsEndpoints();
 app.MapLeadEndpoints();

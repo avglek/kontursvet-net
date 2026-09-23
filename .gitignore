@@ -65,6 +65,7 @@ PublishProfiles/
 # ============================================================
 appsettings.Local.json
 appsettings.*.Local.json
+appsettings.Development.json
 *.env
 .env
 .env.*
