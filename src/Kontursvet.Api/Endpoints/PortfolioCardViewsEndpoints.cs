@@ -31,6 +31,7 @@ public static class PortfolioCardViewsEndpoints
             GetPortfolioCardViewHandler handler,
             CancellationToken ct) =>
         {
+            await Task.Delay(3000);
             var result = await handler.HandleAsync(new GetPortfolioCardViewQuery(id), ct);
             return result.ToHttp();
         })

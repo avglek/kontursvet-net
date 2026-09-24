@@ -1,6 +1,6 @@
 <template>
   <!-- Состояние загрузки -->
-  <div v-if="isLoading"><Spinner /></div>
+  <div v-if="isLoading"><Spinner :is-overlay="true" /></div>
 
   <!-- Ошибка -->
   <div v-else-if="error" class="error">{{ error }}</div>
@@ -110,14 +110,3 @@ onMounted(async () => {
   }
 });
 </script>
-
-<!-- <style scoped>
-.link {
-  color: var(--accent);
-  text-decoration: none;
-  white-space: nowrap;
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: end;
-}
-</style> -->

@@ -19,10 +19,7 @@
 
 <script lang="ts" setup>
 const props = defineProps<{
-  isOverlay?: {
-    type: boolean;
-    default: false;
-  };
+  isOverlay?: boolean;
 }>();
 </script>
 
