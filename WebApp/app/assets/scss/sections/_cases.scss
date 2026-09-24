@@ -1,0 +1,72 @@
+.cases-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.case-card {
+  min-width: 0;
+  min-height: 540px;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  overflow: hidden;
+  background: linear-gradient(145deg, #0b2947, #071a2e);
+}
+
+.case-photo {
+  min-width: 0;
+  min-height: 540px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.76) saturate(0.9);
+  }
+}
+
+.case-body {
+  padding: 42px 35px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  h3 {
+    font: 600 34px/1.1 "Inter Display", sans-serif;
+    letter-spacing: -0.025em;
+    margin: 10px 0 19px;
+  }
+
+  ul {
+    padding-left: 19px;
+    color: #adc4d4;
+    font-size: 15px;
+    margin: 0 0 24px;
+  }
+
+  li { margin: 7px 0; }
+
+  a {
+    color: var(--cyan-light);
+    font-weight: 600;
+    margin-top: auto;
+    font-size: 14px;
+  }
+}
+
+.case-facts {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+
+  span {
+    padding: 7px 10px;
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    color: #bce5f5;
+    font-size: 12px;
+  }
+}

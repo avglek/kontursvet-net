@@ -1,0 +1,12 @@
+@use '../abstracts/media' as *;
+
+@include upto-380 {
+  .hero-title { font-size: 39px; }
+
+  .section-title,
+  .composition-copy > .section-title,
+  .ai-heading .section-title { font-size: 35px; }
+
+  .button { padding-inline: 16px; }
+  .case-body h3 { font-size: 29px; }
+}

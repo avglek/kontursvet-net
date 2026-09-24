@@ -1,0 +1,31 @@
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 48px;
+  margin-bottom: 44px;
+}
+
+.section-title {
+  font: 700 clamp(40px, 3.7vw, 60px)/1.04 "Inter Display", sans-serif;
+  letter-spacing: -0.038em;
+  margin: 12px 0 0;
+  max-width: 900px;
+}
+
+.section-lead {
+  max-width: 620px;
+  color: var(--muted);
+  font-size: 18px;
+  margin: 0 0 2px;
+}
+
+.glow-line {
+  display: inline-block;
+  width: 72px;
+  height: 1px;
+  margin-left: 14px;
+  vertical-align: middle;
+  background: linear-gradient(90deg, var(--cyan), transparent);
+  box-shadow: 0 0 16px rgba(22, 175, 231, 0.8);
+}

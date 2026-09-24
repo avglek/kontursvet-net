@@ -1,0 +1,33 @@
+.final-cta {
+  padding: 82px 0;
+  background:
+    radial-gradient(circle at 75% 40%, rgba(25, 117, 175, 0.2), transparent 29%),
+    linear-gradient(180deg, #071d34, #041321);
+  border-top: 1px solid rgba(130, 191, 226, 0.12);
+}
+
+.final-layout {
+  display: grid;
+  grid-template-columns: 1.16fr 0.84fr;
+  gap: 54px;
+  align-items: center;
+
+  h2 {
+    font: 700 clamp(43px, 3.7vw, 61px)/1.04 "Inter Display", sans-serif;
+    letter-spacing: -0.04em;
+    margin: 12px 0 15px;
+    max-width: 760px;
+  }
+
+  p {
+    font-size: 18px;
+    color: #a9c0d1;
+    margin: 0 0 22px;
+  }
+}
+
+.final-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}

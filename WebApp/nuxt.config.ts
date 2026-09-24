@@ -4,7 +4,7 @@ export default defineNuxtConfig({
 
   // Отключаем загрузку шрифтов по сети
   // Устанавливаем шрифт npm install @fontsource-variable/inter
-  modules: ["@nuxt/fonts"],
+  modules: ["@nuxt/fonts", "@nuxt/image"],
 
   fonts: {
     // 1. Указываем, какие шрифты брать из установленных npm-пакетов
@@ -40,4 +40,18 @@ export default defineNuxtConfig({
 
   // Глобальные стили
   css: ["~/assets/scss/main.scss"],
+  // vite: {
+  //   css: {
+  //     preprocessorOptions: {
+  //       scss: {
+  //         // 2. Автоматически вставляем переменные и миксины в каждый SCSS-блок
+  //         //    Обратите внимание на точку с запятой в конце и на кавычки
+  //         additionalData: `
+  //           @use "~/assets/scss/variables" as *;
+  //           @use "~/assets/scss/mixins" as *;
+  //         `,
+  //       },
+  //     },
+  //   },
+  // },
 });

@@ -1,0 +1,7 @@
+@use 'mixins' as *;
+
+@mixin upto-1200 { @include respond-below('xl') { @content; } }
+@mixin upto-1024 { @include respond-below('lg') { @content; } }
+@mixin upto-820  { @include respond-below('md') { @content; } }
+@mixin upto-560  { @include respond-below('sm') { @content; } }
+@mixin upto-380  { @include respond-below('xs') { @content; } }

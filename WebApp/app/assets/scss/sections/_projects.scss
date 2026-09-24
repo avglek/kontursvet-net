@@ -1,0 +1,127 @@
+.project-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 0.82fr 0.82fr;
+  grid-template-rows: 300px 300px;
+  gap: 16px;
+}
+
+.project-card {
+  position: relative;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  background: #061727;
+  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.14);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(0.86) saturate(0.92);
+    transition: transform 0.5s ease, filter 0.5s ease;
+  }
+
+  &:hover img {
+    transform: scale(1.025);
+    filter: brightness(0.95);
+  }
+}
+
+.project-card-featured { grid-row: 1 / 3; }
+
+.project-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 47%, rgba(2, 12, 22, 0.92) 100%);
+}
+
+.project-caption {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 20px;
+  z-index: 2;
+
+  strong {
+    display: block;
+    font: 600 22px/1.2 "Inter Display", sans-serif;
+  }
+
+  span {
+    display: block;
+    color: #b4c8d7;
+    margin-top: 4px;
+    font-size: 14px;
+  }
+}
+
+.portfolio-nav-link { color: var(--cyan-light) !important; }
+
+.portfolio-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 46px;
+  margin-top: 22px;
+  padding: 30px 34px;
+  border: 1px solid rgba(22, 175, 231, 0.34);
+  border-radius: 18px;
+  background: linear-gradient(120deg, rgba(12, 48, 80, 0.96), rgba(5, 24, 43, 0.96));
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.16);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(71, 204, 255, 0.72);
+    box-shadow: 0 22px 64px rgba(0, 0, 0, 0.24);
+
+    .portfolio-entry-action b { transform: translateX(4px); }
+  }
+}
+
+.portfolio-entry-copy {
+  h3 {
+    font: 600 clamp(25px, 2.3vw, 36px)/1.08 "Inter Display", sans-serif;
+    letter-spacing: -0.025em;
+    margin: 8px 0;
+  }
+
+  p {
+    margin: 0;
+    color: var(--muted);
+    max-width: 620px;
+  }
+}
+
+.portfolio-entry-stats {
+  display: flex;
+  gap: 28px;
+  color: #bbcfdd;
+  white-space: nowrap;
+
+  span { display: grid; }
+
+  strong {
+    font: 600 30px/1 "Inter Display", sans-serif;
+    color: white;
+  }
+}
+
+.portfolio-entry-action {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  white-space: nowrap;
+  padding: 14px 18px;
+  border: 1px solid var(--cyan);
+  border-radius: 10px;
+  color: white;
+  font-weight: 600;
+
+  b {
+    color: var(--cyan-light);
+    font-size: 20px;
+    transition: transform 0.2s;
+  }
+}

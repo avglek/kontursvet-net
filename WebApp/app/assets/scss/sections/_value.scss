@@ -1,0 +1,46 @@
+.value-section {
+  padding: 66px 0;
+  background: linear-gradient(180deg, #071b31, #06182c);
+  border-bottom: 1px solid rgba(130, 191, 226, 0.1);
+}
+
+.value-layout {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 70px;
+  align-items: center;
+}
+
+.value-title {
+  font: 600 clamp(30px, 2.4vw, 42px)/1.12 "Inter Display", sans-serif;
+  letter-spacing: -0.025em;
+  margin: 10px 0 0;
+  max-width: 520px;
+}
+
+.value-track {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  border-top: 1px solid var(--line);
+}
+
+.value-item {
+  min-height: 116px;
+  padding: 19px 14px 0;
+  border-left: 1px solid var(--line);
+
+  &:last-child { border-right: 1px solid var(--line); }
+
+  span {
+    display: block;
+    color: var(--cyan-light);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    margin-bottom: 22px;
+  }
+
+  strong {
+    font-size: 14px;
+    line-height: 1.3;
+  }
+}

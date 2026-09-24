@@ -1,0 +1,49 @@
+.process-section { background: rgba(3, 16, 29, 0.14); }
+
+.process-list {
+  list-style: none;
+  margin: 42px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+
+  li {
+    position: relative;
+    padding: 0 21px;
+
+    &:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      top: 26px;
+      left: 72px;
+      right: -2px;
+      border-top: 1px dashed rgba(120, 179, 214, 0.32);
+    }
+  }
+
+  strong {
+    display: block;
+    margin: 18px 0 7px;
+    font-size: 15px;
+  }
+
+  p {
+    font-size: 13px;
+    color: #91adbf;
+    margin: 0;
+  }
+}
+
+.process-number {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: #082139;
+  color: var(--cyan-light);
+  font: 600 13px/1 "Inter Display", sans-serif;
+  position: relative;
+  z-index: 2;
+}

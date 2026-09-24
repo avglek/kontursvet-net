@@ -1,0 +1,37 @@
+.included-section {
+  background: linear-gradient(180deg, rgba(7, 26, 45, 0.12), rgba(4, 17, 31, 0.34));
+}
+
+.included-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 11px;
+}
+
+.included-card {
+  min-width: 0;
+  min-height: 210px;
+  padding: 23px 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(13, 45, 77, 0.68), rgba(7, 26, 45, 0.55));
+
+  > span {
+    display: block;
+    color: var(--cyan-light);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    margin-bottom: 31px;
+  }
+
+  h3 {
+    font: 600 16px/1.25 "Inter Display", sans-serif;
+    margin: 0 0 9px;
+  }
+
+  p {
+    color: #91adbf;
+    font-size: 13px;
+    margin: 0;
+  }
+}

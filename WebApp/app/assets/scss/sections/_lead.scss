@@ -1,0 +1,28 @@
+.lead-panel {
+  display: grid;
+  grid-template-columns: 0.58fr 1.42fr;
+  gap: 36px;
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid var(--line);
+
+  h3 {
+    font: 600 28px/1.15 "Inter Display", sans-serif;
+    margin: 11px 0 9px;
+  }
+
+  > div > p {
+    color: var(--muted);
+    font-size: 14px;
+    margin: 0;
+  }
+}
+
+.lead-wishes { grid-column: 1 / 3; }
+
+.form-notice {
+  grid-column: 1 / -1;
+  color: #a8dff2;
+  font-size: 13px;
+  margin: 0;
+}

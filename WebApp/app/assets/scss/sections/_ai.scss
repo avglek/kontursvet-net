@@ -1,0 +1,133 @@
+.ai-shell {
+  border: 1px solid var(--line-strong);
+  border-radius: 24px;
+  background:
+    radial-gradient(
+      circle at 78% 24%,
+      rgba(24, 121, 180, 0.17),
+      transparent 26%
+    ),
+    linear-gradient(145deg, #0b2947, #071a2f);
+  padding: 42px;
+  box-shadow: var(--shadow);
+}
+
+.ai-heading {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  align-items: flex-start;
+  margin-bottom: 34px;
+
+  p {
+    color: #acc2d3;
+    max-width: 760px;
+    font-size: 18px;
+    margin: 17px 0 0;
+  }
+}
+
+.prototype-badge {
+  display: inline-flex;
+  padding: 9px 13px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: #bfe9f9;
+  font-size: 13px;
+  white-space: nowrap;
+  background: rgba(8, 35, 59, 0.6);
+}
+
+.ai-steps {
+  display: grid;
+  grid-template-columns: 1fr 0.76fr 1.16fr;
+  gap: 18px;
+}
+
+.ai-card {
+  min-width: 0;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(3, 18, 33, 0.46);
+}
+
+.step-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #cde3ef;
+  font-size: 14px;
+  margin-bottom: 14px;
+
+  > span {
+    color: var(--cyan-light);
+    font:
+      600 19px/1 "Inter Display",
+      sans-serif;
+  }
+}
+
+.upload-preview,
+.result-preview {
+  height: 350px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #03101d;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.upload-preview {
+  img {
+    filter: brightness(0.63) saturate(0.8);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 45% 0 0;
+    background: linear-gradient(transparent, rgba(1, 10, 18, 0.9));
+    pointer-events: none;
+  }
+
+  button {
+    position: absolute;
+    z-index: 2;
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    height: 48px;
+    border: 1px solid rgba(85, 206, 245, 0.48);
+    border-radius: 9px;
+    background: rgba(3, 22, 38, 0.82);
+    color: white;
+    font-weight: 600;
+
+    &:not(:disabled):hover {
+      border-color: var(--cyan-light);
+    }
+  }
+}
+
+.field-error {
+  color: #ffc2c2;
+  font-size: 13px;
+  margin: 10px 0 0;
+}
+
+.mode-options {
+  display: grid;
+  gap: 10px;
+
+  button {
+    padding: 17px;
+    text-align: left;
+    border: 1px solid;
+  }
+}

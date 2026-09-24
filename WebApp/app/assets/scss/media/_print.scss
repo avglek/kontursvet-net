@@ -1,0 +1,7 @@
+@media print {
+  .site-header,
+  .preview-label,
+  .preview-modal {
+    display: none !important;
+  }
+}

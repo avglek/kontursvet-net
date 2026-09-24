@@ -20,6 +20,7 @@ bld/
 *.userprefs
 *.rsuser
 
+
 # Результаты тестов и покрытие
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
@@ -102,3 +103,4 @@ temp
 ## 4 node
 node_modules
 package-lock.json
+tmp
