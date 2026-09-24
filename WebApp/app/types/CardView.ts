@@ -1,7 +1,7 @@
 export interface ICardView {
   id: number;
   name: string;
-  case: string;
+  part: string;
   title: string;
   description: string;
   task: string;
@@ -12,7 +12,7 @@ export interface ICardView {
   period: string;
   features: string;
   meta: string[];
-  photos?: IGallery[];
+  gallery?: IGallery[];
 }
 
 export interface ICard {

@@ -8,7 +8,7 @@
     <div class="shell">
       <div class="case-heading">
         <div>
-          <div class="eyebrow">{{ card?.case }}</div>
+          <div class="eyebrow">{{ card?.part }}</div>
           <h2>{{ card?.title }}</h2>
         </div>
         <NuxtLink :to="'/portfolio/#' + card?.name">К списку ↑</NuxtLink>
@@ -60,7 +60,7 @@
         <span> {{ card?.meta[2] }}</span>
       </div>
       <div class="gallery">
-        <figure v-for="photo in card?.photos">
+        <figure v-for="photo in card?.gallery">
           <NuxtImg
             loading="lazy"
             :src="photo.src"
@@ -86,8 +86,6 @@ import { useLightbox } from '~/composables/useLightbox';
 // Подключаем функцию открытия
 const { openLightbox } = useLightbox();
 
-const cardViews = ref<ICardView[]>([]);
-const photos = ref<IPhoto[]>([]);
 const card = ref<ICardView | null>(null);
 const isLoading = ref<boolean>(true);
 const error = ref<string | null>(null);
@@ -99,17 +97,12 @@ const id: number = props.id;
 
 onMounted(async () => {
   try {
-    const cardResponse = await fetch('/api/data?file=cards-view.json');
-    const photoResponse = await fetch('/api/data?file=photo-view.json');
+    const cardResponse = await fetch(`/api/profile/cardviews/${id}`);
 
-    if (!cardResponse.ok || !photoResponse.ok) {
+    if (!cardResponse.ok) {
       throw new Error('Ошибка при загрузке данных');
     }
-    cardViews.value = (await cardResponse.json()) as ICardView[];
-    photos.value = (await photoResponse.json()) as IPhoto[];
-
-    card.value = cardViews.value[id - 1]!;
-    card.value.photos = photos.value[id - 1]?.gallery;
+    card.value = (await cardResponse.json()) as ICardView;
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Неизвестная ошибка';
   } finally {
@@ -118,7 +111,7 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
+<!-- <style scoped>
 .link {
   color: var(--accent);
   text-decoration: none;
@@ -127,4 +120,4 @@ onMounted(async () => {
   display: flex;
   justify-content: end;
 }
-</style>
+</style> -->

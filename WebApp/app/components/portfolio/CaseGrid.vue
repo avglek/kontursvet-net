@@ -33,6 +33,7 @@ onMounted(async () => {
     if (!response.ok) {
       throw new Error("Ошибка при загрузке данных");
     }
+
     cards.value = (await response.json()) as ICard[];
   } catch (err) {
     error.value = err instanceof Error ? err.message : "Неизвестная ошибка";
