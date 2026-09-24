@@ -18,9 +18,9 @@
   </section>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import type { ICard } from '~/types/CardView';
-import Spinner from '../Spinner.vue';
+import { ref, onMounted } from "vue";
+import type { ICard } from "~/types/CardView";
+import Spinner from "../Spinner.vue";
 
 const cards = ref<ICard[]>([]);
 const isLoading = ref<boolean>(true);
@@ -28,14 +28,14 @@ const error = ref<string | null>(null);
 
 onMounted(async () => {
   try {
-    const response = await fetch('/api/data?file=case-cards.json');
+    const response = await fetch("/api/profile/cards");
 
     if (!response.ok) {
-      throw new Error('Ошибка при загрузке данных');
+      throw new Error("Ошибка при загрузке данных");
     }
     cards.value = (await response.json()) as ICard[];
   } catch (err) {
-    error.value = err instanceof Error ? err.message : 'Неизвестная ошибка';
+    error.value = err instanceof Error ? err.message : "Неизвестная ошибка";
   } finally {
     isLoading.value = false;
   }

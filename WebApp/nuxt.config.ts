@@ -4,7 +4,7 @@ export default defineNuxtConfig({
 
   // Отключаем загрузку шрифтов по сети
   // Устанавливаем шрифт npm install @fontsource-variable/inter
-  modules: ["@nuxt/fonts", "@nuxt/image"],
+  modules: ["@nuxt/fonts", "@nuxt/image", "@stolbov.r/nuxt-font-loader"],
 
   fonts: {
     // 1. Указываем, какие шрифты брать из установленных npm-пакетов
@@ -17,6 +17,44 @@ export default defineNuxtConfig({
       fontshare: false,
       bunny: false,
     },
+  },
+
+  // Загрузка локальных шрифтов.
+  fontLoader: {
+    local: [
+      {
+        family: "Inter Display",
+        src: "/fonts/InterDisplay-Bold.woff2",
+        weight: "700",
+        preload: true,
+        display: "swap",
+        style: "normal",
+      },
+      {
+        family: "Inter Display",
+        src: "/fonts/InterDisplay-SemiBold.woff2",
+        weight: "600",
+        preload: true,
+        display: "swap",
+        style: "normal",
+      },
+      {
+        family: "Open Sans",
+        src: "/fonts/OpenSans-Regular.woff2",
+        weight: "400",
+        preload: true,
+        display: "swap",
+        style: "normal",
+      },
+      {
+        family: "Open Sans",
+        src: "/fonts/OpenSans-SemiBold.woff2",
+        weight: "600",
+        preload: true,
+        display: "swap",
+        style: "normal",
+      },
+    ],
   },
   // Проксирование API на .NET backend (в dev-режиме)
   $development: {
@@ -40,18 +78,6 @@ export default defineNuxtConfig({
 
   // Глобальные стили
   css: ["~/assets/scss/main.scss"],
-  // vite: {
-  //   css: {
-  //     preprocessorOptions: {
-  //       scss: {
-  //         // 2. Автоматически вставляем переменные и миксины в каждый SCSS-блок
-  //         //    Обратите внимание на точку с запятой в конце и на кавычки
-  //         additionalData: `
-  //           @use "~/assets/scss/variables" as *;
-  //           @use "~/assets/scss/mixins" as *;
-  //         `,
-  //       },
-  //     },
-  //   },
-  // },
+
+  // Шрифты
 });

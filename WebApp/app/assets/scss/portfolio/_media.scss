@@ -1,0 +1,107 @@
+@use '../abstracts/media' as *;
+
+@include upto-1040 {
+  .benefit-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@include upto-820 {
+  .shell { width: min(100% - 36px, 720px); }
+
+  .portfolio-site-header { height: 88px; min-height: 88px; }
+
+  .header-inner { gap: 16px; }
+
+  .portfolio-brand img { width: 220px; max-width: 48vw; }
+  .portfolio-brand img { width: 210px; }
+
+  .portfolio-hero { min-height: 580px; }
+  .portfolio-hero-content { padding: 72px 0; }
+
+  .portfolio-hero::after {
+    background: linear-gradient(0deg,
+      rgba(8, 27, 51, 0.96) 0%,
+      rgba(8, 27, 51, 0.62) 62%,
+      rgba(8, 27, 51, 0.22) 100%);
+  }
+
+  .cards,
+  .info-grid { grid-template-columns: 1fr; }
+
+  .portfolio-section { padding: 64px 0; }
+
+  .gallery { gap: 14px; }
+
+  .cta { padding: 34px; }
+
+  .intro-grid,
+  .lead-card { grid-template-columns: 1fr; }
+
+  .proof-strip { grid-template-columns: 1fr; }
+
+  .lead-copy {
+    padding: 38px;
+    border-right: 0;
+    border-bottom: 1px solid var(--pf-line);
+  }
+
+  .lead-form { padding: 38px; }
+
+  .case-card-body { min-height: auto; }
+
+  .facts-grid { grid-template-columns: 1fr 1fr; }
+  .fact-wide  { grid-column: span 2; }
+
+  .case-heading {
+    display: block;
+
+    a { display: inline-block; margin: 0 0 24px; }
+  }
+
+  .concept-case .gallery { grid-template-columns: 1fr; }
+}
+
+@include upto-480 {
+  .shell { width: calc(100% - 28px); }
+
+  .header-action { font-size: 0.78rem; }
+
+  .portfolio-brand img { width: 178px; max-width: 62vw; }
+
+  .intro-grid { gap: 28px; }
+
+  .display-title { font-size: 2.65rem; }
+
+  .portfolio-hero { min-height: 620px; }
+  .portfolio-hero-content { padding: 56px 0; }
+  .portfolio-hero h1 { font-size: 2.45rem; }
+
+  .portfolio-meta { display: grid; gap: 10px; }
+
+  .portfolio-section { padding: 50px 0; }
+
+  .cards,
+  .gallery { grid-template-columns: 1fr; }
+
+  .case-card-body { padding: 22px; }
+  .panel { padding: 24px; }
+  .cta   { padding: 26px; }
+
+  .gallery img { aspect-ratio: 4/3; }
+
+  .lead-section { padding-bottom: 58px; }
+  .lead-copy,
+  .lead-form { padding: 26px; }
+  .lead-form { grid-template-columns: 1fr; }
+
+  .field-wide,
+  .check,
+  .submit-button,
+  .form-note,
+  .form-status { grid-column: 1; }
+
+  .proof-item { padding: 20px; }
+
+  .benefit-grid,
+  .facts-grid { grid-template-columns: 1fr; }
+  .fact-wide { grid-column: 1; }
+}

@@ -6,8 +6,6 @@
   </main>
 </template>
 
-<script lang="ts" setup>
-// import "~/assets/css/portfolio.css";
-</script>
+<script lang="ts" setup></script>
 
 <style></style>

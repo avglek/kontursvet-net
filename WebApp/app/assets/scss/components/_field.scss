@@ -1,0 +1,77 @@
+// ==============================
+// 🧾 Форма
+// ==============================
+.field {
+  display: grid;
+  gap: 8px;
+
+  label {
+    color: var(--pf-muted, var(--muted));
+    font-size: 0.9rem;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    border: 1px solid rgba(184, 199, 214, 0.28);
+    background: #071a31;
+    color: var(--pf-white, var(--ice));
+    font: inherit;
+    padding: 14px 15px;
+    border-radius: 2px;
+    outline: none;
+
+    &:focus {
+      border-color: var(--pf-accent, var(--cyan));
+      box-shadow: 0 0 0 3px rgba(22, 168, 224, 0.1);
+    }
+  }
+
+  textarea { min-height: 105px; resize: vertical; }
+
+  input::file-selector-button {
+    border: 0;
+    background: #153759;
+    color: var(--pf-white, var(--ice));
+    padding: 8px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+}
+
+.field-wide { grid-column: 1 / -1; }
+
+.check {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--pf-muted, var(--muted));
+  font-size: 0.86rem;
+
+  input { margin-top: 4px; }
+}
+
+.submit-button {
+  grid-column: 1 / -1;
+  border: 0;
+  background: var(--pf-accent, var(--cyan));
+  color: #031426;
+  font: inherit;
+  font-weight: 800;
+  padding: 16px 22px;
+  cursor: pointer;
+
+  &:not(:disabled):hover { filter: brightness(1.08); }
+}
+
+.form-note,
+.form-status {
+  grid-column: 1 / -1;
+  color: var(--pf-muted, var(--muted));
+  font-size: 0.82rem;
+  margin: 0;
+}
+
+.form-status { color: #71d5ff; min-height: 1.3em; }

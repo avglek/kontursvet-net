@@ -1,16 +1,11 @@
 // ==============================
-// 📱 Breakpoints (для _mixins.scss)
+// 📱 Breakpoints
 // ==============================
 $breakpoints: (
-  "xs": 380px,
-  "sm": 560px,
-  "md": 820px,
-  "lg": 1024px,
-  "xl": 1200px,
+  'xs':  380px,
+  'sm':  480px,
+  'md':  560px,
+  'lg':  820px,
+  'xl':  1040px,
+  'xxl': 1200px,
 );
-
-// ==============================
-// 🔤 Шрифты (используем уже определённый Inter Display)
-// ==============================
-$font-body: "Open Sans", "Segoe UI", sans-serif;
-$font-title: "Inter Display", sans-serif;

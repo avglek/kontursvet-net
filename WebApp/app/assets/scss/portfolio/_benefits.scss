@@ -1,0 +1,35 @@
+.benefits { background: #0a2039; }
+
+.benefit-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--pf-line);
+  border: 1px solid var(--pf-line);
+  margin-top: 42px;
+}
+
+.benefit {
+  background: #0d2745;
+  padding: 30px 26px;
+
+  h3 {
+    font-size: 1.2rem;
+    line-height: 1.25;
+    margin: 0 0 12px;
+  }
+
+  p { color: var(--pf-muted); margin: 0; font-size: 0.96rem; }
+}
+
+.benefit-mark {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 24px;
+  border: 1px solid rgba(22, 168, 224, 0.55);
+  color: var(--pf-accent);
+  font-weight: 800;
+  font-size: 1.05rem;
+}

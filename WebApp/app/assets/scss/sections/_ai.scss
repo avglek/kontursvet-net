@@ -2,11 +2,7 @@
   border: 1px solid var(--line-strong);
   border-radius: 24px;
   background:
-    radial-gradient(
-      circle at 78% 24%,
-      rgba(24, 121, 180, 0.17),
-      transparent 26%
-    ),
+    radial-gradient(circle at 78% 24%, rgba(24, 121, 180, 0.17), transparent 26%),
     linear-gradient(145deg, #0b2947, #071a2f);
   padding: 42px;
   box-shadow: var(--shadow);
@@ -19,12 +15,7 @@
   align-items: flex-start;
   margin-bottom: 34px;
 
-  p {
-    color: #acc2d3;
-    max-width: 760px;
-    font-size: 18px;
-    margin: 17px 0 0;
-  }
+  p { color: #acc2d3; max-width: 760px; font-size: 18px; margin: 17px 0 0; }
 }
 
 .prototype-badge {
@@ -62,9 +53,7 @@
 
   > span {
     color: var(--cyan-light);
-    font:
-      600 19px/1 "Inter Display",
-      sans-serif;
+    font: 600 19px/1 "Inter Display", sans-serif;
   }
 }
 
@@ -76,17 +65,11 @@
   border-radius: 14px;
   background: #03101d;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
+  img { width: 100%; height: 100%; object-fit: cover; }
 }
 
 .upload-preview {
-  img {
-    filter: brightness(0.63) saturate(0.8);
-  }
+  img { filter: brightness(0.63) saturate(0.8); }
 
   &::after {
     content: "";
@@ -109,17 +92,11 @@
     color: white;
     font-weight: 600;
 
-    &:not(:disabled):hover {
-      border-color: var(--cyan-light);
-    }
+    &:not(:disabled):hover { border-color: var(--cyan-light); }
   }
 }
 
-.field-error {
-  color: #ffc2c2;
-  font-size: 13px;
-  margin: 10px 0 0;
-}
+.field-error { color: #ffc2c2; font-size: 13px; margin: 10px 0 0; }
 
 .mode-options {
   display: grid;
@@ -128,6 +105,44 @@
   button {
     padding: 17px;
     text-align: left;
-    border: 1px solid;
+    border: 1px solid var(--line);
+    border-radius: 13px;
+    background: #0b2946;
+    color: #e7f1f7;
+    transition: 0.2s;
+
+    &:hover,
+    &.is-selected {
+      border-color: #42c5f2;
+      background: linear-gradient(145deg, #164c73, #0b2a47);
+      box-shadow: inset 0 0 0 1px rgba(66, 197, 242, 0.15);
+    }
   }
+
+  strong { display: block; font-size: 16px; margin-bottom: 4px; }
+  span   { display: block; font-size: 13px; color: #8eb1c8; }
 }
+
+.generate-button { width: 100%; margin-top: 12px; }
+
+.result-preview {
+  img {
+    filter: brightness(0.8) saturate(0.9);
+    transition: filter 0.25s;
+  }
+
+  &.is-loading img { filter: brightness(0.35) blur(2px); }
+}
+
+.result-status {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  padding: 7px 10px;
+  border-radius: 7px;
+  background: rgba(3, 18, 33, 0.82);
+  font-size: 12px;
+  color: #c7e8f5;
+}
+
+.disclaimer { font-size: 13px; color: #87a9bf; margin: 12px 0 0; }

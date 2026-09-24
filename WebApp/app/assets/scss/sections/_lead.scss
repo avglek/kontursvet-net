@@ -11,11 +11,7 @@
     margin: 11px 0 9px;
   }
 
-  > div > p {
-    color: var(--muted);
-    font-size: 14px;
-    margin: 0;
-  }
+  > div > p { color: var(--muted); font-size: 14px; margin: 0; }
 }
 
 .lead-wishes { grid-column: 1 / 3; }

@@ -1,7 +1,4 @@
-// ==============================
-// Layout — каркас страницы
-// ==============================
-@forward "container";
-@forward "section";
-@forward "header";
-@forward "footer";
+@forward 'container';
+@forward 'section';
+@forward 'header';
+@forward 'footer';

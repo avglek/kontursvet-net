@@ -1,0 +1,51 @@
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+.panel {
+  background: var(--pf-blue);
+  border-top: 3px solid var(--pf-accent);
+  padding: 32px;
+
+  h3 { margin-top: 0; }
+
+  ul {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--pf-muted);
+  }
+}
+
+.cta {
+  background: linear-gradient(135deg, var(--pf-blue), var(--pf-navy));
+  border: 1px solid var(--pf-line);
+  padding: 54px;
+  margin-top: 48px;
+
+  p { font-size: 1.25rem; max-width: 760px; }
+}
+
+.portfolio-button {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 14px 22px;
+  border: 1px solid var(--pf-accent);
+  color: var(--pf-white);
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.portfolio-back {
+  display: inline-block;
+  margin-bottom: 24px;
+  color: var(--pf-accent);
+  text-decoration: none;
+}
+
+.portfolio-footer {
+  border-top: 1px solid var(--pf-line);
+  padding: 36px 0 54px;
+  color: var(--pf-muted);
+}
