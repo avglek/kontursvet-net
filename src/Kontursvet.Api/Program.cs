@@ -30,18 +30,18 @@ if (app.Environment.IsDevelopment())
 ;
 
 
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(builder.Environment.ContentRootPath, "wwwroot")),
-    RequestPath = "",
-    OnPrepareResponse = ctx =>
-    {
-        // Кэш на год — файлы с Guid в имени, никогда не перезаписываются
-        ctx.Context.Response.Headers.Append(
-            "Cache-Control", "public, max-age=31536000, immutable");
-    }
-});
+// app.UseStaticFiles(new StaticFileOptions
+// {
+//     FileProvider = new PhysicalFileProvider(
+//         Path.Combine(builder.Environment.ContentRootPath, "wwwroot")),
+//     RequestPath = "",
+//     OnPrepareResponse = ctx =>
+//     {
+//         // Кэш на год — файлы с Guid в имени, никогда не перезаписываются
+//         ctx.Context.Response.Headers.Append(
+//             "Cache-Control", "public, max-age=31536000, immutable");
+//     }
+// });
 //Console.WriteLine(BCrypt.Net.BCrypt.HashPassword("admin123"));
 app.UseAuthentication();
 app.UseAuthorization();

@@ -18,10 +18,6 @@ public sealed class LeadPhone
 public sealed class LeadAttachment
 {
     public string Filename { get; set; } = string.Empty;
-
-    // В JSON приходит base64-строка, в Domain храним как есть —
-    // декодирование в byte[] делает Infrastructure при необходимости
-    public string? Content { get; set; }
+    public string? Url { get; set; }
     public string? ContentType { get; set; }
-    public string Encoding { get; set; } = "base64";
 }

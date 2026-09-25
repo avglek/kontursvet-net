@@ -28,9 +28,8 @@ public static class LeadEndpoints
             var attachments = req.Attachments.Select(a => new LeadAttachment
             {
                 Filename = a.Filename,
-                Content = a.Content,
+                Url = a.Url,
                 ContentType = a.ContentType,
-                Encoding = a.Encoding
             }).ToList();
 
             var result = await handler.HandleAsync(new SendLeadCommand(lead, attachments), ct);
@@ -44,8 +43,7 @@ public static class LeadEndpoints
     }
 }
 
-// Request-модели — соответствуют твоим TS-интерфейсам ILeadMessage, ILead, ILeadPhone, ILeadAttachment
 public sealed record LeadMessageRequest(LeadTextDto Text, List<LeadAttachmentDto> Attachments);
 public sealed record LeadTextDto(string Name, LeadPhoneDto Phone, string Home, string Location, string Message);
 public sealed record LeadPhoneDto(string Digital, string Format);
-public sealed record LeadAttachmentDto(string Filename, string? Content, string? ContentType, string Encoding = "base64");
+public sealed record LeadAttachmentDto(string Filename, string? Url, string? ContentType);
