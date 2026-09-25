@@ -1,0 +1,12 @@
+{
+  "modal": {
+    "success": {
+      "title": "Your request has been successfully submitted.",
+      "message": "Our representative will contact you shortly to discuss the details."
+    },
+    "error": {
+      "title": "Oops... Error.",
+      "message": "Please try submitting your request later."
+    }
+  }
+}

@@ -47,9 +47,9 @@
             <label>Телефон</label
             ><input
               v-maska
-              v-model="phoneFormatted"
+              v-model="form.phoneFormat"
               data-maska="+7(###)###-##-##"
-              @maska="phoneRaw = $event.detail.unmasked"
+              @maska="form.phoneDigital = $event.detail.unmasked"
               placeholder="+7(999)000-00-00"
             />
           </div>
@@ -90,11 +90,11 @@
             />
           </div>
           <label class="check"
-            ><input type="checkbox" required v-model="form.check" /><span
+            ><input type="checkbox" required v-model="check" /><span
               >Согласен на обработку данных для обратной связи</span
             ></label
           >
-          <button class="submit-button" type="submit" :disabled="!form.check">
+          <button class="submit-button" type="submit" :disabled="!check">
             Получить предварительную оценку
           </button>
           <p class="form-status" aria-live="polite"></p>
@@ -110,123 +110,64 @@
 }
 </style>
 
-<script lang="ts" setup>
-import imageCompression from 'browser-image-compression';
-import type { ILead, ILeadPhone } from '#shared/types/ILead';
+<script setup lang="ts">
+import type { ILead, ILeadPhone, ILeadForm } from '~/types/ILead';
 import { type IModalLeadPanel } from '~/types/CardView.ts';
 import { ref } from 'vue';
 import { vMaska } from 'maska/vue';
+import { useLeads } from '~/composables/useLeads';
 
-const { $clientLog } = useNuxtApp();
-
-const { t, locale, setLocale } = useI18n();
-
-const url = '/api/send-message';
-const modalMessage: Partial<IModalLeadPanel> = {};
-
-const form = reactive({
+const form: ILeadForm = reactive({
   name: '',
+  phoneDigital: '',
+  phoneFormat: '',
   home: '',
   location: '',
   message: '',
-  check: false,
 });
 
-// Опции сжатия для изображений
-const compressionOptions = {
-  maxSizeMB: 1,
-  maxWidthOrHeight: 1920,
-  useWebWorker: true,
-};
-
-const fileInput = ref(null);
+const check = ref(false);
+const modalMessage: Partial<IModalLeadPanel> = {};
 const isFormDisabled = ref(false);
 const isModalView = ref(false);
-const phoneFormatted = ref('');
-const phoneRaw = ref('');
 
-let selectedFile: File[] = [];
+let selected: File[] = [];
+const { t } = useI18n();
 
 const handleModalClose = () => {
   isModalView.value = false;
 };
 
-const handleFileChange = (e: Event) => {
-  const target = e.target as HTMLInputElement;
-  if (target.files && target.files?.length > 0) {
-    selectedFile = Array.from(target.files);
-  }
-};
-
 const handleSubmit = async () => {
-  form.check = false;
   isFormDisabled.value = true;
-  const phone: ILeadPhone = {
-    digital: phoneRaw.value,
-    format: phoneFormatted.value,
-  };
-  const body: ILead = {
-    name: form.name,
-    phone,
-    home: form.home,
-    message: form.message,
-    location: form.location,
-  };
-
-  const formData = new FormData();
-
-  for (let file of selectedFile) {
-    if (file.type.startsWith('image/')) {
-      try {
-        const compressedFile = await imageCompression(file, compressionOptions);
-
-        // Добавляем сжатый файл в formData
-        formData.append('files', compressedFile, compressedFile.name);
-        $clientLog.info(
-          `add file: ${compressedFile.name} : ${compressedFile.size}`,
-        );
-      } catch (err) {
-        $clientLog.warn(`Compress failed: ${file.name}`, err);
-        console.error('Ошибка сжатия файла:', file.name, err);
-      }
-    }
-  }
-
-  formData.append('json', JSON.stringify(body));
 
   try {
-    const response = await $fetch(url, {
-      method: 'POST',
-      body: formData,
-    });
+    const { sendLead } = useLeads();
+    await sendLead(form, selected);
     modalMessage.title = t('modal.success.title');
     modalMessage.message = t('modal.success.message');
-    $clientLog.info('Upload success:', response);
     isModalView.value = true;
-  } catch (error) {
-    $clientLog.warn('Upload failed:', error);
+    // Сброс формы
+    Object.assign(form, {
+      name: '',
+      phoneDigital: '',
+      phoneFormat: '',
+      home: '',
+      location: '',
+      message: '',
+    });
+    selected = [];
+  } catch (e: any) {
     modalMessage.title = t('modal.error.title');
     modalMessage.message = t('modal.error.message');
     isModalView.value = true;
   } finally {
     isFormDisabled.value = false;
-    clearForm();
   }
 };
 
-const clearForm = () => {
-  form.check = false;
-  form.home = '';
-  form.location = '';
-  form.message = '';
-  form.name = '';
-  phoneFormatted.value = '';
-  phoneRaw.value = '';
-
-  if (fileInput.value) {
-    // @ts-ignore
-    fileInput.value.value = '';
-  }
-  selectedFile = [];
+const handleFileChange = (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  selected = Array.from(target.files ?? []);
 };
 </script>

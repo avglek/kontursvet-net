@@ -1,8 +1,8 @@
-import type { LoginRequest, LoginResult, AdminMe } from "~/types/api";
-import { useApi } from "./useApi";
+import type { LoginRequest, LoginResult, AdminMe } from '~/types/api';
+import { useApi } from './useApi';
 
-const TOKEN_KEY = "kontursvet_token";
-const USER_KEY = "kontursvet_user";
+const TOKEN_KEY = 'kontursvet_token';
+const USER_KEY = 'kontursvet_user';
 
 interface AuthUser {
   id: number;
@@ -12,8 +12,8 @@ interface AuthUser {
 
 export const useAuth = () => {
   // Общее состояние для всех компонентов
-  const token = useState<string | null>("auth.token", () => null);
-  const user = useState<AuthUser | null>("auth.user", () => null);
+  const token = useState<string | null>('auth.token', () => null);
+  const user = useState<AuthUser | null>('auth.user', () => null);
 
   // Восстановление из localStorage (только в браузере)
   const hydrate = () => {
@@ -39,14 +39,14 @@ export const useAuth = () => {
 
   const login = async (credentials: LoginRequest): Promise<void> => {
     const api = useApi();
-    const result = await api.post<LoginResult>("/api/auth/login", credentials, {
+    const result = await api.post<LoginResult>('/api/auth/login', credentials, {
       skipAuth: true,
     });
 
     token.value = result.accessToken;
 
     // Забираем инфу о пользователе
-    const me = await api.get<AdminMe>("/api/admin/me");
+    const me = await api.get<AdminMe>('/api/admin/me');
     user.value = { id: me.id, username: me.username, role: me.role };
 
     // Сохраняем в localStorage
