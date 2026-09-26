@@ -12,8 +12,10 @@ public sealed class NoOpMessageDispatcher(ILogger<NoOpMessageDispatcher> logger)
 {
     public Task<Result> DispatchAsync(Lead lead, IReadOnlyList<LeadAttachment> attachments, CancellationToken ct)
     {
+
         logger.LogInformation("Lead received: {Name}, {Phone}, attachments: {Count}",
             lead.Name, lead.Phone.Digital, attachments.Count);
         return Task.FromResult(Result.Success());
     }
+
 }

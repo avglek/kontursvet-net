@@ -170,4 +170,22 @@ const handleFileChange = (e: Event) => {
   const target = e.target as HTMLInputElement;
   selected = Array.from(target.files ?? []);
 };
+
+// const handleFileChange2 = (e: Event) => {
+//   const MAX_SIZE = 10 * 1024 * 1024
+// const ALLOWED = ['image/jpeg', 'image/png', 'image/webp']
+
+// const onFileChange = (e: Event) => {
+//   const target = e.target as HTMLInputElement
+//   const list = Array.from(target.files ?? [])
+
+//   for (const f of list) {
+//     if (f.size > MAX_SIZE) return error.value = `Файл ${f.name} больше 10 МБ`
+//     if (!ALLOWED.includes(f.type)) return error.value = `Формат ${f.type} не поддерживается`
+//   }
+
+//   files.value = list
+//   error.value = null
+// }
+//}
 </script>

@@ -12,6 +12,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.12" />
     <PackageReference Include="Npgsql" Version="10.0.3" />
+    <PackageReference Include="SaaSoft.MAX.Bot" Version="1.2.2" />
   </ItemGroup>
 
   <PropertyGroup>

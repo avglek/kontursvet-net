@@ -58,6 +58,14 @@ export interface StoredFile {
   contentType: string;
 }
 
+//========== Lead Attachment =======
+export interface LeadTokenAttachment {
+  leadId: string; // uid сообщения
+  token: string; // токен загруженного файла
+  fileName: string;
+  contentType: string;
+}
+
 // ============ Errors ============
 export interface ProblemDetails {
   type?: string;

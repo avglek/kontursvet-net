@@ -24,7 +24,13 @@ public static class DependencyInjection
         services.AddScoped<ILeadRepository, LeadRepository>();
 
         // Заменить одной строкой на TelegramDispatcher, когда понадобится
-        services.AddScoped<IMessageDispatcher, NoOpMessageDispatcher>();
+        services.AddSingleton<MaxMessageDispatcher>();
+
+        services.AddSingleton<IMessageDispatcher>(
+            sp => sp.GetRequiredService<MaxMessageDispatcher>());
+
+        services.AddSingleton<IUploadLeadFile>(
+            sp => sp.GetRequiredService<MaxMessageDispatcher>());
 
         services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
         services.AddSingleton<IJwtTokenService, JwtTokenService>();

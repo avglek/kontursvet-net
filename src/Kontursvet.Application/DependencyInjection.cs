@@ -37,7 +37,7 @@ public static class DependencyInjection
         services.AddScoped<LoginHandler>();
 
         services.AddScoped<UploadFileHandler>();
-
+        services.AddScoped<UploadLeadFileHandler>();
 
         return services;
     }

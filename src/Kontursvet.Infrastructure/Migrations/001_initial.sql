@@ -49,5 +49,5 @@ CREATE TABLE IF NOT EXISTS lead_attachments (
   lead_id BIGINT NOT NULL REFERENCES leads (id) ON DELETE CASCADE,
   filename TEXT NOT NULL,
   content_type TEXT,
-  url TEXT,
+  token TEXT
 );

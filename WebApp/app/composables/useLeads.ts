@@ -1,4 +1,4 @@
-import type { StoredFile } from '~/types/api';
+import type { LeadTokenAttachment } from '~/types/api';
 import { useApi } from './useApi';
 import imageCompression from 'browser-image-compression';
 
@@ -20,8 +20,10 @@ interface LeadAttachmentPayload {
 export const useLeads = () => {
   const api = useApi();
 
-  const uploadUrl = '/api/files/upload';
-  const sendUrl = '/api/messages';
+  const uploadUrl = '/api/lead/upload';
+  const sendUrl = '/api/lead/messages';
+
+  const uidMessage = crypto.randomUUID();
 
   // Опции сжатия для изображений
   const compressionOptions = {
@@ -31,28 +33,31 @@ export const useLeads = () => {
   };
 
   /**
-   * Загружает один файл и возвращает его URL.
+   * Загружает один файл и возвращает его token.
    */
-  const uploadFile = async (file: File): Promise<StoredFile> => {
+  const uploadFile = async (file: File): Promise<LeadTokenAttachment> => {
     const formData = new FormData();
     const compressedFile = await imageCompression(file, compressionOptions);
-    formData.append('files', compressedFile, compressedFile.name);
+    formData.append('file', compressedFile, compressedFile.name);
+    //formData.append('uuid', uidMessage);
 
-    return api.post<StoredFile>(uploadUrl, formData);
+    return api.post<LeadTokenAttachment>(uploadUrl, formData);
   };
 
   /**
    * Загружает все файлы параллельно.
    * Если хотя бы один упал — выбрасываем ошибку, ничего не отправляем.
    */
-  const uploadAll = async (files: File[]): Promise<LeadAttachmentPayload[]> => {
+  const uploadAll = async (files: File[]): Promise<LeadTokenAttachment[]> => {
     if (files.length === 0) return [];
 
     const results = await Promise.all(files.map(uploadFile));
-    return results.map((r: LeadAttachmentPayload, i: number) => ({
-      filename: files[i]!.name,
-      url: r.url,
+
+    return results.map((r: LeadTokenAttachment, i: number) => ({
+      fileName: files[i]!.name,
+      token: r.token,
       contentType: r.contentType,
+      leadId: r.leadId,
     }));
   };
 

@@ -30,8 +30,8 @@ public sealed class LeadRepository(IDbConnectionFactory factory) : ILeadReposito
         if (attachments.Count > 0)
         {
             const string insertAtt = """
-                INSERT INTO lead_attachments (lead_id, filename, content_type, content_base64, encoding)
-                VALUES (@LeadId, @Filename, @ContentType, @Content, @Encoding);
+                INSERT INTO lead_attachments (lead_id, filename,token)
+                VALUES (@LeadId, @Filename, @Token);
                 """;
 
             await db.ExecuteAsync(new CommandDefinition(insertAtt,
@@ -40,8 +40,7 @@ public sealed class LeadRepository(IDbConnectionFactory factory) : ILeadReposito
                     LeadId = id,
                     a.Filename,
                     a.ContentType,
-                    a.Content,
-                    a.Encoding
+                    a.Token
                 }), cancellationToken: ct));
         }
 
