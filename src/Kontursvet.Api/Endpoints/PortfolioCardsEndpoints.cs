@@ -17,7 +17,6 @@ public static class PortfolioCardsEndpoints
             int? take,
             CancellationToken ct) =>
         {
-            await Task.Delay(3000);
             var result = await handler.HandleAsync(
                 new GetPortfolioCardsQuery(skip ?? 0, take ?? 20), ct);
             return result.ToHttp();
