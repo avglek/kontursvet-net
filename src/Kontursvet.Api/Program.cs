@@ -28,6 +28,20 @@ if (app.Environment.IsDevelopment())
     });
 }
 
+// Раздача статики: wwwroot/uploads/* → доступно по /uploads/*
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "wwwroot")),
+    RequestPath = "",
+    OnPrepareResponse = ctx =>
+    {
+        // Кэш на год — файлы с Guid в имени, никогда не перезаписываются
+        ctx.Context.Response.Headers.Append(
+            "Cache-Control", "public, max-age=31536000, immutable");
+    }
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
 

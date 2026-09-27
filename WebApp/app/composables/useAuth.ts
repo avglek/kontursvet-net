@@ -1,5 +1,4 @@
 import type { LoginRequest, LoginResult, AdminMe } from '~/types/api';
-import { useApi } from './useApi';
 
 const TOKEN_KEY = 'kontursvet_token';
 const USER_KEY = 'kontursvet_user';
@@ -51,7 +50,7 @@ export const useAuth = () => {
 
     // Сохраняем в localStorage
     if (import.meta.client) {
-      localStorage.setItem(TOKEN_KEY, token.value!);
+      localStorage.setItem(TOKEN_KEY, token.value);
       localStorage.setItem(USER_KEY, JSON.stringify(user.value));
     }
   };
