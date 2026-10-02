@@ -1,0 +1,185 @@
+{
+  "schema": "kontursvet.overlay-geometry",
+  "version": "0.4.3",
+  "status": "approved",
+  "canvas": {
+    "width": 1448,
+    "height": 1086,
+    "coordinateSystem": "pixel",
+    "origin": "top-left",
+    "base": "assets/house/house-base.webp"
+  },
+  "baseHouse": {
+    "state": "active",
+    "sourceFile": "ChatGPT Image 15 сент. 2026 г., 15_21_19.png",
+    "sourceSha256": "7B2CF0B23F47B21ADA7E2F20024BDC020ACB02657DDE1A88C27B9B3CBD31F9DC",
+    "cropPolicy": "same-canvas-only",
+    "previousHouse": "deprecated",
+    "legacySnapshot": "../calculator-handoff-v2-legacy-previous-house-2026-09-15"
+  },
+  "calibration": {
+    "method": "rebuilt-from-scratch",
+    "guideOpacityChecks": [50, 100],
+    "checkedOverlayCount": 11,
+    "result": "approved",
+    "approvedAt": "2026-09-16",
+    "qaPreviewRoot": "previews/calibration",
+    "reviewNote": "Geometry 0.4.3 approved: exact coordinates from user-exported geometry (3).json; the third snowflake at 391.3925582390561, 615.1832010721283 was visually checked on the left facade between floors. Earlier roof/eaves and other anchors remain unchanged."
+  },
+  "geometryLock": {
+    "state": "frozen",
+    "version": "0.4.3",
+    "frozenAt": "2026-09-16",
+    "sourceExport": "geometry (3).json",
+    "sourceExportSha256": "F3ED18228C5FB62E04AED8DD52950DB650FD8C1065BEF30010D2AAE51AA08AFD",
+    "rule": "Use this geometry as the immutable placement baseline for lighting-asset work. Any later coordinate change requires a new version and calibration review."
+  },
+  "roofPaths": [
+    {
+      "id": "main-front-roof-edge",
+      "label": "Главная фронтальная кромка кровли",
+      "zone": "roof",
+      "points": [[198.4355177453446, 397.1090774159889], [383.77952258802435, 370.4499798667594], [608.4773952870827, 332.3655963051156], [806.5162188637094, 298.0896414142765], [1023.597282647956, 267.62213940764127], [1219, 239]]
+    },
+    {
+      "id": "main-right-roof-return",
+      "label": "Правый боковой край кровли",
+      "zone": "roof",
+      "points": [[1219, 239], [1284, 332], [1377.781972288367, 456.7745729211258]]
+    },
+    {
+      "id": "porch-gable-roof-edge",
+      "label": "Скаты кровли входной группы",
+      "zone": "roof",
+      "points": [[422, 606], [596, 494], [848, 595]]
+    }
+  ],
+  "eavesPaths": [
+    {
+      "id": "main-front-eave",
+      "label": "Нижняя кромка главного фронтального карниза",
+      "zone": "eaves",
+      "dropScale": 0.88,
+      "points": [[201, 402], [382, 358], [596, 313], [814, 281], [1019, 255], [1219, 239]]
+    },
+    {
+      "id": "main-right-eave",
+      "label": "Нижняя кромка правого карниза",
+      "zone": "eaves",
+      "dropScale": 0.58,
+      "points": [[1219, 239], [1284, 332], [1375, 469]]
+    },
+    {
+      "id": "porch-gable-eave",
+      "label": "Нижняя кромка карниза входной группы",
+      "zone": "eaves",
+      "dropScale": 0.72,
+      "points": [[422, 606], [596, 494], [848, 595]]
+    }
+  ],
+  "verticalPaths": [
+    {
+      "id": "porch-left-column",
+      "label": "Левая колонна входной группы",
+      "zone": "column",
+      "points": [[514, 621], [514, 865]]
+    },
+    {
+      "id": "porch-right-column",
+      "label": "Правая колонна входной группы",
+      "zone": "column",
+      "points": [[748, 606], [748, 865]]
+    }
+  ],
+  "snowflakeAnchors": [
+    {
+      "id": "snowflake-upper-window-pier",
+      "label": "Простенок между окнами второго этажа",
+      "point": [632.3836203730289, 423.981033592091],
+      "scale": 0.86,
+      "zone": "facade-between-windows"
+    },
+    {
+      "id": "snowflake-right-window-spandrel",
+      "label": "Простенок между правыми окнами",
+      "point": [958, 580],
+      "scale": 0.72,
+      "zone": "facade-between-windows"
+    },
+    {
+      "id": "snowflake-right-side-pier",
+      "label": "Простенок между левыми окнами первого и второго этажа",
+      "point": [391.3925582390561, 615.1832010721283],
+      "scale": 0.66,
+      "zone": "facade-between-windows"
+    }
+  ],
+  "polarisAnchors": [
+    {
+      "id": "polaris-main-left-corner",
+      "label": "Под левым внешним углом главного карниза",
+      "point": [203.51343071088397, 423.7681023250214],
+      "mountPoint": [199.70497782668022, 395.83957193453017],
+      "scale": 0.72,
+      "placement": "below",
+      "zone": "external-eave-corner",
+      "attachedTo": "main-front-eave"
+    },
+    {
+      "id": "polaris-main-right-corner",
+      "label": "Под правым внешним углом главного карниза",
+      "point": [1377.781972288367, 483.4336583636558],
+      "mountPoint": [1377.781972288367, 460.58305001872856],
+      "scale": 0.72,
+      "placement": "below",
+      "zone": "external-eave-corner",
+      "attachedTo": "main-right-eave"
+    },
+    {
+      "id": "polaris-main-turn-corner",
+      "label": "Под внешним углом перехода главного карниза в боковой",
+      "point": [1220.3665977164492, 271.4305711051209],
+      "mountPoint": [1219, 239],
+      "scale": 0.66,
+      "placement": "below",
+      "zone": "external-eave-corner",
+      "attachedTo": "main-front-eave"
+    },
+    {
+      "id": "polaris-porch-left-corner",
+      "label": "Под левым внешним углом карниза входной группы",
+      "point": [423.1333662310039, 623.0763980896832],
+      "mountPoint": [422, 606],
+      "scale": 0.62,
+      "placement": "below",
+      "zone": "external-eave-corner",
+      "attachedTo": "porch-gable-eave"
+    },
+    {
+      "id": "polaris-porch-right-corner",
+      "label": "Под правым внешним углом карниза входной группы",
+      "point": [845.8701593602846, 607.8426349796661],
+      "mountPoint": [848, 595],
+      "scale": 0.62,
+      "placement": "below",
+      "zone": "external-eave-corner",
+      "attachedTo": "porch-gable-eave"
+    }
+  ],
+  "keepoutZones": [
+    { "id": "upper-left-window", "label": "Левое окно второго этажа", "x": 338, "y": 409, "width": 154, "height": 164 },
+    { "id": "upper-right-window", "label": "Правое окно второго этажа", "x": 851, "y": 334, "width": 215, "height": 199 },
+    { "id": "upper-side-window", "label": "Верхнее окно бокового фасада", "x": 1271, "y": 438, "width": 32, "height": 141 },
+    { "id": "lower-left-window", "label": "Левое окно первого этажа", "x": 338, "y": 657, "width": 155, "height": 174 },
+    { "id": "lower-right-window", "label": "Правое окно первого этажа", "x": 851, "y": 622, "width": 216, "height": 214 },
+    { "id": "lower-side-window", "label": "Нижнее окно бокового фасада", "x": 1271, "y": 657, "width": 33, "height": 137 },
+    { "id": "entrance-door", "label": "Входная дверь", "x": 607, "y": 666, "width": 105, "height": 214 }
+  ],
+  "layerDefaults": {
+    "roofFlex": { "coreWidth": 2.4, "glowWidth": 10 },
+    "fringe": { "spacing": 25, "wireWidth": 1.1, "bulbRadius": 1.9 },
+    "icicles": { "spacing": 48, "wireWidth": 1.05, "bulbRadius": 1.75 },
+    "verticalThread": { "wireWidth": 1.1, "bulbRadius": 2.2 },
+    "motif": { "strokeWidth": 2.1 }
+  }
+}

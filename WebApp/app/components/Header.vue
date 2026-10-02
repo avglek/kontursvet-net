@@ -30,7 +30,9 @@
         ><NuxtLink href="/#contact">Контакты</NuxtLink>
         <NuxtLink no-prefetch class="portfolio-nav-link" to="/portfolio"
           >Портфолио
-          <!-- <span aria-hidden="true">↗</span> -->
+        </NuxtLink>
+        <NuxtLink no-prefetch class="portfolio-nav-link" to="/calculator"
+          >Калькулятор
         </NuxtLink>
         <NuxtLink class="button button-small button-ghost" href="/lead"
           >Отправить фото</NuxtLink
