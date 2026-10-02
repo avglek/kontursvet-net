@@ -21,9 +21,11 @@ public sealed class UpdatePortfolioCardViewHandler(IPortfolioRepository reposito
         if (string.IsNullOrWhiteSpace(dto.Title))
             return Result.Failure("Поле Title обязательно", "CARD_TITLE_REQUIRED");
 
-        // Проверяем существование — чтобы отдать 404, а не молчаливый no-op
-        var existing = await repository.GetViewByIdAsync(cmd.Id, ct);
-        if (existing is null)
+        // Представление связано 1:1 с карточкой (FK по id), поэтому для нового объекта
+        // представления ещё нет. Проверяем существование КАРТОЧКИ — и PUT работает как upsert
+        // (UpsertViewAsync делает INSERT ... ON CONFLICT DO UPDATE).
+        var card = await repository.GetCardByIdAsync(cmd.Id, ct);
+        if (card is null)
             return Result.Failure("Карточка не найдена", "CARD_NOT_FOUND");
 
         dto.Id = cmd.Id;
@@ -31,6 +33,6 @@ public sealed class UpdatePortfolioCardViewHandler(IPortfolioRepository reposito
 
         return ok
             ? Result.Success()
-            : Result.Failure("Не удалось обновить карточку", "CARD_UPDATE_FAILED");
+            : Result.Failure("Не удалось сохранить представление", "CARD_UPDATE_FAILED");
     }
 }

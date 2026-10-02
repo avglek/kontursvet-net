@@ -1,0 +1,235 @@
+@use '../abstracts/media' as *;
+
+// ---------- Кнопка «удалить» (в паре с .button) ----------
+.button-danger {
+  background: rgba(60, 15, 15, 0.35);
+  border-color: rgba(255, 138, 138, 0.45);
+  color: #ffc2c2;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    border-color: #ff8a8a;
+    background: rgba(120, 30, 30, 0.35);
+  }
+}
+
+.button.is-busy { opacity: 0.6; pointer-events: none; }
+
+// ---------- Список объектов ----------
+.admin-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.admin-row {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr) auto;
+  gap: 22px;
+  align-items: center;
+  padding: 14px 18px 14px 14px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: linear-gradient(145deg, #0b2743, #071a2e);
+  transition: border-color 0.25s ease;
+
+  &:hover { border-color: rgba(85, 206, 245, 0.5); }
+
+  &__thumb {
+    width: 140px;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: 10px;
+    background: #03101d;
+    filter: brightness(0.9) saturate(0.92);
+  }
+
+  &__body {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+
+    strong { font: 600 20px/1.2 "Inter Display", sans-serif; }
+  }
+
+  &__kicker { color: var(--cyan-light); font-size: 13px; }
+  &__meta { color: var(--muted-2); font-size: 13px; }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+}
+
+// ---------- Форма ----------
+.admin-card {
+  margin-bottom: 18px;
+  padding: 34px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: linear-gradient(145deg, #0b2743, #071a2e);
+
+  &__title {
+    font: 600 26px/1.13 "Inter Display", sans-serif;
+    letter-spacing: -0.02em;
+    margin: 0 0 8px;
+  }
+
+  &__lead {
+    color: var(--muted);
+    font-size: 15px;
+    max-width: 640px;
+    margin: 0 0 26px;
+  }
+}
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+
+  > .field { min-width: 0; }
+
+  &--3 { grid-template-columns: repeat(3, 1fr); }
+}
+
+.field__hint { color: var(--muted-2); font-size: 12px; }
+.field__error { color: #ffc2c2; font-size: 13px; }
+
+// ---------- Загрузка изображения ----------
+.upload {
+  display: grid;
+  gap: 12px;
+
+  &__preview {
+    display: grid;
+    place-items: center;
+    width: min(100%, 420px);
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border: 1px dashed var(--line-strong);
+    border-radius: 12px;
+    background: #03101d;
+    color: var(--muted-2);
+    font-size: 13px;
+
+    img { width: 100%; height: 100%; object-fit: cover; }
+  }
+
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: stretch;
+  }
+
+  &__path { flex: 1 1 260px; min-width: 0; }
+}
+
+// ---------- Галерея ----------
+.admin-gallery {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.admin-photo {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: start;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(3, 18, 33, 0.46);
+
+  &__img {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 10px;
+    background: #03101d;
+
+    img { width: 100%; height: 100%; object-fit: cover; }
+  }
+
+  &__fields { display: grid; gap: 12px; min-width: 0; }
+
+  &__path {
+    margin: 0;
+    color: var(--muted-2);
+    font-size: 12px;
+    word-break: break-all;
+  }
+
+  &__tools { display: flex; flex-direction: column; gap: 8px; }
+}
+
+.icon-button {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  background: rgba(4, 19, 34, 0.58);
+  color: var(--ice);
+  font-size: 18px;
+  line-height: 1;
+  transition: border-color 0.2s ease, background 0.2s ease;
+
+  &:hover:not(:disabled) {
+    border-color: rgba(85, 206, 245, 0.75);
+    background: rgba(17, 72, 112, 0.28);
+  }
+
+  &--danger:hover:not(:disabled) {
+    border-color: #ff8a8a;
+    background: rgba(120, 30, 30, 0.35);
+  }
+
+  &:disabled {
+    background: rgba(4, 19, 34, 0.58);
+    opacity: 0.35;
+  }
+}
+
+// ---------- Панель действий ----------
+.admin-actions {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+  padding: 18px 0 20px;
+  background: linear-gradient(180deg, transparent, rgba(4, 17, 31, 0.96) 35%);
+
+  .button-danger { margin-left: auto; }
+}
+
+@include upto-820 {
+  .admin-card { padding: 22px 18px; }
+  .admin-grid,
+  .admin-grid--3 { grid-template-columns: 1fr; }
+
+  .admin-row {
+    grid-template-columns: 100px minmax(0, 1fr);
+    gap: 14px;
+
+    &__thumb { width: 100px; }
+    &__actions { grid-column: 1 / -1; justify-content: flex-start; }
+  }
+
+  .admin-photo {
+    grid-template-columns: 1fr;
+
+    &__tools { flex-direction: row; }
+  }
+
+  .admin-actions .button-danger { margin-left: 0; }
+}

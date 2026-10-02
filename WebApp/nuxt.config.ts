@@ -93,4 +93,9 @@ export default defineNuxtConfig({
       { code: 'en', language: 'en-US', file: 'en.json' },
     ],
   },
+
+  // nuxt.config.ts
+  routeRules: {
+    '/admin/**': { appLayout: 'admin', ssr: false },
+  },
 });

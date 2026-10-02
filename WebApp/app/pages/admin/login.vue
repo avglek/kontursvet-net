@@ -80,35 +80,5 @@ const onSubmit = async () => {
 </script>
 
 <style lang="scss" scoped>
-// .login {
-//   min-height: 100vh;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   padding: 1rem;
-//   background: $color-bg;
-// }
 
-// .login__form {
-//   width: 100%;
-//   max-width: 24rem;
-//   padding: 1.5rem;
-//   @include card;
-// }
-
-// .login__header {
-//   margin-bottom: 0.5rem;
-// }
-
-// .login__title {
-//   font-size: 1.25rem;
-//   font-weight: 600;
-//   color: $color-text;
-// }
-
-// .login__subtitle {
-//   font-size: 0.875rem;
-//   color: $color-text-muted;
-//   margin-top: 0.25rem;
-// }
 </style>
