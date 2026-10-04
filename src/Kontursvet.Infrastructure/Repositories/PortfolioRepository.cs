@@ -29,7 +29,8 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
     {
         using var db = factory.Create();
         const string sql = """
-            SELECT count(pc.id) as quantity,max(pc.id) as last FROM portfolio_cards pc;
+            SELECT count(pc.id) as quantity, COALESCE(max(pc.id), 0) as last
+            FROM portfolio_cards pc;
             """;
 
         var row = await db.QuerySingleOrDefaultAsync<CardCount>(
@@ -37,6 +38,22 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
 
         return row?.ToEntity();
     }
+    /// <summary>
+    /// Общее количество фотографий во всех проектах.
+    /// Галерея лежит в JSONB-массиве gallery, поэтому суммируем длину массива по строкам.
+    /// </summary>
+    public async Task<long?> GetPhotosCountAsync(CancellationToken ct)
+    {
+        using var db = factory.Create();
+        const string sql = """
+            SELECT COALESCE(SUM(jsonb_array_length(gallery)), 0)::bigint
+            FROM portfolio_card_views
+            WHERE jsonb_typeof(gallery) = 'array';
+            """;
+
+        return await db.ExecuteScalarAsync<long?>(new CommandDefinition(sql, cancellationToken: ct));
+    }
+
     public async Task<IReadOnlyList<PortfolioCard>> GetAllCardsAsync(int skip, int take, CancellationToken ct)
     {
         using var db = factory.Create();

@@ -38,6 +38,19 @@ public static class PortfolioCardsEndpoints
         .Produces<PortfolioCardCountDto>(StatusCodes.Status200OK)
         .AllowAnonymous();
 
+        // GET /api/profile/cards/photos-count — суммарно фотографий во всех проектах
+        group.MapGet("/photos-count", async (
+            GetPortfolioPhotosCountHandler handler,
+            CancellationToken ct) =>
+        {
+            var result = await handler.HandleAsync(
+                new GetPortfolioPhotosCount(), ct);
+            return result.ToHttp();
+        })
+        .WithName("GetPortfolioPhotosCount")
+        .Produces<PortfolioPhotosCountDto>(StatusCodes.Status200OK)
+        .AllowAnonymous();
+
         // GET /api/profile/cards{id}
         group.MapGet("/{id:long}", async (
             long id,

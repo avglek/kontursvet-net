@@ -50,6 +50,15 @@ export interface GalleryItemDto {
   figcaption: string;
 }
 
+export interface CardCount {
+  quantity: number;
+  last: number;
+}
+
+export interface CardCountPhotos {
+  photos: number;
+}
+
 // ============ Files ============
 export interface StoredFile {
   url: string;
