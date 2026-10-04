@@ -1,0 +1,54 @@
+# syntax=docker/dockerfile:1
+
+# ============================================================
+# Контекст сборки — корень репозитория (см. docker-compose.*)
+#   docker build -f Dockerfile.api --target runtime .
+# ============================================================
+
+# ---------- Этап сборки (SDK) ----------
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+
+# Копируем все исходники: API транзитивно ссылается на Application/Domain/Infrastructure.
+# Назначение "./" — относительно WORKDIR (/src), итого файлы лежат в /src/*.
+COPY src ./
+
+WORKDIR /src/Kontursvet.Api
+
+# Публикация единого проекта — NuGet restore выполнится как часть publish
+RUN dotnet publish Kontursvet.Api.csproj -c Release -o /app/publish /p:UseAppHost=false
+
+# ---------- Этап рантайма (прод) ----------
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
+WORKDIR /app
+
+# Общая папка загрузок/статики (монтируется volume'ом в compose)
+ENV Storage__LocalRoot=/data \
+    ASPNETCORE_URLS=http://0.0.0.0:5136 \
+    ASPNETCORE_ENVIRONMENT=Production
+
+COPY --from=build /app/publish ./
+
+# Program.cs использует PhysicalFileProvider(<ContentRoot>/wwwroot) — папка должна
+# существовать, иначе провайдер бросит исключение на старте. Пустая поставка её не
+# включает, а загрузками в Docker управляет общий volume /data (раздаёт nginx).
+RUN mkdir -p /app/wwwroot
+
+EXPOSE 5136
+ENTRYPOINT ["dotnet", "Kontursvet.Api.dll"]
+
+# ---------- Этап отладки (SDK + dotnet watch) ----------
+# Используется docker-compose.dev.yml: исходники монтируются поверх /src,
+# изменения подхватываются через dotnet watch без пересборки образа.
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS dev
+WORKDIR /src
+
+COPY src ./
+
+ENV Storage__LocalRoot=/data \
+    ASPNETCORE_URLS=http://0.0.0.0:5136 \
+    ASPNETCORE_ENVIRONMENT=Development \
+    DOTNET_USE_POLLING_FILE_WATCHER=1
+
+EXPOSE 5136
+CMD ["dotnet", "watch", "--project", "/src/Kontursvet.Api/Kontursvet.Api.csproj", "--non-interactive"]

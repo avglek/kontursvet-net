@@ -1,0 +1,65 @@
+# ============================================================
+# ПРОД: готовые образы api + web за reverse-proxy nginx.
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+# ============================================================
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+      target: runtime
+    image: kontursvet-api:prod
+    container_name: kontursvet-api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://0.0.0.0:5136
+      Storage__LocalRoot: /data
+      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=${POSTGRES_DB:-kontursvet};Username=${POSTGRES_USER:-kontursvet};Password=${POSTGRES_PASSWORD:-kontursvet}
+      Jwt__SecretKey: ${JWT_SECRET_KEY:-dev-secret-key-min-32-chars-long-change-in-prod-1234567890}
+      Jwt__Issuer: ${JWT_ISSUER:-kontursvet}
+      Jwt__Audience: ${JWT_AUDIENCE:-kontursvet-admin}
+      Max__Token: ${MAX_TOKEN:-}
+      Max__ChatId: ${MAX_CHAT_ID:-}
+    volumes:
+      - uploads:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - kontursvet
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+      target: runtime
+      args:
+        NUXT_PUBLIC_API_BASE: ${NUXT_PUBLIC_API_BASE:-}
+    image: kontursvet-web:prod
+    container_name: kontursvet-web
+    restart: unless-stopped
+    environment:
+      NUXT_PUBLIC_API_BASE: ${NUXT_PUBLIC_API_BASE:-}
+      HOST: 0.0.0.0
+      PORT: '3000'
+    depends_on:
+      - api
+    networks:
+      - kontursvet
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: kontursvet-nginx
+    restart: unless-stopped
+    ports:
+      - '${HTTP_PORT:-8080}:80'
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      # Отдаёт общую папку загрузок напрямую (только чтение)
+      - uploads:/data:ro
+    depends_on:
+      - api
+      - web
+    networks:
+      - kontursvet

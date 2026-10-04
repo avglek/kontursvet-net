@@ -1,0 +1,83 @@
+# ============================================================
+# ОТЛАДКА: hot reload исходников внутри контейнеров.
+#   docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+#
+#   API  — dotnet watch (этап dev в Dockerfile.api), исходники смонтированы в /src
+#   WEB  — nuxt dev, исходники WebApp смонтированы в /app
+#   NGINX — тот же reverse-proxy, HMR проходит по WebSocket
+# Вход — через nginx: http://localhost:${HTTP_PORT:-8080}
+# ============================================================
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+      target: dev
+    image: kontursvet-api:dev
+    container_name: kontursvet-api-dev
+    command:
+      [
+        'dotnet',
+        'watch',
+        '--project',
+        '/src/Kontursvet.Api/Kontursvet.Api.csproj',
+        '--non-interactive',
+      ]
+    working_dir: /src/Kontursvet.Api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://0.0.0.0:5136
+      Storage__LocalRoot: /data
+      DOTNET_USE_POLLING_FILE_WATCHER: '1'
+      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=${POSTGRES_DB:-kontursvet};Username=${POSTGRES_USER:-kontursvet};Password=${POSTGRES_PASSWORD:-kontursvet}
+      Jwt__SecretKey: ${JWT_SECRET_KEY:-dev-secret-key-min-32-chars-long-change-in-prod-1234567890}
+      Jwt__Issuer: ${JWT_ISSUER:-kontursvet}
+      Jwt__Audience: ${JWT_AUDIENCE:-kontursvet-admin}
+      Max__Token: ${MAX_TOKEN:-}
+      Max__ChatId: ${MAX_CHAT_ID:-}
+    volumes:
+      - ./src:/src
+      - nuget-cache:/root/.nuget/packages
+      - uploads:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - kontursvet
+
+  web:
+    image: node:22-alpine
+    container_name: kontursvet-web-dev
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    environment:
+      HOST: 0.0.0.0
+      PORT: '3000'
+      NUXT_PUBLIC_API_BASE: ''
+      # Цель dev-прокси Nuxt: внутри сети контейнера API доступен как api:5136
+      NUXT_API_PROXY_TARGET: http://api:5136
+    volumes:
+      - ./WebApp:/app
+      # Не даём host-зависимостям (Windows) затереть linux-модули контейнера
+      - /app/node_modules
+    depends_on:
+      - api
+    networks:
+      - kontursvet
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: kontursvet-nginx-dev
+    ports:
+      - '${HTTP_PORT:-8080}:80'
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - uploads:/data:ro
+    depends_on:
+      - api
+      - web
+    networks:
+      - kontursvet
+
+volumes:
+  nuget-cache:

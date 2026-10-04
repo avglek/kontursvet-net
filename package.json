@@ -7,7 +7,15 @@
     "dev:nuxt": "npm run dev --prefix ./WebApp",
     "install:all": "npm install && npm install --prefix ./WebApp",
     "net": "dotnet run --project ./src/Kontursvet.Api/Kontursvet.Api.csproj",
-    "all": "concurrently --names 'API,NUXT' --prefix-colors 'blue,green' --kill-others \"npm run net\" \"npm run dev:nuxt\""
+    "all": "concurrently --names 'API,NUXT' --prefix-colors 'blue,green' --kill-others \"npm run net\" \"npm run dev:nuxt\"",
+    "db:up": "docker compose up -d postgres",
+    "docker:prod:up": "docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build",
+    "docker:prod:down": "docker compose -f docker-compose.yml -f docker-compose.prod.yml down",
+    "docker:prod:logs": "docker compose -f docker-compose.yml -f docker-compose.prod.yml logs -f",
+    "docker:dev:up": "docker compose -f docker-compose.yml -f docker-compose.dev.yml up",
+    "docker:dev:build": "docker compose -f docker-compose.yml -f docker-compose.dev.yml build",
+    "docker:dev:down": "docker compose -f docker-compose.yml -f docker-compose.dev.yml down",
+    "docker:down:all": "docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.dev.yml down -v"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"

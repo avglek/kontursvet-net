@@ -1,3 +1,8 @@
+// Цель dev-прокси на .NET API. По умолчанию — локальный запуск (dotnet watch).
+// В Docker задаётся через NUXT_API_PROXY_TARGET (например, http://api:5136).
+const apiProxyTarget =
+  process.env.NUXT_API_PROXY_TARGET || 'http://localhost:5136';
+
 export default defineNuxtConfig({
   compatibilityDate: '2026-09-01',
   devtools: { enabled: false },
@@ -69,8 +74,8 @@ export default defineNuxtConfig({
       },
     },
     routeRules: {
-      '/api/**': { proxy: 'http://localhost:5136/api/**' },
-      '/uploads/**': { proxy: 'http://localhost:5136/uploads/**' },
+      '/api/**': { proxy: `${apiProxyTarget}/api/**` },
+      '/uploads/**': { proxy: `${apiProxyTarget}/uploads/**` },
     },
   },
 

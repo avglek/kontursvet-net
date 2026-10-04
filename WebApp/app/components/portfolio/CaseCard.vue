@@ -1,7 +1,13 @@
 <template>
   <div :id="card.link">
     <a class="p_case-card" href="#" @click.prevent="openCase(card.id)">
-      <NuxtImg :src="card.img.src" :alt="card.img.alt" />
+      <img
+        v-if="isUploaded(card.img.src)"
+        :src="card.img.src"
+        :alt="card.img.alt"
+        loading="lazy"
+      />
+      <NuxtImg v-else :src="card.img.src" :alt="card.img.alt" />
       <div class="case-card-body">
         <div class="eyebrow">{{ card.title }}</div>
         <h2>{{ card.subTitle }}</h2>

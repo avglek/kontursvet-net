@@ -1,16 +1,44 @@
+# ============================================================
+# БАЗОВЫЙ слой. Только инфраструктура: PostgreSQL + сеть + общий
+# volume загрузок. Прод/отладка докладываются override-файлами:
+#
+#   Прод:  docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build
+#   Dev:   docker compose -f docker-compose.yml -f docker-compose.dev.yml  up
+#
+# Значения берутся из .env (см. .env.example).
+# ============================================================
 services:
   postgres:
     image: postgres:16-alpine
     container_name: kontursvet-postgres
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: kontursvet
-      POSTGRES_USER: kontursvet
-      POSTGRES_PASSWORD: kontursvet
+      POSTGRES_DB: ${POSTGRES_DB:-kontursvet}
+      POSTGRES_USER: ${POSTGRES_USER:-kontursvet}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kontursvet}
     ports:
-      - "5432:5432"
+      - '${POSTGRES_PORT:-5432}:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./src/Kontursvet.Infrastructure/Migrations:/docker-entrypoint-initdb.d
+      # Миграции применяются при первой инициализации тома
+      - ./src/Kontursvet.Infrastructure/Migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U ${POSTGRES_USER:-kontursvet} -d ${POSTGRES_DB:-kontursvet}',
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - kontursvet
 
 volumes:
   pgdata:
+  # Общая папка загрузок/статики: пишет API, раздаёт nginx
+  uploads:
+
+networks:
+  kontursvet:
+    driver: bridge

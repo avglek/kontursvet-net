@@ -61,7 +61,15 @@
       </div>
       <div class="gallery">
         <figure v-for="photo in card?.gallery">
+          <img
+            v-if="isUploaded(photo.src)"
+            loading="lazy"
+            :src="photo.src"
+            :alt="photo.alt"
+            @click="openLightbox(photo.src)"
+          />
           <NuxtImg
+            v-else
             loading="lazy"
             :src="photo.src"
             :alt="photo.alt"
