@@ -15,6 +15,11 @@ services:
       target: dev
     image: kontursvet-api:dev
     container_name: kontursvet-api-dev
+    # --no-launch-profile обязателен: launchSettings.json задаёт
+    # applicationUrl=http://localhost:5136 и launchBrowser=true, и dotnet watch
+    # применяет их вместо ASPNETCORE_URLS из environment. Итог без флага — bind
+    # на localhost внутри контейнера (nginx не достает, 502) и ошибка
+    # "Failed to launch 'http://localhost:5136'".
     command:
       [
         'dotnet',
@@ -22,8 +27,12 @@ services:
         '--project',
         '/src/Kontursvet.Api/Kontursvet.Api.csproj',
         '--non-interactive',
+        '--no-launch-profile',
       ]
     working_dir: /src/Kontursvet.Api
+    ports:
+      # Прямой доступ к API в обход nginx (слушает 0.0.0.0:5136)
+      - '5136:5136'
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ASPNETCORE_URLS: http://0.0.0.0:5136

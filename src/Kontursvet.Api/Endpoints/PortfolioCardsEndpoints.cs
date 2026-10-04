@@ -25,6 +25,19 @@ public static class PortfolioCardsEndpoints
         .Produces<IReadOnlyList<PortfolioCardViewDto>>(StatusCodes.Status200OK)
         .AllowAnonymous();
 
+        // GET /api/profile/cards/count
+        group.MapGet("/count", async (
+            GetPortfolioCardsCountHandler handler,
+            CancellationToken ct) =>
+        {
+            var result = await handler.HandleAsync(
+                new GetPortfolioCardsCount(), ct);
+            return result.ToHttp();
+        })
+        .WithName("GetPortfolioCardsCount")
+        .Produces<PortfolioCardCountDto>(StatusCodes.Status200OK)
+        .AllowAnonymous();
+
         // GET /api/profile/cards{id}
         group.MapGet("/{id:long}", async (
             long id,

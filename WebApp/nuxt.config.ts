@@ -68,6 +68,15 @@ export default defineNuxtConfig({
   },
   // Проксирование API на .NET backend (в dev-режиме)
   $development: {
+    // В Docker (особенно на Windows/macOS) inotify не проходит через bind mount,
+    // из-за чего watcher Vite/Nuxt не видит изменения исходников и HMR не работает.
+    // Переводим наблюдение на опрос — синхронно с DOTNET_USE_POLLING_FILE_WATCHER
+    // на стороне API (см. docker-compose.dev.yml).
+    vite: {
+      server: {
+        watch: { usePolling: true, interval: 300 },
+      },
+    },
     runtimeConfig: {
       public: {
         apiBase: '', // пусто — значит, все запросы идут на /api/** и проксируются

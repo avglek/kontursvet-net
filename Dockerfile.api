@@ -51,4 +51,7 @@ ENV Storage__LocalRoot=/data \
     DOTNET_USE_POLLING_FILE_WATCHER=1
 
 EXPOSE 5136
-CMD ["dotnet", "watch", "--project", "/src/Kontursvet.Api/Kontursvet.Api.csproj", "--non-interactive"]
+# --no-launch-profile отключает Properties/launchSettings.json: там задан
+# applicationUrl=http://localhost:5136, который dotnet watch применяет вместо
+# ASPNETCORE_URLS. Внутри контейнера такой bind делает API недоступным для nginx.
+CMD ["dotnet", "watch", "--project", "/src/Kontursvet.Api/Kontursvet.Api.csproj", "--non-interactive", "--no-launch-profile"]

@@ -18,6 +18,7 @@ public static class DependencyInjection
         services.AddScoped<GetPortfolioCardsHandler>();
         services.AddScoped<UpdatePortfolioCardHandler>();
         services.AddScoped<DeletePortfolioCardHandler>();
+        services.AddScoped<GetPortfolioCardsCountHandler>();
 
         // PortfolioCardView
         services.AddScoped<GetPortfolioCardViewHandler>();

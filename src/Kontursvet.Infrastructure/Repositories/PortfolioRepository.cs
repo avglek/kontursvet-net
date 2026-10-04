@@ -25,6 +25,18 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
         return row?.ToEntity();
     }
 
+    public async Task<PortfolioCardCount?> GetCardsCountAsync(CancellationToken ct)
+    {
+        using var db = factory.Create();
+        const string sql = """
+            SELECT count(pc.id) as quantity,max(pc.id) as last FROM portfolio_cards pc;
+            """;
+
+        var row = await db.QuerySingleOrDefaultAsync<CardCount>(
+            new CommandDefinition(sql, cancellationToken: ct));
+
+        return row?.ToEntity();
+    }
     public async Task<IReadOnlyList<PortfolioCard>> GetAllCardsAsync(int skip, int take, CancellationToken ct)
     {
         using var db = factory.Create();
@@ -188,6 +200,17 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
     }
 
     // -------- Row-типы Dapper --------
+    private sealed class CardCount
+    {
+        public long Quantity { get; set; } = 0;
+        public long Last { get; set; } = 0;
+
+        public PortfolioCardCount ToEntity() => new()
+        {
+            Quantity = Quantity,
+            Last = Last
+        };
+    }
 
     private sealed class CardRow
     {

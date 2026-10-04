@@ -10,6 +10,7 @@ public interface IPortfolioRepository
     Task<long> CreateCardAsync(PortfolioCard card, CancellationToken ct);
     Task<bool> UpdateCardAsync(PortfolioCard card, CancellationToken ct);
     Task<bool> DeleteCardAsync(long id, CancellationToken ct);
+    Task<PortfolioCardCount?> GetCardsCountAsync(CancellationToken ct);
 
     // CardView (представление)
     Task<PortfolioCardView?> GetViewByIdAsync(long id, CancellationToken ct);
