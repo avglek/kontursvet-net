@@ -75,6 +75,18 @@ export interface LeadTokenAttachment {
   contentType: string;
 }
 
+// ============ Products ============
+export interface ProductCardDto {
+  id: number;
+  code: string;
+  name: string;
+  description: string;
+  group: string;
+  price: number;
+  imgSrc: string | null;
+  isActive: boolean;
+}
+
 // ============ Errors ============
 export interface ProblemDetails {
   type?: string;

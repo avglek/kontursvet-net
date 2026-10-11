@@ -7,9 +7,14 @@
         </NuxtLink>
 
         <nav class="admin-nav" aria-label="Разделы админки">
-          <NuxtLink to="/admin" exact-active-class="is-active">Дашборд</NuxtLink>
+          <NuxtLink to="/admin" exact-active-class="is-active"
+            >Дашборд</NuxtLink
+          >
           <NuxtLink to="/admin/portfolio" active-class="is-active">
             Портфолио
+          </NuxtLink>
+          <NuxtLink to="/admin/products" active-class="is-active">
+            Товары
           </NuxtLink>
           <NuxtLink to="/" target="_blank">Сайт</NuxtLink>
         </nav>
