@@ -55,5 +55,6 @@ app.MapPortfolioCardsEndpoints();
 app.MapPortfolioCardViewsEndpoints();
 app.MapLeadEndpoints();
 app.MapFileEndpoints();
+app.MapProductCardsEndpoints();
 
 app.Run();
