@@ -15,7 +15,9 @@
     "docker:dev:up": "docker compose -f docker-compose.yml -f docker-compose.dev.yml up",
     "docker:dev:build": "docker compose -f docker-compose.yml -f docker-compose.dev.yml build",
     "docker:dev:down": "docker compose -f docker-compose.yml -f docker-compose.dev.yml down",
-    "docker:down:all": "docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.dev.yml down -v"
+    "docker:down:all": "docker compose -f docker-compose.yml -f docker-compose.prod.yml -f docker-compose.dev.yml down -v",
+    "docker:save:api": "docker save kontursvet-net-api:prod| gzip > docker/img/kontursvet-net-api-prod.tar.gz",
+    "docker:save:web": "docker save kontursvet-net-web:prod| gzip > docker/img/kontursvet-net-web-prod.tar.gz"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
