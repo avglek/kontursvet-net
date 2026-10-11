@@ -8,7 +8,7 @@ public static class ProductCardsEndpoints
 {
     public static IEndpointRouteBuilder MapProductCardsEndpoints(this IEndpointRouteBuilder app)
     {
-        var group = app.MapGroup("/api/proucts").WithTags("Products");
+        var group = app.MapGroup("/api/products").WithTags("Products");
 
         // GET /api/products?skip=0&take=20
         group.MapGet("/", async (
@@ -49,12 +49,13 @@ public static class ProductCardsEndpoints
             var result = await handler.HandleAsync(new CreateProductCommand(dto), ct);
 
             return result.IsSuccess
-                ? Results.Created($"/api/profiles/{result.Value}", new { id = result.Value })
+                ? Results.Created($"/api/products/{result.Value}", new { id = result.Value })
                 : result.ToHttp();
         })
         .WithName("CreateProduct")
         .Produces(StatusCodes.Status201Created)
         .ProducesProblem(StatusCodes.Status400BadRequest)
+        .ProducesProblem(StatusCodes.Status409Conflict)
         .RequireAuthorization();
 
         // PUT /api/products/{id}
@@ -71,6 +72,7 @@ public static class ProductCardsEndpoints
         .Produces(StatusCodes.Status204NoContent)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .ProducesProblem(StatusCodes.Status404NotFound)
+        .ProducesProblem(StatusCodes.Status409Conflict)
         .RequireAuthorization();
 
         // DELETE /api/products/{id}

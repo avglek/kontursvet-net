@@ -10,5 +10,4 @@ public interface IProductRepository
     Task<long> CreateAsync(ProductCard card, CancellationToken ct);
     Task<bool> UpdateAsync(ProductCard card, CancellationToken ct);
     Task<bool> DeleteAsync(long id, CancellationToken ct);
-    Task<int> CountAsync(CancellationToken ct);
 }

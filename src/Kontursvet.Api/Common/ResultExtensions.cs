@@ -19,6 +19,8 @@ public static class ResultExtensions
         var status = code switch
         {
             "CARD_NOT_FOUND" => StatusCodes.Status404NotFound,
+            "PRODUCT_NOT_FOUND" => StatusCodes.Status404NotFound,
+            "PRODUCT_CODE_DUPLICATE" => StatusCodes.Status409Conflict,
             _ => StatusCodes.Status400BadRequest
         };
 

@@ -55,7 +55,7 @@ public sealed class ProductRepository(IDbConnectionFactory factory) : IProductRe
         using var db = factory.Create();
         const string sql = """
             INSERT INTO product_cards (code, name, description, group_name, price, img_src, is_active)
-            VALUES (@Code, @Name, @Description, @GroupName, @Price, @ImgSrc, @IsActive)
+            VALUES (@Code, @Name, @Description, @Group, @Price, @ImgSrc, @IsActive)
             RETURNING id;
             """;
 
@@ -68,7 +68,7 @@ public sealed class ProductRepository(IDbConnectionFactory factory) : IProductRe
         const string sql = """
             UPDATE product_cards SET
                 code = @Code, name = @Name, description = @Description,
-                group_name = @GroupName, price = @Price, img_src = @ImgSrc,
+                group_name = @Group, price = @Price, img_src = @ImgSrc,
                 is_active = @IsActive
             WHERE id = @Id;
             """;
@@ -83,13 +83,6 @@ public sealed class ProductRepository(IDbConnectionFactory factory) : IProductRe
         var affected = await db.ExecuteAsync(new CommandDefinition(
             "DELETE FROM product_cards WHERE id = @Id", new { Id = id }, cancellationToken: ct));
         return affected > 0;
-    }
-
-    public async Task<int> CountAsync(CancellationToken ct)
-    {
-        using var db = factory.Create();
-        const string sql = "SELECT COUNT(*) FROM product_cards;";
-        return await db.ExecuteScalarAsync<int>(new CommandDefinition(sql, cancellationToken: ct));
     }
 
     // -------- Dapper Row-тип --------
