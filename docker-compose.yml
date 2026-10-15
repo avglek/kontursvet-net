@@ -10,7 +10,7 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: kontursvet-postgres
+    container_name: kontursvet-net-postgres
     restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-kontursvet}
@@ -32,7 +32,7 @@ services:
       timeout: 5s
       retries: 10
     networks:
-      - kontursvet
+      - kontursvet-net
 
 volumes:
   pgdata:
@@ -40,5 +40,5 @@ volumes:
   uploads:
 
 networks:
-  kontursvet:
+  kontursvet-net:
     driver: bridge

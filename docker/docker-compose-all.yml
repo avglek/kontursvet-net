@@ -1,0 +1,104 @@
+# ============================================================
+# БАЗОВЫЙ слой. Только инфраструктура: PostgreSQL + сеть + общий
+# volume загрузок. Прод/отладка докладываются override-файлами:
+#
+#   Прод:
+#     docker compose -f docker-compose-all.yml up -d
+#
+# Значения берутся из .env (см. .env.example).
+# ============================================================
+services:
+  api:
+    image: kontursvet-net-api:prod
+    container_name: kontursvet-net-api
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://0.0.0.0:5136
+      Storage__LocalRoot: /data
+      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=${POSTGRES_DB:-kontursvet};Username=${POSTGRES_USER:-kontursvet};Password=${POSTGRES_PASSWORD:-kontursvet}
+      Jwt__SecretKey: ${JWT_SECRET_KEY:-dev-secret-key-min-32-chars-long-change-in-prod-1234567890}
+      Jwt__Issuer: ${JWT_ISSUER:-kontursvet}
+      Jwt__Audience: ${JWT_AUDIENCE:-kontursvet-admin}
+      Max__Token: ${MAX_TOKEN:-}
+      Max__ChatId: ${MAX_CHAT_ID:-}
+    volumes:
+      - uploads:/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - kontursvet-net
+
+  web:
+    image: kontursvet-net-web:prod
+    container_name: kontursvet-net-web
+    restart: unless-stopped
+    environment:
+      NUXT_PUBLIC_API_BASE: ${NUXT_PUBLIC_API_BASE:-}
+      HOST: 0.0.0.0
+      PORT: '3000'
+    depends_on:
+      - api
+    networks:
+      - kontursvet-net
+
+  nginx:
+    image: nginx:1.27-alpine
+    container_name: kontursvet-net-nginx
+    restart: unless-stopped
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      # Отдаёт общую папку загрузок напрямую (только чтение)
+      - uploads:/data:ro
+    depends_on:
+      - api
+      - web
+    networks:
+      - kontursvet-net
+      - proxy
+
+    labels:
+      - traefik.enable=true
+      - traefik.port=80
+      - traefik.http.routers.dev.rule=Host(`dev.kontursvet.spb.ru`)
+      - traefik.http.routers.dev.entrypoints=websecure
+      - traefik.http.routers.dev.tls=true
+
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: kontursvet-net-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-kontursvet}
+      POSTGRES_USER: ${POSTGRES_USER:-kontursvet}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kontursvet}
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Миграции применяются при первой инициализации тома
+      - ./db/migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U ${POSTGRES_USER:-kontursvet} -d ${POSTGRES_DB:-kontursvet}',
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - kontursvet-net
+
+volumes:
+  pgdata:
+  uploads:
+
+networks:
+  kontursvet-net:
+    driver: bridge
+  proxy:
+    external: true
+

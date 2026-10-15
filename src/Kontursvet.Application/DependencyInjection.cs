@@ -4,6 +4,7 @@ using Kontursvet.Application.Features.Leads;
 using Kontursvet.Application.Features.Portfolio.Card;
 using Kontursvet.Application.Features.Portfolio.CardView;
 using Kontursvet.Application.Features.Portfolio.Gallery;
+using Kontursvet.Application.Features.Products;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kontursvet.Application;
@@ -12,6 +13,13 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
+        // ProductCard
+        services.AddScoped<CreateProductHandler>();
+        services.AddScoped<GetAllProductsHandler>();
+        services.AddScoped<GetProductByIdHandler>();
+        services.AddScoped<UpdateProductHandler>();
+        services.AddScoped<DeleteProductHandler>();
+
         // PortfolioCard
         services.AddScoped<CreatePortfolioCardHandler>();
         services.AddScoped<GetPortfolioCardHandler>();

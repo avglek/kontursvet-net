@@ -16,6 +16,10 @@
         <div class="admin-stat__label">Карточек в портфолио</div>
         <div class="admin-stat__value">{{ cardsCount }}</div>
       </NuxtLink>
+      <NuxtLink to="/admin/products" class="admin-stat">
+        <div class="admin-stat__label">Товаров в каталоге</div>
+        <div class="admin-stat__value">{{ productsCount }}</div>
+      </NuxtLink>
       <div class="admin-stat">
         <div class="admin-stat__label">Новых лидов</div>
         <div class="admin-stat__value">—</div>
@@ -34,11 +38,19 @@ definePageMeta({ layout: 'admin' });
 const { user } = useAuth();
 const admin = usePortfolioAdmin();
 
+const products = useProductsAdmin();
+
 const cardsCount = ref('—');
+const productsCount = ref('—');
 
 onMounted(async () => {
   try {
     cardsCount.value = String((await admin.listCards()).length);
+  } catch {
+    /* оставляем прочерк */
+  }
+  try {
+    productsCount.value = String((await products.list()).length);
   } catch {
     /* оставляем прочерк */
   }

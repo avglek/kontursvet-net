@@ -22,6 +22,7 @@ public static class DependencyInjection
         services.AddScoped<IPortfolioRepository, PortfolioRepository>();
 
         services.AddScoped<ILeadRepository, LeadRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
 
         // Заменить одной строкой на TelegramDispatcher, когда понадобится
         services.AddSingleton<MaxMessageDispatcher>();
