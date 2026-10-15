@@ -341,6 +341,16 @@
       line-height: 1.2;
     }
 
+    em {
+      display: block;
+      color: #70a8ff;
+      font-size: 10px;
+      font-style: normal;
+      margin-top: 4px;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
     &[data-id='none'] {
       grid-column: 1 / -1;
       min-height: 43px;
@@ -391,6 +401,14 @@
       color: #8fa2bb;
       font-size: 11px;
       margin-top: 3px;
+    }
+
+    &__sum {
+      flex: none;
+      font-size: 13px;
+      font-weight: 700;
+      color: #d9ecff;
+      white-space: nowrap;
     }
 
     &[hidden] {
@@ -448,6 +466,7 @@
     align-items: center;
     gap: 11px;
     min-width: 0;
+    flex: 1;
 
     strong {
       display: block;
@@ -460,6 +479,19 @@
       font-size: 11px;
       margin-top: 3px;
     }
+
+    .motif-price {
+      color: #70a8ff;
+      font-weight: 600;
+    }
+  }
+
+  .motif-sum {
+    flex: none;
+    font-size: 12px;
+    font-weight: 700;
+    color: #d9ecff;
+    white-space: nowrap;
   }
 
   .motif-icon {
@@ -537,18 +569,32 @@
   }
 
   .summary-item {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    align-items: baseline;
     gap: 13px;
     font-size: 13px;
     line-height: 1.35;
 
-    span {
+    &__name {
       color: #ebf3ff;
+
+      small {
+        display: block;
+        color: #90a5bf;
+        font-size: 11px;
+        margin-top: 3px;
+      }
     }
 
-    b {
+    &__qty {
+      color: #b3c7df;
+      white-space: nowrap;
+    }
+
+    &__sum {
       font-weight: 600;
+      color: #f0f8ff;
       white-space: nowrap;
     }
   }

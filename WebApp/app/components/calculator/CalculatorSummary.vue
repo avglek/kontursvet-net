@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import type { SelectionLine } from "~/composables/useCalculatorState";
+import { ref } from 'vue';
+import type { SelectionLine } from '~/composables/useCalculatorState';
 
 const props = defineProps<{
   lines: SelectionLine[];
   priceText: string;
   explainer: string;
   totalPositions: number;
+  isFinal: boolean;
   leadUrl: string;
 }>();
 
@@ -14,30 +15,46 @@ const emit = defineEmits<{
   reset: [];
 }>();
 
-const feedback = ref("");
+const feedback = ref('');
 
 function qtyText(v: number | null): string {
   return v == null
-    ? "метраж не указан"
-    : `${new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 1 }).format(v)} м`;
+    ? 'метраж не указан'
+    : `${new Intl.NumberFormat('ru-RU', { maximumFractionDigits: 1 }).format(v)} м`;
+}
+
+function formatPrice(n: number): string {
+  return new Intl.NumberFormat('ru-RU', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(n);
+}
+
+function unitPriceText(price: number | null): string {
+  if (price == null) return '—';
+  return formatPrice(price) + ' ₽';
+}
+
+function lineTotalText(total: number | null): string {
+  if (total == null) return '—';
+  return formatPrice(total) + ' ₽';
 }
 
 function compositionText(): string {
   const lines = props.lines;
-  const priceLine =
-    props.priceText === "Стоимость уточняется"
-      ? "Стоимость и монтаж — после уточнения тарифов и замера."
-      : `Предварительная стоимость материалов: ${props.priceText}. Монтаж и дополнительные работы не включены.`;
+  const priceLine = props.isFinal
+    ? `Предварительная стоимость материалов: ${props.priceText}. Монтаж и дополнительные работы не включены.`
+    : 'Стоимость и монтаж — после уточнения тарифов и замера.';
   return [
-    "КОНТУРСВЕТ — предварительная комплектация",
+    'КОНТУРСВЕТ — предварительная комплектация',
     ...(lines.length
       ? lines.map(
           (l) =>
-            `• ${l.name}: ${l.unit === "м" ? qtyText(l.quantity) : l.quantity + " шт"}`,
+            `• ${l.name}: ${l.unit === 'м' ? qtyText(l.quantity) : l.quantity + ' шт'} — ${lineTotalText(l.lineTotal)}`,
         )
-      : ["Подсветка пока не выбрана"]),
+      : ['Подсветка пока не выбрана']),
     priceLine,
-  ].join("\n");
+  ].join('\n');
 }
 
 async function copy() {
@@ -47,23 +64,23 @@ async function copy() {
     await navigator.clipboard.writeText(text);
     ok = true;
   } catch {
-    const area = document.createElement("textarea");
+    const area = document.createElement('textarea');
     area.value = text;
-    area.style.position = "fixed";
-    area.style.opacity = "0";
+    area.style.position = 'fixed';
+    area.style.opacity = '0';
     document.body.append(area);
     area.select();
-    ok = document.execCommand("copy");
+    ok = document.execCommand('copy');
     area.remove();
   }
   feedback.value = ok
-    ? "Состав скопирован. Его можно вставить в заявку."
-    : "Не удалось скопировать автоматически. Выделите состав из блока выше.";
+    ? 'Состав скопирован. Его можно вставить в заявку.'
+    : 'Не удалось скопировать автоматически. Выделите состав из блока выше.';
 }
 
 function resetAll() {
-  feedback.value = "";
-  emit("reset");
+  feedback.value = '';
+  emit('reset');
 }
 </script>
 
@@ -76,10 +93,14 @@ function resetAll() {
       </p>
       <ul class="summary-list" v-if="lines.length">
         <li v-for="line in lines" :key="line.id" class="summary-item">
-          <span>{{ line.name }}</span>
-          <b>{{
-            line.unit === "м" ? qtyText(line.quantity) : `${line.quantity} шт`
-          }}</b>
+          <span class="summary-item__name">
+            {{ line.name }}
+            <small>{{ unitPriceText(line.unitPrice) }} / {{ line.unit }}</small>
+          </span>
+          <span class="summary-item__qty">{{
+            line.unit === 'м' ? qtyText(line.quantity) : `${line.quantity} шт`
+          }}</span>
+          <b class="summary-item__sum">{{ lineTotalText(line.lineTotal) }}</b>
         </li>
       </ul>
 
