@@ -67,6 +67,7 @@
             :src="photo.src"
             :alt="photo.alt"
             @click="openLightbox(photo.src)"
+            class="pointer"
           />
           <NuxtImg
             v-else
@@ -74,6 +75,7 @@
             :src="photo.src"
             :alt="photo.alt"
             @click="openLightbox(photo.src)"
+            class="pointer"
           />
           <figcaption>{{ photo.figcaption }}</figcaption>
         </figure>
@@ -84,6 +86,11 @@
     </div>
   </section>
 </template>
+<style lang="css" scoped>
+.pointer {
+  cursor: pointer;
+}
+</style>
 
 <script lang="ts" setup>
 import { type ICardView, type IPhoto } from '~/types/CardView';

@@ -3,7 +3,7 @@
   <div v-if="isLoading"><Spinner :is-overlay="true" /></div>
 
   <!-- Ошибка -->
-  <div v-else-if="error" class="error">{{ error }}</div>
+  <!-- <div v-else-if="error" class="error">{{ error }}</div> -->
 
   <section class="section">
     <div class="shell">
