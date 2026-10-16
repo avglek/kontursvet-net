@@ -155,6 +155,8 @@ public sealed class MaxMessageDispatcher : IMessageDispatcher, IUploadLeadFile
             text += $"\n**Где находится:** {lead.Location}";
         if (!string.IsNullOrWhiteSpace(lead.Message))
             text += $"\n**Коротко о задаче:** {lead.Message}";
+        if(!string.IsNullOrWhiteSpace(lead.Estimate))
+            text += $"\n**Предварительный расчет:** {lead.Estimate}";
 
         return text;
     }

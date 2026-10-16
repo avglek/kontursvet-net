@@ -117,21 +117,6 @@ onMounted(async () => {
 
 <template>
   <div>
-    <!-- <header class="site-header">
-      <a
-        class="brand"
-        href="https://www.kontursvet.spb.ru/"
-        aria-label="КОНТУРСВЕТ — на главную"
-      >
-        <span class="brand-mark" aria-hidden="true" />
-        <span class="brand-text">
-          <strong>КОНТУРСВЕТ</strong>
-          <small>АРХИТЕКТУРА СВЕТА</small>
-        </span>
-      </a>
-      <div class="header-note">Свет создаёт пространство</div>
-    </header> -->
-
     <div class="intro">
       <p class="eyebrow">Конфигуратор освещения</p>
       <h1>Примерьте свет на дом</h1>

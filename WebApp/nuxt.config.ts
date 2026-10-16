@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@stolbov.r/nuxt-font-loader',
     '@nuxtjs/i18n',
+    '@pinia/nuxt',
   ],
 
   fonts: {

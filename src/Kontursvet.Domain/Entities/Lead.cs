@@ -26,6 +26,12 @@ public sealed class Lead
     /// Описание задачи
     /// </summary>
     public string Message { get; set; } = string.Empty;
+
+    ///
+    /// <summary>
+    /// Предварительный расчет
+    /// </summary>
+    public string? Estimate { get; set; }
 }
 
 public sealed class LeadPhone

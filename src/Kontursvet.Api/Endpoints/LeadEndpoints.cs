@@ -23,7 +23,8 @@ public static class LeadEndpoints
                 },
                 Home = req.Text.Home,
                 Location = req.Text.Location,
-                Message = req.Text.Message
+                Message = req.Text.Message,
+                Estimate = req.Text.Estimate
             };
 
             var attachments = req.Attachments.Select(a => new LeadAttachment
@@ -64,6 +65,6 @@ public static class LeadEndpoints
 }
 
 public sealed record LeadMessageRequest(LeadTextDto Text, List<LeadAttachmentDto> Attachments);
-public sealed record LeadTextDto(string Name, LeadPhoneDto Phone, string Home, string Location, string Message);
+public sealed record LeadTextDto(string Name, LeadPhoneDto Phone, string Home, string Location, string Message, string Estimate);
 public sealed record LeadPhoneDto(string Digital, string Format);
 public sealed record LeadAttachmentDto(string Filename, string? Token, string? ContentType);

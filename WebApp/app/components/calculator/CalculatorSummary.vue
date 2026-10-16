@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import type { SelectionLine } from '~/composables/useCalculatorState';
+import { useLeadStore } from '~/stores/lead';
 
 const props = defineProps<{
   lines: SelectionLine[];
@@ -16,6 +17,8 @@ const emit = defineEmits<{
 }>();
 
 const feedback = ref('');
+
+const leadStore = useLeadStore();
 
 function qtyText(v: number | null): string {
   return v == null
@@ -41,12 +44,22 @@ function lineTotalText(total: number | null): string {
 }
 
 function compositionText(): string {
+  return (
+    'КОНТУРСВЕТ — предварительная комплектация \n' +
+    estimateText() +
+    '\n' +
+    props.explainer +
+    '\n' +
+    'Стоимость и монтаж — после уточнения тарифов и замера.'
+  );
+}
+
+function estimateText(): string {
   const lines = props.lines;
   const priceLine = props.isFinal
     ? `Предварительная стоимость материалов: ${props.priceText}. Монтаж и дополнительные работы не включены.`
     : 'Стоимость и монтаж — после уточнения тарифов и замера.';
   return [
-    'КОНТУРСВЕТ — предварительная комплектация',
     ...(lines.length
       ? lines.map(
           (l) =>
@@ -57,25 +70,22 @@ function compositionText(): string {
   ].join('\n');
 }
 
+async function toLead() {
+  const text = estimateText();
+
+  leadStore.setEstimate(text);
+  await navigateTo('/lead');
+}
+
 async function copy() {
   const text = compositionText();
-  let ok = false;
   try {
     await navigator.clipboard.writeText(text);
-    ok = true;
+    feedback.value = 'Состав скопирован.';
   } catch {
-    const area = document.createElement('textarea');
-    area.value = text;
-    area.style.position = 'fixed';
-    area.style.opacity = '0';
-    document.body.append(area);
-    area.select();
-    ok = document.execCommand('copy');
-    area.remove();
+    feedback.value =
+      'Не удалось скопировать автоматически. Выделите состав из блока выше.';
   }
-  feedback.value = ok
-    ? 'Состав скопирован. Его можно вставить в заявку.'
-    : 'Не удалось скопировать автоматически. Выделите состав из блока выше.';
 }
 
 function resetAll() {
@@ -119,13 +129,9 @@ function resetAll() {
         <button class="button secondary" type="button" @click="copy">
           Скопировать состав
         </button>
-        <a
-          class="button"
-          :href="leadUrl"
-          target="_blank"
-          rel="noopener noreferrer"
-          >Открыть сайт</a
-        >
+        <button class="button" @click="toLead" rel="noopener noreferrer">
+          Отправить
+        </button>
       </div>
 
       <button class="button quiet" type="button" @click="resetAll">
@@ -134,12 +140,6 @@ function resetAll() {
       <div class="feedback" role="status" aria-live="polite">
         {{ feedback }}
       </div>
-
-      <p class="handoff-note">
-        Состав автоматически не отправляется. Скопируйте его и передайте
-        компании через сайт. Онлайн-отправка из этого файла подключается
-        разработчиком.
-      </p>
     </div>
   </section>
 </template>

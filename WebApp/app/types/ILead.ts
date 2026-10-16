@@ -30,4 +30,5 @@ export interface ILeadForm {
   home: string;
   location: string;
   message: string;
+  estimate: string;
 }
