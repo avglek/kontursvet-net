@@ -1,14 +1,44 @@
 <script setup lang="ts">
-defineProps<{
+import { computed } from 'vue';
+
+const props = defineProps<{
   snowflakes: number;
   polaris: number;
   maxSnowflakes: number;
   maxPolaris: number;
+  priceByCode: Map<string, number>;
 }>();
 
 const emit = defineEmits<{
-  step: [kind: "snowflakes" | "polaris", delta: number];
+  step: [kind: 'snowflakes' | 'polaris', delta: number];
 }>();
+
+function formatPrice(n: number): string {
+  return new Intl.NumberFormat('ru-RU', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(n);
+}
+
+// Цена мотива за штуку из прайса
+function unitPrice(code: string): string {
+  const price = props.priceByCode.get(code);
+  return price == null ? '' : `${formatPrice(price)} ₽/шт`;
+}
+
+// Сумма по мотивам: цена × количество
+function lineSum(code: string, count: number): string {
+  const price = props.priceByCode.get(code);
+  if (price == null || count === 0) return '';
+  return `≈ ${formatPrice(price * count)} ₽`;
+}
+
+const snowflakesPrice = computed(() => unitPrice('motifs-snowflakes'));
+const polarisPrice = computed(() => unitPrice('motifs-polaris'));
+const snowflakesSum = computed(() =>
+  lineSum('motifs-snowflakes', props.snowflakes),
+);
+const polarisSum = computed(() => lineSum('motifs-polaris', props.polaris));
 </script>
 
 <template>
@@ -26,10 +56,13 @@ const emit = defineEmits<{
       <div class="motif-info">
         <span class="motif-icon" aria-hidden="true">❄</span>
         <span
-          ><strong>Снежинки</strong
-          ><small>В простенках между окнами</small></span
+          ><strong>Снежинки</strong><small>В простенках между окнами</small>
+          <small v-if="snowflakesPrice" class="motif-price">{{
+            snowflakesPrice
+          }}</small></span
         >
       </div>
+      <b v-if="snowflakesSum" class="motif-sum">{{ snowflakesSum }}</b>
       <div class="stepper">
         <button
           type="button"
@@ -53,10 +86,13 @@ const emit = defineEmits<{
       <div class="motif-info">
         <span class="motif-icon" aria-hidden="true">✧</span>
         <span
-          ><strong>Полярисы</strong
-          ><small>Под внешними углами карниза</small></span
+          ><strong>Полярисы</strong><small>Под внешними углами карниза</small>
+          <small v-if="polarisPrice" class="motif-price">{{
+            polarisPrice
+          }}</small></span
         >
       </div>
+      <b v-if="polarisSum" class="motif-sum">{{ polarisSum }}</b>
       <div class="stepper">
         <button
           type="button"

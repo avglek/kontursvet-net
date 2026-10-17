@@ -9,6 +9,7 @@ interface LeadForm {
   home: string;
   location: string;
   message: string;
+  estimate: string;
 }
 
 interface LeadAttachmentPayload {
@@ -76,6 +77,7 @@ export const useLeads = () => {
         home: form.home,
         location: form.location,
         message: form.message,
+        estimate: form.estimate,
       },
       attachments,
     };

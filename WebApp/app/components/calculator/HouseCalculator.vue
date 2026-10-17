@@ -10,9 +10,27 @@ import {
   type ProductGroup,
 } from '~/utils/calculator.config';
 import { useCalculatorState } from '~/composables/useCalculatorState';
+import { useProducts } from '~/composables/useProducts';
 import { useMotionRenderer } from '~/composables/useMotionRenderer';
 
-const { state, qty, summary, reset, step } = useCalculatorState();
+// Прайс товаров из API — источник цен для расчёта
+const {
+  priceByCode,
+  loading: pricesLoading,
+  error: pricesError,
+  fetchProducts,
+} = useProducts();
+
+// Состояние загрузки прайса — чтобы различать «не выбрано» и «цена ещё не пришла»
+const pricesStatus = computed(() => ({
+  ready: !pricesLoading.value,
+  error: pricesError.value,
+}));
+
+const { state, qty, summary, reset, step } = useCalculatorState(
+  priceByCode,
+  pricesStatus,
+);
 const {
   activeMotion,
   userStatic,
@@ -83,32 +101,22 @@ async function handleReplay() {
   if (!ok) return;
 }
 
-// После маунта дочерних компонентов — prepare
+// После маунта — загрузить прайс и подготовить слои
 onMounted(async () => {
+  // Прайс не должен блокировать отрисовку визуализации — грузим параллельно
+  const pricesReady = fetchProducts();
+
   await nextTick();
   prepareAllLayers();
   // Первичная синхронизация на случай, если state уже не пуст (SSR-hydration)
   for (const mid of MOTION_IDS) sync(mid, visibleOverlays.value.has(mid));
+
+  await pricesReady;
 });
 </script>
 
 <template>
   <div>
-    <!-- <header class="site-header">
-      <a
-        class="brand"
-        href="https://www.kontursvet.spb.ru/"
-        aria-label="КОНТУРСВЕТ — на главную"
-      >
-        <span class="brand-mark" aria-hidden="true" />
-        <span class="brand-text">
-          <strong>КОНТУРСВЕТ</strong>
-          <small>АРХИТЕКТУРА СВЕТА</small>
-        </span>
-      </a>
-      <div class="header-note">Свет создаёт пространство</div>
-    </header> -->
-
     <div class="intro">
       <p class="eyebrow">Конфигуратор освещения</p>
       <h1>Примерьте свет на дом</h1>
@@ -183,6 +191,7 @@ onMounted(async () => {
           "
           @select="(id: any) => (state[group] = id)"
           @qty-change="(v: any) => (qty[group] = v)"
+          :price-by-code="priceByCode"
         />
 
         <CalculatorMotifs
@@ -190,6 +199,7 @@ onMounted(async () => {
           :polaris="state.polaris"
           :max-snowflakes="MOTIF_MAX.snowflakes"
           :max-polaris="MOTIF_MAX.polaris"
+          :price-by-code="priceByCode"
           @step="step"
         />
 
@@ -198,6 +208,7 @@ onMounted(async () => {
           :price-text="summary.priceText"
           :explainer="summary.explainer"
           :total-positions="summary.totalPositions"
+          :is-final="summary.isFinal"
           :lead-url="CONFIG.leadUrl"
           @reset="reset"
         />

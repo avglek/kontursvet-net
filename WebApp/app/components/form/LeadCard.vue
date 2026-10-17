@@ -78,6 +78,10 @@
               placeholder="Что хотите подсветить и к какому сроку"
             ></textarea>
           </div>
+          <div v-if="form.estimate" class="field field-wide">
+            <label for="estimate">Предварительная комплектация</label
+            ><textarea v-model="form.estimate" name="estimate"></textarea>
+          </div>
           <div class="field field-wide">
             <label>Фотографии объекта</label
             ><input
@@ -116,6 +120,7 @@ import { type IModalLeadPanel } from '~/types/CardView.ts';
 import { ref } from 'vue';
 import { vMaska } from 'maska/vue';
 import { useLeads } from '~/composables/useLeads';
+import { storeToRefs } from 'pinia';
 
 const form: ILeadForm = reactive({
   name: '',
@@ -124,6 +129,7 @@ const form: ILeadForm = reactive({
   home: '',
   location: '',
   message: '',
+  estimate: '',
 });
 
 const check = ref(false);
@@ -134,6 +140,10 @@ const isModalView = ref(false);
 let selected: File[] = [];
 const { t } = useI18n();
 
+const leadStore = useLeadStore();
+//const {estimate} = storeToRefs(leadStore);
+form.estimate = leadStore.estimate;
+
 const handleModalClose = () => {
   isModalView.value = false;
 };
@@ -143,10 +153,12 @@ const handleSubmit = async () => {
 
   try {
     const { sendLead } = useLeads();
+    //form.estimate = estimate.value;
     await sendLead(form, selected);
     modalMessage.title = t('modal.success.title');
     modalMessage.message = t('modal.success.message');
     isModalView.value = true;
+    leadStore.clearEstimate();
     // Сброс формы
     Object.assign(form, {
       name: '',
@@ -155,6 +167,7 @@ const handleSubmit = async () => {
       home: '',
       location: '',
       message: '',
+      estimate: '',
     });
     selected = [];
   } catch (e: any) {
