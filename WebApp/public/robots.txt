@@ -1,2 +1,8 @@
-User-Agent: *
-Disallow:
+User-agent: *
+Disallow: /admin
+Disallow: /admin/
+Disallow: /search/
+Disallow: /*?*
+Disallow: /*?
+
+Sitemap: https://www.kontursvet.spb.ru/sitemap.xml

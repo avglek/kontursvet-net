@@ -16,6 +16,7 @@ public sealed class PortfolioCardViewDto
     public string Features { get; set; } = string.Empty;
     public List<string> Meta { get; set; } = [];
     public List<GalleryItemDto> Gallery { get; set; } = [];
+    public DateTime UpdatedAt { get; set; }
 }
 
 public sealed class GalleryItemDto
