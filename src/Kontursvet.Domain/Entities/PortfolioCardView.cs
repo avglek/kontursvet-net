@@ -20,4 +20,5 @@ public sealed class PortfolioCardView
     public string Features { get; set; } = string.Empty;
     public List<string> Meta { get; set; } = [];
     public List<GalleryItem> Gallery { get; set; } = [];
+    public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
 }

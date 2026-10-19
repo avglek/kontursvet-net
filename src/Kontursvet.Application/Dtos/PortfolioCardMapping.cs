@@ -22,6 +22,7 @@ public static class PortfolioCardMapping
         Title = e.Title,
         SubTitle = e.SubTitle,
         Description = e.Description,
-        Img = new ImgDto { Src = e.ImgSrc, Alt = e.ImgAlt }
+        Img = new ImgDto { Src = e.ImgSrc, Alt = e.ImgAlt },
+        UpdatedAt = e.UpdatedAt
     };
 }

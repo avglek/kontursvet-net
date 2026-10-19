@@ -63,6 +63,7 @@ services:
       HOST: 0.0.0.0
       PORT: '3000'
       NUXT_PUBLIC_API_BASE: ''
+      NUXT_API_INTERNAL_BASE: http://api:5136
       # Цель dev-прокси Nuxt: внутри сети контейнера API доступен как api:5136
       NUXT_API_PROXY_TARGET: http://api:5136
     volumes:

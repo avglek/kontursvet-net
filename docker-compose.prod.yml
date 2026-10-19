@@ -41,6 +41,7 @@ services:
     restart: unless-stopped
     environment:
       NUXT_PUBLIC_API_BASE: ${NUXT_PUBLIC_API_BASE:-}
+      NUXT_API_INTERNAL_BASE: http://api:5136
       HOST: 0.0.0.0
       PORT: '3000'
     depends_on:

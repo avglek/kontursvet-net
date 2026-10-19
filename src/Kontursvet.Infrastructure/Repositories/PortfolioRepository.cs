@@ -58,9 +58,11 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
     {
         using var db = factory.Create();
         const string sql = """
-            SELECT id, link, title, sub_title, description, img_src, img_alt
-            FROM portfolio_cards
-            ORDER BY id
+            SELECT c.id, c.link, c.title, c.sub_title, c.description, c.img_src, c.img_alt,
+                   v.updated_at
+            FROM portfolio_cards c
+            LEFT JOIN portfolio_card_views v ON v.id = c.id
+            ORDER BY c.id
             OFFSET @Skip LIMIT @Take;
             """;
 
@@ -111,7 +113,7 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
         using var db = factory.Create();
         const string sql = """
             SELECT id, name, part, title, description, task, works, location,
-                   term, team, period, features, meta, gallery
+                   term, team, period, features, meta, gallery, updated_at
             FROM portfolio_card_views WHERE id = @Id;
             """;
 
@@ -125,7 +127,7 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
         using var db = factory.Create();
         const string sql = """
             SELECT id, name, part, title, description, task, works, location,
-                   term, team, period, features, meta, gallery
+                   term, team, period, features, meta, gallery, updated_at
             FROM portfolio_card_views
             ORDER BY id
             OFFSET @Skip LIMIT @Take;
@@ -142,16 +144,17 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
         const string sql = """
             INSERT INTO portfolio_card_views
                 (id, name, part, title, description, task, works, location,
-                 term, team, period, features, meta, gallery)
+                 term, team, period, features, meta, gallery, updated_at)
             VALUES
                 (@Id, @Name, @Part, @Title, @Description, @Task, @Works::jsonb, @Location,
-                 @Term, @Team, @Period, @Features, @Meta::jsonb, @Gallery::jsonb)
+                 @Term, @Team, @Period, @Features, @Meta::jsonb, @Gallery::jsonb, @UpdatedAt)
             ON CONFLICT (id) DO UPDATE SET
                 name = EXCLUDED.name, part = EXCLUDED.part, title = EXCLUDED.title,
                 description = EXCLUDED.description, task = EXCLUDED.task,
                 works = EXCLUDED.works, location = EXCLUDED.location, term = EXCLUDED.term,
                 team = EXCLUDED.team, period = EXCLUDED.period, features = EXCLUDED.features,
-                meta = EXCLUDED.meta, gallery = EXCLUDED.gallery;
+                meta = EXCLUDED.meta, gallery = EXCLUDED.gallery,
+                updated_at = EXCLUDED.updated_at;
             """;
 
         var affected = await db.ExecuteAsync(new CommandDefinition(sql, new
@@ -169,7 +172,8 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
             view.Period,
             view.Features,
             Meta = JsonSerializer.Serialize(view.Meta, JsonOpts),
-            Gallery = JsonSerializer.Serialize(view.Gallery, JsonOpts)
+            Gallery = JsonSerializer.Serialize(view.Gallery, JsonOpts),
+            UpdatedAt = view.UpdatedAt
         }, cancellationToken: ct));
 
         return affected > 0;
@@ -204,7 +208,8 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
                 v.period        AS view_period,
                 v.features      AS view_features,
                 v.meta          AS view_meta,
-                v.gallery       AS view_gallery
+                v.gallery       AS view_gallery,
+                v.updated_at    AS view_updated_at
             FROM portfolio_cards c
             LEFT JOIN portfolio_card_views v ON v.id = c.id
             WHERE c.id = @Id;
@@ -238,6 +243,7 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
         public string Description { get; set; } = "";
         public string ImgSrc { get; set; } = "";
         public string ImgAlt { get; set; } = "";
+        public DateTime UpdatedAt { get; set; }
 
         public PortfolioCard ToEntity() => new()
         {
@@ -247,7 +253,8 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
             SubTitle = SubTitle,
             Description = Description,
             ImgSrc = ImgSrc,
-            ImgAlt = ImgAlt
+            ImgAlt = ImgAlt,
+            UpdatedAt = UpdatedAt
         };
     }
 
@@ -267,6 +274,7 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
         public string Features { get; set; } = "";
         public string Meta { get; set; } = "[]";
         public string Gallery { get; set; } = "[]";
+        public DateTime UpdatedAt { get; set; }
 
         public PortfolioCardView ToEntity() => new()
         {
@@ -283,7 +291,8 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
             Period = Period,
             Features = Features,
             Meta = JsonSerializer.Deserialize<List<string>>(Meta, JsonOpts) ?? [],
-            Gallery = JsonSerializer.Deserialize<List<GalleryItem>>(Gallery, JsonOpts) ?? []
+            Gallery = JsonSerializer.Deserialize<List<GalleryItem>>(Gallery, JsonOpts) ?? [],
+            UpdatedAt = UpdatedAt
         };
     }
 
@@ -313,6 +322,7 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
         public string? ViewFeatures { get; set; }
         public string? ViewMeta { get; set; }
         public string? ViewGallery { get; set; }
+        public DateTime? ViewUpdatedAt { get; set; }
 
         public PortfolioCard ToCard() => new()
         {
@@ -340,7 +350,8 @@ public sealed class PortfolioRepository(IDbConnectionFactory factory) : IPortfol
             Period = ViewPeriod ?? "",
             Features = ViewFeatures ?? "",
             Meta = JsonSerializer.Deserialize<List<string>>(ViewMeta ?? "[]", JsonOpts) ?? [],
-            Gallery = JsonSerializer.Deserialize<List<GalleryItem>>(ViewGallery ?? "[]", JsonOpts) ?? []
+            Gallery = JsonSerializer.Deserialize<List<GalleryItem>>(ViewGallery ?? "[]", JsonOpts) ?? [],
+            UpdatedAt = ViewUpdatedAt ?? DateTime.UtcNow
         };
     }
 

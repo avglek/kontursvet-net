@@ -8,6 +8,7 @@ public sealed class PortfolioCardDto
     public string SubTitle { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public ImgDto Img { get; set; } = new();
+    public DateTime UpdatedAt { get; set; }
 }
 
 public sealed class ImgDto

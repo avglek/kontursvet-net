@@ -91,6 +91,9 @@ export default defineNuxtConfig({
 
   // Прод: apiBase из env
   runtimeConfig: {
+    // Внутренний адрес API для серверных роутов Nuxt (не доступен из браузера)
+    apiInternalBase:
+      process.env.NUXT_API_INTERNAL_BASE || 'http://localhost:5136',
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '',
     },
