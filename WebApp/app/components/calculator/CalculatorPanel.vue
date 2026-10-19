@@ -1,51 +1,3 @@
-<script setup lang="ts">
-import { computed } from 'vue';
-import type { Product } from '~/utils/calculator.config';
-
-const props = defineProps<{
-  title: string;
-  number: string;
-  description: string;
-  products: Product[];
-  selected: string;
-  qty: number | null;
-  qtyLabel: string;
-  qtyHint: string;
-  priceByCode: Map<string, number>;
-}>();
-
-const emit = defineEmits<{
-  select: [id: string];
-  'qty-change': [value: number | null];
-}>();
-
-function onQtyInput(e: Event) {
-  const raw = (e.target as HTMLInputElement).value.replace(',', '.');
-  const v = Number(raw);
-  emit('qty-change', raw !== '' && Number.isFinite(v) && v > 0 ? v : null);
-}
-
-function formatPrice(n: number): string {
-  return new Intl.NumberFormat('ru-RU', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(n);
-}
-
-// Цена из прайса за один метр
-function priceText(id: string): string {
-  const price = props.priceByCode.get(id);
-  return price == null ? '' : `${formatPrice(price)} ₽/м`;
-}
-
-// Предварительная сумма позиции: цена × метраж
-const positionSumText = computed(() => {
-  const price = props.priceByCode.get(props.selected);
-  if (price == null || props.qty == null) return '';
-  return `≈ ${formatPrice(price * props.qty)} ₽`;
-});
-</script>
-
 <template>
   <section class="panel">
     <div class="panel-heading">
@@ -98,3 +50,51 @@ const positionSumText = computed(() => {
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { computed } from 'vue';
+import type { Product } from '~/utils/calculator.config';
+
+const props = defineProps<{
+  title: string;
+  number: string;
+  description: string;
+  products: Product[];
+  selected: string;
+  qty: number | null;
+  qtyLabel: string;
+  qtyHint: string;
+  priceByCode: Map<string, number>;
+}>();
+
+const emit = defineEmits<{
+  select: [id: string];
+  'qty-change': [value: number | null];
+}>();
+
+function onQtyInput(e: Event) {
+  const raw = (e.target as HTMLInputElement).value.replace(',', '.');
+  const v = Number(raw);
+  emit('qty-change', raw !== '' && Number.isFinite(v) && v > 0 ? v : null);
+}
+
+function formatPrice(n: number): string {
+  return new Intl.NumberFormat('ru-RU', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(n);
+}
+
+// Цена из прайса за один метр
+function priceText(id: string): string {
+  const price = props.priceByCode.get(id);
+  return price == null ? '' : `${formatPrice(price)} ₽/м`;
+}
+
+// Предварительная сумма позиции: цена × метраж
+const positionSumText = computed(() => {
+  const price = props.priceByCode.get(props.selected);
+  if (price == null || props.qty == null) return '';
+  return `≈ ${formatPrice(price * props.qty)} ₽`;
+});
+</script>
