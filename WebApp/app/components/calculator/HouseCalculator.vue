@@ -1,3 +1,110 @@
+<template>
+  <div>
+    <div class="intro">
+      <p class="eyebrow">Конфигуратор освещения</p>
+      <h1>Примерьте свет на дом</h1>
+      <p>
+        Выберите материалы, укажите метраж и соберите предварительную
+        комплектацию. Изображение показывает сочетание выбранных световых
+        решений на одном доме.
+      </p>
+    </div>
+
+    <main class="layout">
+      <section class="stage-column" aria-label="Визуализация дома">
+        <div class="scene-card">
+          <div class="scene-top">
+            <span>Визуализация проекта</span>
+            <span class="live">Изменения в реальном времени</span>
+          </div>
+
+          <CalculatorScene
+            :active-overlays="visibleOverlays"
+            @layer-ref="onLayerRef"
+          />
+
+          <div class="scene-caption">
+            <span
+              ><b>Один дом.</b> Все материалы накладываются на эту
+              фотографию.</span
+            >
+            <span>1448 × 1086</span>
+          </div>
+
+          <CalculatorMotionBar
+            :replay-busy="replayBusy"
+            :has-active="activeMotion.size > 0"
+            :static-on="userStatic"
+            :reduced-motion="reducedMotion"
+            :status-text="motionStatusText"
+            @replay="handleReplay"
+            @toggle-static="toggleStatic"
+          />
+        </div>
+
+        <div class="scene-tip">
+          Визуализация схематично показывает внешний вид материалов. Точный
+          метраж и стоимость подтверждаются после замера.
+        </div>
+      </section>
+
+      <div class="controls">
+        <CalculatorPanel
+          v-for="group in ['roof', 'eaves', 'vertical'] as ProductGroup[]"
+          :key="group"
+          :title="GROUP_LABELS[group].title"
+          :number="GROUP_LABELS[group].number"
+          :description="GROUP_LABELS[group].description"
+          :products="PRODUCTS[group]!"
+          :selected="state[group]"
+          :qty="qty[group]"
+          :qty-label="
+            group === 'roof'
+              ? 'Метраж контура'
+              : group === 'eaves'
+                ? 'Метраж карниза'
+                : 'Метраж нити'
+          "
+          :qty-hint="
+            group === 'roof'
+              ? 'Укажите после замера или оценки'
+              : group === 'eaves'
+                ? 'Укажите после замера или оценки'
+                : 'Общая длина на колоннах'
+          "
+          @select="(id: any) => (state[group] = id)"
+          @qty-change="(v: any) => (qty[group] = v)"
+          :price-by-code="priceByCode"
+        />
+
+        <CalculatorMotifs
+          :snowflakes="state.snowflakes"
+          :polaris="state.polaris"
+          :max-snowflakes="MOTIF_MAX.snowflakes"
+          :max-polaris="MOTIF_MAX.polaris"
+          :price-by-code="priceByCode"
+          @step="step"
+        />
+
+        <CalculatorSummary
+          :lines="summary.lines"
+          :price-text="summary.priceText"
+          :explainer="summary.explainer"
+          :total-positions="summary.totalPositions"
+          :is-final="summary.isFinal"
+          :lead-url="CONFIG.leadUrl"
+          @reset="reset"
+        />
+      </div>
+    </main>
+
+    <footer class="footer">
+      <span>КОНТУРСВЕТ · Предварительный подбор, не публичная оферта</span>
+      <span>Визуализация материалов на одном доме</span>
+    </footer>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import {
@@ -114,110 +221,3 @@ onMounted(async () => {
   await pricesReady;
 });
 </script>
-
-<template>
-  <div>
-    <div class="intro">
-      <p class="eyebrow">Конфигуратор освещения</p>
-      <h1>Примерьте свет на дом</h1>
-      <p>
-        Выберите материалы, укажите метраж и соберите предварительную
-        комплектацию. Изображение показывает сочетание выбранных световых
-        решений на одном доме.
-      </p>
-    </div>
-
-    <main class="layout">
-      <section class="stage-column" aria-label="Визуализация дома">
-        <div class="scene-card">
-          <div class="scene-top">
-            <span>Визуализация проекта</span>
-            <span class="live">Изменения в реальном времени</span>
-          </div>
-
-          <CalculatorScene
-            :active-overlays="visibleOverlays"
-            @layer-ref="onLayerRef"
-          />
-
-          <div class="scene-caption">
-            <span
-              ><b>Один дом.</b> Все материалы накладываются на эту
-              фотографию.</span
-            >
-            <span>1448 × 1086</span>
-          </div>
-
-          <CalculatorMotionBar
-            :replay-busy="replayBusy"
-            :has-active="activeMotion.size > 0"
-            :static-on="userStatic"
-            :reduced-motion="reducedMotion"
-            :status-text="motionStatusText"
-            @replay="handleReplay"
-            @toggle-static="toggleStatic"
-          />
-        </div>
-
-        <div class="scene-tip">
-          Визуализация схематично показывает внешний вид материалов. Точный
-          метраж и стоимость подтверждаются после замера.
-        </div>
-      </section>
-
-      <div class="controls">
-        <CalculatorPanel
-          v-for="group in ['roof', 'eaves', 'vertical'] as ProductGroup[]"
-          :key="group"
-          :title="GROUP_LABELS[group].title"
-          :number="GROUP_LABELS[group].number"
-          :description="GROUP_LABELS[group].description"
-          :products="PRODUCTS[group]!"
-          :selected="state[group]"
-          :qty="qty[group]"
-          :qty-label="
-            group === 'roof'
-              ? 'Метраж контура'
-              : group === 'eaves'
-                ? 'Метраж карниза'
-                : 'Метраж нити'
-          "
-          :qty-hint="
-            group === 'roof'
-              ? 'Укажите после замера или оценки'
-              : group === 'eaves'
-                ? 'Укажите после замера или оценки'
-                : 'Общая длина на колоннах'
-          "
-          @select="(id: any) => (state[group] = id)"
-          @qty-change="(v: any) => (qty[group] = v)"
-          :price-by-code="priceByCode"
-        />
-
-        <CalculatorMotifs
-          :snowflakes="state.snowflakes"
-          :polaris="state.polaris"
-          :max-snowflakes="MOTIF_MAX.snowflakes"
-          :max-polaris="MOTIF_MAX.polaris"
-          :price-by-code="priceByCode"
-          @step="step"
-        />
-
-        <CalculatorSummary
-          :lines="summary.lines"
-          :price-text="summary.priceText"
-          :explainer="summary.explainer"
-          :total-positions="summary.totalPositions"
-          :is-final="summary.isFinal"
-          :lead-url="CONFIG.leadUrl"
-          @reset="reset"
-        />
-      </div>
-    </main>
-
-    <footer class="footer">
-      <span>КОНТУРСВЕТ · Предварительный подбор, не публичная оферта</span>
-      <span>Визуализация материалов на одном доме</span>
-    </footer>
-  </div>
-</template>

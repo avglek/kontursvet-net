@@ -1,18 +1,3 @@
-<script setup lang="ts">
-defineProps<{
-  replayBusy: boolean;
-  hasActive: boolean;
-  staticOn: boolean;
-  reducedMotion: boolean;
-  statusText: string;
-}>();
-
-const emit = defineEmits<{
-  replay: [];
-  "toggle-static": [];
-}>();
-</script>
-
 <template>
   <div class="scene-motion">
     <span role="status">{{ statusText }}</span>
@@ -37,3 +22,18 @@ const emit = defineEmits<{
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+defineProps<{
+  replayBusy: boolean;
+  hasActive: boolean;
+  staticOn: boolean;
+  reducedMotion: boolean;
+  statusText: string;
+}>();
+
+const emit = defineEmits<{
+  replay: [];
+  'toggle-static': [];
+}>();
+</script>
