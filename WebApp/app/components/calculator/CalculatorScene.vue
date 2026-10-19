@@ -5,7 +5,7 @@ import { MOTION_IDS } from '~/utils/calculator.config';
 import geometryRaw from '~/data/geometry.json';
 import type { Geometry } from '~/types/geometry';
 
-const POLARIS_URL = '/images/calculator/motifs/polaris-4.png';
+const POLARIS_URL = '/images/calculator/motifs/polaris.png';
 
 const geometry = geometryRaw as unknown as Geometry;
 
