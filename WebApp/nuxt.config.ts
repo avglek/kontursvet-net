@@ -7,6 +7,59 @@ export default defineNuxtConfig({
   compatibilityDate: '2026-09-01',
   devtools: { enabled: false },
 
+  app: {
+    head: {
+      htmlAttrs: { lang: 'ru' },
+      titleTemplate: '%s — КонтурСвет',
+      meta: [
+        { charset: 'utf-8' },
+        {
+          name: 'viewport',
+          content: 'width=device-width, initial-scale=1',
+        },
+        {
+          name: 'description',
+          content:
+            'КонтурСвет — световое оформление домов и участков в Санкт-Петербурге и Ленинградской области. Контурная подсветка, бахрома, оформление деревьев и комплексные решения.',
+        },
+        {
+          name: 'keywords',
+          content:
+            'световое оформление, контурная подсветка, бахрома, подсветка дома, световой дизайн, Санкт-Петербург, Ленинградская область, КонтурСвет',
+        },
+        { name: 'author', content: 'КонтурСвет' },
+        { property: 'og:type', content: 'website' },
+        { property: 'og:locale', content: 'ru_RU' },
+        { property: 'og:locale:alternate', content: 'en_US' },
+        { property: 'og:site_name', content: 'КонтурСвет' },
+      ],
+      link: [
+        {
+          rel: 'canonical',
+          href: 'https://www.kontursvet.spb.ru',
+        },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '32x32',
+          href: '/favicon-32x32.png',
+        },
+        {
+          rel: 'icon',
+          type: 'image/png',
+          sizes: '16x16',
+          href: '/favicon-16x16.png',
+        },
+        {
+          rel: 'apple-touch-icon',
+          sizes: '180x180',
+          href: '/apple-touch-icon.png',
+        },
+      ],
+    },
+  },
+
   // Отключаем загрузку шрифтов по сети
   // Устанавливаем шрифт npm install @fontsource-variable/inter
   modules: [
@@ -91,6 +144,9 @@ export default defineNuxtConfig({
 
   // Прод: apiBase из env
   runtimeConfig: {
+    // Внутренний адрес API для серверных роутов Nuxt (не доступен из браузера)
+    apiInternalBase:
+      process.env.NUXT_API_INTERNAL_BASE || 'http://localhost:5136',
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '',
       // ID счётчика Яндекс Метрики; пусто — метрика не подключается

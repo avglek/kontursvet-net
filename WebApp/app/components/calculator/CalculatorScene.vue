@@ -1,3 +1,18 @@
+<template>
+  <div class="scene" ref="sceneEl">
+    <img class="base" src="/images/calculator/house-base.webp" alt="" />
+
+    <div
+      v-for="id in MOTION_IDS"
+      :key="id"
+      class="overlay-wrapper"
+      :class="{ visible: activeOverlays.has(id) }"
+      :hidden="!activeOverlays.has(id)"
+      v-html="overlayMarkup[id]"
+    />
+  </div>
+</template>
+
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
 import { buildOverlaySvg } from '~/utils/overlay-renderer';
@@ -5,7 +20,7 @@ import { MOTION_IDS } from '~/utils/calculator.config';
 import geometryRaw from '~/data/geometry.json';
 import type { Geometry } from '~/types/geometry';
 
-const POLARIS_URL = '/images/calculator/motifs/polaris-4.png';
+const POLARIS_URL = '/images/calculator/motifs/polaris.png';
 
 const geometry = geometryRaw as unknown as Geometry;
 
@@ -54,21 +69,6 @@ onMounted(() => {
   }
 });
 </script>
-
-<template>
-  <div class="scene" ref="sceneEl">
-    <img class="base" src="/images/calculator/house-base.webp" alt="" />
-
-    <div
-      v-for="id in MOTION_IDS"
-      :key="id"
-      class="overlay-wrapper"
-      :class="{ visible: activeOverlays.has(id) }"
-      :hidden="!activeOverlays.has(id)"
-      v-html="overlayMarkup[id]"
-    />
-  </div>
-</template>
 
 <style scoped>
 .scene {

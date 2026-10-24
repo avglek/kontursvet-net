@@ -37,7 +37,8 @@ public static class PortfolioCardViewMapping
         Period = e.Period,
         Features = e.Features,
         Meta = e.Meta,
-        Gallery = e.Gallery.Select(ToDto).ToList()
+        Gallery = e.Gallery.Select(ToDto).ToList(),
+        UpdatedAt = e.UpdatedAt
     };
 
     private static GalleryItem ToDomain(this GalleryItemDto dto)

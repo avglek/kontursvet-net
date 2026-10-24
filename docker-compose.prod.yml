@@ -43,6 +43,7 @@ services:
       NUXT_PUBLIC_API_BASE: ${NUXT_PUBLIC_API_BASE:-}
       # ID счётчика Яндекс Метрики (пусто — метрика отключена)
       NUXT_PUBLIC_YANDEX_METRIKA_ID: ${NUXT_PUBLIC_YANDEX_METRIKA_ID:-}
+      NUXT_API_INTERNAL_BASE: http://api:5136
       HOST: 0.0.0.0
       PORT: '3000'
     depends_on:
