@@ -120,6 +120,7 @@ import { type IModalLeadPanel } from '~/types/CardView.ts';
 import { ref } from 'vue';
 import { vMaska } from 'maska/vue';
 import { useLeads } from '~/composables/useLeads';
+import { useMetrika } from '~/composables/useMetrika';
 import { storeToRefs } from 'pinia';
 
 const form: ILeadForm = reactive({
@@ -144,6 +145,8 @@ const leadStore = useLeadStore();
 //const {estimate} = storeToRefs(leadStore);
 form.estimate = leadStore.estimate;
 
+const metrika = useMetrika();
+
 const handleModalClose = () => {
   isModalView.value = false;
 };
@@ -159,6 +162,7 @@ const handleSubmit = async () => {
     modalMessage.message = t('modal.success.message');
     isModalView.value = true;
     leadStore.clearEstimate();
+    metrika.reachGoal('form_submit');
     // Сброс формы
     Object.assign(form, {
       name: '',

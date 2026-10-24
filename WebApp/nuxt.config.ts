@@ -93,6 +93,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '',
+      // ID счётчика Яндекс Метрики; пусто — метрика не подключается
+      yandexMetrikaId: process.env.NUXT_PUBLIC_YANDEX_METRIKA_ID || '',
     },
   },
 
