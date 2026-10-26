@@ -1,0 +1,83 @@
+// ============================================================
+// @font-face — Inter Display и Open Sans.
+// Файлы лежат в WebApp/public/fonts/, пути абсолютные от корня сайта.
+// ============================================================
+
+@font-face {
+  font-family: 'Inter Display';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('/fonts/InterDisplay-Bold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Inter Display';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url('/fonts/InterDisplay-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('/fonts/OpenSans-Regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url('/fonts/OpenSans-SemiBold.woff2') format('woff2');
+}
+
+// Метрические фолбэки: когда браузер ещё не загрузил Open Sans, эти шрифты
+// подхватываются с предсказуемыми метриками, чтобы не «прыгала» вёрстка.
+@font-face {
+  font-family: 'Open Sans Fallback: Segoe UI';
+  src: local('Segoe UI');
+  size-adjust: 105.727%;
+  ascent-override: 101.095%;
+  descent-override: 27.71%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Open Sans Fallback: Noto Sans';
+  src: local('Noto Sans');
+  size-adjust: 98.8924%;
+  ascent-override: 108.082%;
+  descent-override: 29.625%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Open Sans Fallback: Helvetica Neue';
+  src: local('Helvetica Neue');
+  size-adjust: 104.167%;
+  ascent-override: 102.609%;
+  descent-override: 28.125%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Open Sans Fallback: BlinkMacSystemFont';
+  src: local('BlinkMacSystemFont');
+  size-adjust: 112.544%;
+  ascent-override: 94.9716%;
+  descent-override: 26.0315%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: 'Open Sans Fallback: Arial';
+  src: local('Arial');
+  size-adjust: 105.148%;
+  ascent-override: 101.652%;
+  descent-override: 27.8625%;
+  line-gap-override: 0%;
+}

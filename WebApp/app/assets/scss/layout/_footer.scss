@@ -1,6 +1,12 @@
+@use '../abstracts' as *;
+
+// ============================================================
+// Подвал.
+// ============================================================
+
 .site-footer {
   padding: 29px 0;
-  background: #03101d;
+  background: $night-2;
   border-top: 1px solid rgba(130, 191, 226, 0.1);
 }
 
@@ -14,9 +20,29 @@
 
   img {
     width: 150px;
-    mix-blend-mode: screen;
     opacity: 0.84;
+    mix-blend-mode: screen;
   }
 
-  p { margin: 0; text-align: right; }
+  p {
+    margin: 0;
+    text-align: right;
+  }
+}
+
+@include down('tablet') {
+  .footer-row {
+    flex-wrap: wrap;
+
+    p {
+      text-align: left;
+    }
+  }
+}
+
+@include down('phone') {
+  .footer-row {
+    display: grid;
+    justify-items: start;
+  }
 }

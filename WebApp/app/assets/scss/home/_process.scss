@@ -1,0 +1,95 @@
+@use "../abstracts" as *;
+
+// Секция «Как работаем»: пять шагов, соединённых пунктирной линией.
+
+.process-section {
+  background: rgba(3, 16, 29, 0.14);
+}
+
+.process-list {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin: 42px 0 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    position: relative;
+    padding: 0 21px;
+    transition:
+      transform 0.3s ease,
+      border-color 0.3s ease,
+      background 0.3s ease;
+
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 26px;
+      left: 72px;
+      right: -2px;
+      border-top: 1px dashed rgba(120, 179, 214, 0.32);
+    }
+
+    &:hover {
+      transform: translateX(4px);
+      border-color: rgba(85, 206, 245, 0.3);
+      background: rgba(6, 24, 44, 0.5);
+    }
+  }
+
+  strong {
+    display: block;
+    margin: 18px 0 7px;
+    font-size: 15px;
+  }
+
+  p {
+    margin: 0;
+    color: #91adbf;
+    font-size: 13px;
+  }
+}
+
+.process-number {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border: 1px solid $line-strong;
+  border-radius: 50%;
+  background: #082139;
+  color: $cyan-light;
+  font: 600 13px/1 $font-head;
+}
+
+// ─── Адаптив ────────────────────────────────────────────────────────────────
+@include down('tablet') {
+  .process-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 34px 0;
+
+    li:not(:last-child)::after {
+      display: none;
+    }
+  }
+}
+
+@include down('phone') {
+  .process-list {
+    grid-template-columns: 1fr;
+    gap: 25px;
+
+    li {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 16px;
+      padding: 0;
+    }
+
+    strong {
+      margin: 4px 0;
+    }
+  }
+}

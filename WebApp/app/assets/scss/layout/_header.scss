@@ -1,24 +1,47 @@
+@use '../abstracts' as *;
+
+// ============================================================
+// Шапка: фиксированная полоса над героем + мобильный drawer.
+// ============================================================
+
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 50;
-  background: rgba(4, 17, 31, 0.88);
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid rgba(130, 191, 226, 0.11);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(2, 7, 14, 0.5);
+  border-bottom: 1px solid rgba(109, 177, 219, 0.12);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    background 0.4s ease,
+    border-color 0.4s ease,
+    backdrop-filter 0.4s ease,
+    box-shadow 0.4s ease;
+
+  // Класс навешивается после прокрутки больше 40px.
+  &.scrolled {
+    background: rgba(4, 17, 31, 0.94);
+    border-bottom-color: rgba(109, 177, 219, 0.28);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  }
 }
 
 .nav-row {
-  height: 84px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 30px;
+  height: $header-height;
 }
 
 .brand {
-  width: 194px;
   display: flex;
   align-items: center;
+  width: 194px;
   overflow: hidden;
 
   img {
@@ -32,51 +55,131 @@
   display: flex;
   align-items: center;
   gap: 30px;
-  font-size: 15px;
   color: #d9e7f0;
+  font-size: 15px;
 
   > a:not(.button) {
     position: relative;
     padding: 27px 0;
 
     &::after {
-      content: "";
+      content: '';
       position: absolute;
-      left: 0;
       bottom: 19px;
+      left: 0;
       width: 0;
       height: 1px;
-      background: var(--cyan);
-      transition: width 0.2s ease;
+      background: $cyan;
+      transition: width 0.2s;
     }
 
-    &:hover::after { width: 100%; }
+    &:hover::after {
+      width: 100%;
+    }
   }
+}
+
+.portfolio-nav-link {
+  color: $cyan-light !important;
 }
 
 .mobile-toggle {
   display: none;
+  position: relative;
   width: 46px;
   height: 46px;
-  border: 1px solid var(--line-strong);
+  border: 1px solid $line-strong;
   border-radius: 10px;
-  background: transparent;
-  position: relative;
+  background: none;
 
   span {
     position: absolute;
+    left: 12px;
     width: 20px;
     height: 1px;
-    left: 12px;
-    background: white;
-    transition: 0.2s;
+    background: #fff;
+    transition: all 0.2s;
 
-    &:first-child { top: 18px; }
-    &:last-child  { top: 26px; }
+    &:first-child {
+      top: 18px;
+    }
+
+    &:last-child {
+      top: 26px;
+    }
   }
 
-  &[aria-expanded="true"] span {
-    &:first-child { top: 22px; transform: rotate(45deg); }
-    &:last-child  { top: 22px; transform: rotate(-45deg); }
+  &[aria-expanded='true'] {
+    span {
+      top: 22px;
+    }
+
+    span:first-child {
+      transform: rotate(45deg);
+    }
+
+    span:last-child {
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+// ─── Мобильный drawer ───────────────────────────────────────────────────────
+@include down('laptop') {
+  .mobile-toggle {
+    display: block;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: $header-height;
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 17px 20px 22px;
+    background: rgba(4, 17, 31, 0.98);
+    border-bottom: 1px solid $line;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-8px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.2s ease;
+
+    > a:not(.button) {
+      padding: 14px 2px;
+
+      &::after {
+        display: none;
+      }
+    }
+
+    .button {
+      margin-top: 10px;
+    }
+
+    &.is-open {
+      display: flex;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+  }
+}
+
+@include down('tablet') {
+  .nav-row {
+    height: $header-height-tablet;
+  }
+
+  .brand {
+    width: 164px;
+  }
+
+  .nav-links {
+    top: $header-height-tablet;
   }
 }

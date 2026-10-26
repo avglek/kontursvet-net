@@ -1,24 +1,29 @@
+// ============================================================
+// CSS custom properties — мост для portfolio/admin (var(--*)).
+// Значения синхронизированы с abstracts/_variables.scss.
+// ============================================================
 :root {
-  // main site
-  --night:       #04111f;
-  --blue:        #06182c;
-  --blue-soft:   #0a223b;
-  --panel:       #0b2743;
-  --panel-2:     #0d2d4d;
-  --line:        rgba(109, 177, 219, 0.22);
+  // main site (home design system)
+  --night: #04111f;
+  --blue: #06182c;
+  --blue-soft: #0a223b;
+  --panel: #0b2743;
+  --panel-2: #0d2d4d;
+  --deep: #02070e;
+  --line: rgba(109, 177, 219, 0.22);
   --line-strong: rgba(109, 177, 219, 0.42);
-  --cyan:        #16afe7;
-  --cyan-light:  #55cef5;
-  --ice:         #f1f7fb;
-  --muted:       #9fb7ca;
-  --muted-2:     #7596b0;
-  --shadow:      0 28px 75px rgba(0, 0, 0, 0.28);
+  --cyan: #16afe7;
+  --cyan-light: #55cef5;
+  --ice: #f1f7fb;
+  --muted: #9fb7ca;
+  --muted-2: #7596b0;
+  --shadow: 0 28px 75px rgba(0, 0, 0, 0.28);
 
-  // portfolio
-  --pf-navy:     #081b33;
-  --pf-blue:     #102945;
-  --pf-accent:   #16a8e0;
-  --pf-white:    #f4f8fc;
-  --pf-muted:    #b8c7d6;
-  --pf-line:     rgba(184, 199, 214, 0.22);
+  // portfolio (shadow DOM / отдельный скоуп)
+  --pf-navy: #081b33;
+  --pf-blue: #102945;
+  --pf-accent: #16a8e0;
+  --pf-white: #f4f8fc;
+  --pf-muted: #b8c7d6;
+  --pf-line: rgba(184, 199, 214, 0.22);
 }

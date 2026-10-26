@@ -1,0 +1,216 @@
+@use "../abstracts" as *;
+
+// Модальные окна: лайтбокс фотографий, форма заявки, уведомления.
+// В исходной вёрстке карточки модалок были оформлены inline-стилями —
+// здесь они вынесены в классы .modal-card.
+
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  padding: 24px;
+  background-color: rgba(2, 7, 14, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  touch-action: none;
+}
+
+.fullsize-img {
+  max-width: 92%;
+  max-height: 90%;
+  border: 1px solid rgba(85, 206, 245, 0.25);
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+  object-fit: contain;
+  user-select: none;
+}
+
+.close-btn {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  padding: 10px;
+  border: none;
+  background: none;
+  color: #fff;
+  font-size: 44px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.2s;
+
+  &:hover {
+    color: $cyan-light;
+  }
+}
+
+// ─── Карточка модалки ───────────────────────────────────────────────────────
+.modal-card {
+  position: relative;
+  width: 92%;
+  max-width: 520px;
+  padding: 36px 32px;
+  border: 1px solid rgba(22, 175, 231, 0.4);
+  border-radius: 16px;
+  background: $blue;
+  color: $ice;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.85);
+  font-family: $font-body;
+
+  &--notice {
+    width: 90%;
+    max-width: 480px;
+    padding: 32px;
+    text-align: center;
+  }
+
+  &__close {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: $muted;
+    font-size: 28px;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  &__emoji {
+    margin-bottom: 12px;
+    font-size: 36px;
+  }
+
+  &__kicker {
+    margin-bottom: 8px;
+    color: $cyan-light;
+    font-family: $font-head;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__title {
+    margin: 0 0 12px;
+    font-family: $font-head;
+    font-size: 26px;
+    font-weight: 700;
+    line-height: 1.2;
+
+    .modal-card--notice & {
+      font-size: 22px;
+    }
+  }
+
+  &__text {
+    margin: 0 0 22px;
+    color: $muted;
+    font-size: 15px;
+    line-height: 1.55;
+
+    .modal-card--notice & {
+      margin-bottom: 24px;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+
+  &__field {
+    margin-bottom: 16px;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: 6px;
+    color: $muted;
+    font-size: 13px;
+  }
+
+  &__input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid $line-strong;
+    border-radius: 8px;
+    background: #04111f;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+  }
+
+  &__drop {
+    padding: 22px;
+    border: 2px dashed $line-strong;
+    border-radius: 10px;
+    background: rgba(8, 32, 56, 0.27);
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+
+    &.is-dragover {
+      border-color: $cyan;
+      background: rgba(10, 46, 82, 0.4);
+    }
+  }
+
+  &__drop-icon {
+    margin-bottom: 6px;
+    font-size: 28px;
+  }
+
+  &__drop-text {
+    color: $cyan-light;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &__drop-hint {
+    margin-top: 4px;
+    color: $muted-2;
+    font-size: 12px;
+  }
+
+  &__file {
+    margin-top: 8px;
+    color: $cyan-light;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  &__submit {
+    width: 100%;
+    justify-content: center;
+    font-size: 16px;
+    cursor: pointer;
+  }
+}
+
+.modal-success {
+  padding: 20px 0;
+  text-align: center;
+
+  &__icon {
+    margin-bottom: 12px;
+    font-size: 44px;
+  }
+
+  &__title {
+    margin: 0 0 10px;
+    color: $cyan-light;
+    font-family: $font-head;
+    font-size: 22px;
+  }
+
+  &__text {
+    margin: 0;
+    color: $muted;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}

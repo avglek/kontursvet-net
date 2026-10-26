@@ -1,0 +1,513 @@
+@use "../abstracts" as *;
+
+// Секция «The Transformation»: интерактивное сравнение «до / после».
+
+.tf-section {
+  padding: 88px 0 80px;
+  background:
+    radial-gradient(ellipse at 15% 0%, rgba(11, 43, 64, 0.3), transparent 52%),
+    linear-gradient(180deg, #06121e, #030c15);
+  border-block: 1px solid rgba(119, 200, 237, 0.11);
+  color: $ice;
+  scroll-margin-top: 100px;
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  > .container {
+    max-width: 1040px;
+  }
+
+  button:focus-visible,
+  a:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.tf-heading {
+  max-width: 940px;
+  margin-bottom: 32px;
+
+  h2 {
+    margin: 0 0 18px;
+    @include heading(clamp(30px, 3.2vw, 46px), 600, 1.15);
+    letter-spacing: -0.035em;
+  }
+
+  br {
+    // перенос включается только на широких экранах (см. @media ниже)
+  }
+}
+
+.tf-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+  color: $cyan-light;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+
+  > span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: $cyan-light;
+    box-shadow: 0 0 12px rgba(85, 206, 245, 0.3);
+  }
+}
+
+.tf-description {
+  max-width: 720px;
+  margin: 0;
+  color: #a7bdcd;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+// ─── Полотно сравнения ──────────────────────────────────────────────────────
+.tf-comparison {
+  position: relative;
+  aspect-ratio: 1448 / 1086;
+  isolation: isolate;
+  border: 1px solid rgba(126, 203, 238, 0.26);
+  border-radius: 18px;
+  background: #08121c;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.27);
+  overflow: hidden;
+
+  // Позиция разделителя приходит из JS как inline-переменная.
+  &:has(.tf-range:focus-visible) {
+    @include focus-ring(3px, 5px);
+  }
+}
+
+.tf-image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.tf-after {
+  clip-path: inset(0 0 0 var(--tf-position));
+}
+
+.tf-label {
+  position: absolute;
+  top: 18px;
+  padding: 9px 13px;
+  border: 1px solid rgba(166, 226, 248, 0.28);
+  border-radius: 30px;
+  background: rgba(4, 16, 30, 0.85);
+  color: #e8f5ff;
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.tf-label-before {
+  left: 18px;
+}
+
+.tf-label-after {
+  right: 18px;
+}
+
+.tf-divider {
+  position: absolute;
+  inset: 0 auto 0 var(--tf-position);
+  width: 2px;
+  transform: translateX(-50%);
+  background: #e4faff;
+  box-shadow: 0 0 14px rgba(85, 206, 245, 0.45);
+  pointer-events: none;
+}
+
+.tf-handle {
+  position: absolute;
+  left: var(--tf-position);
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  transform: translate(-50%, -50%);
+  border: 1px solid rgba(195, 237, 255, 0.6);
+  border-radius: 50%;
+  background: rgba(6, 27, 43, 0.9);
+  color: #e4faff;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+// Невидимый range поверх всей картинки — отвечает за доступность и драг.
+.tf-range {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: ew-resize;
+  touch-action: pan-y;
+}
+
+// ─── Панель под сравнением ──────────────────────────────────────────────────
+.tf-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 18px;
+  margin-top: 16px;
+
+  p {
+    margin: 0;
+    color: #a7bdcd;
+    font-size: 12px;
+    line-height: 1.6;
+
+    > span {
+      margin-right: 7px;
+      color: $cyan-light;
+    }
+  }
+}
+
+.tf-replay {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 10px 15px;
+  border: 1px solid rgba(119, 200, 237, 0.25);
+  border-radius: 9px;
+  background: #071a2a;
+  color: #c5e4f4;
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  white-space: nowrap;
+
+  > span {
+    font-size: 20px;
+    line-height: 1;
+    color: $cyan-light;
+  }
+
+  &:hover {
+    background: #0c293c;
+    border-color: $cyan-light;
+  }
+}
+
+.tf-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 26px;
+
+  .button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+    min-height: 60px;
+    padding: 17px 22px;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: left;
+    white-space: normal;
+    cursor: pointer;
+  }
+}
+
+.tf-secondary {
+  background: #071a2a;
+  border: 1px solid rgba(119, 200, 237, 0.3);
+  color: #e3f2fb;
+
+  &:hover {
+    background: #0c293c;
+    border-color: $cyan-light;
+  }
+}
+
+// ─── Диалоги секции ─────────────────────────────────────────────────────────
+.tf-dialog {
+  position: fixed;
+  inset: 0;
+  width: min(540px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  margin: auto;
+  padding: 34px;
+  border: 1px solid rgba(123, 205, 246, 0.3);
+  border-radius: 20px;
+  background: #071927;
+  color: $ice;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+  font-family: $font-body;
+  overflow-y: auto;
+
+  &::backdrop {
+    background: rgba(1, 6, 12, 0.86);
+    backdrop-filter: blur(6px);
+  }
+
+  h2 {
+    margin: 0 0 18px;
+    @include heading(28px, 600, 1.2);
+    letter-spacing: -0.025em;
+  }
+
+  > p:not(.tf-kicker) {
+    color: #afc5d4;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .tf-kicker {
+    padding-right: 24px;
+  }
+
+  button:focus-visible,
+  input:focus-visible,
+  a:focus-visible {
+    @include focus-ring;
+  }
+}
+
+.tf-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #bed5e3;
+  font-size: 28px;
+  cursor: pointer;
+
+  &:hover {
+    background: #173a4c;
+  }
+}
+
+.tf-demo {
+  padding: 10px 12px;
+  border-left: 2px solid $cyan-light;
+  background: rgba(85, 206, 245, 0.05);
+}
+
+.tf-form {
+  > label {
+    display: block;
+    margin: 18px 0 8px;
+    color: #c2d7e5;
+    font-size: 13px;
+  }
+
+  > input {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    padding: 12px;
+    border: 1px solid rgba(120, 182, 213, 0.27);
+    border-radius: 9px;
+    background: #04111e;
+    color: $ice;
+    font: inherit;
+    font-size: 15px;
+  }
+
+  .button {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    min-height: 50px;
+    cursor: pointer;
+  }
+}
+
+.tf-optional {
+  padding-left: 6px;
+  color: #8ca9ba;
+  font-size: 11px;
+}
+
+.tf-upload {
+  padding: 14px;
+  border: 1px dashed rgba(100, 203, 247, 0.47);
+  border-radius: 12px;
+  background: rgba(29, 102, 140, 0.05);
+
+  &.tf-dragover {
+    border-color: $cyan-light;
+    background: rgba(85, 206, 245, 0.1);
+  }
+
+  input {
+    display: block;
+    max-width: 100%;
+    color: #afc5d4;
+    font-size: 12px;
+
+    &::file-selector-button {
+      margin-right: 8px;
+      padding: 8px;
+      border: 1px solid #47738b;
+      border-radius: 6px;
+      background: #12364a;
+      color: #e3f2fb;
+      cursor: pointer;
+    }
+  }
+}
+
+.tf-file-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 8px 14px;
+  color: #d2edff;
+  font-size: 13px;
+  text-align: center;
+  cursor: pointer;
+
+  > span {
+    font-size: 26px;
+    color: $cyan-light;
+  }
+
+  small {
+    color: #92b4c8;
+    font-size: 11px;
+  }
+}
+
+.tf-preview {
+  max-width: 100%;
+  max-height: 150px;
+  margin: 14px auto 0;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+.tf-preview[hidden],
+.tf-filename[hidden] {
+  display: none;
+}
+
+.tf-filename {
+  color: #afc5d4;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.tf-feedback {
+  min-height: 24px;
+  color: #a6e5ff;
+  font-size: 13px;
+  line-height: 1.6;
+
+  &.tf-error {
+    color: #ffbaaa;
+  }
+}
+
+// ─── Адаптив ────────────────────────────────────────────────────────────────
+@include down('compare') {
+  .tf-section {
+    padding: 52px 0 48px;
+  }
+
+  .tf-heading {
+    margin-bottom: 24px;
+
+    h2 {
+      font-size: clamp(27px, 7.1vw, 38px);
+      line-height: 1.17;
+    }
+
+    br {
+      display: none;
+    }
+  }
+
+  .tf-description {
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .tf-comparison {
+    border-radius: 12px;
+  }
+
+  .tf-label {
+    top: 10px;
+    padding: 7px 9px;
+    font-size: 10px;
+  }
+
+  .tf-label-before {
+    left: 10px;
+  }
+
+  .tf-label-after {
+    right: 10px;
+  }
+
+  .tf-handle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .tf-toolbar {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+
+    p {
+      max-width: 270px;
+    }
+  }
+
+  .tf-replay {
+    min-height: 44px;
+    font-size: 11px;
+  }
+
+  .tf-actions {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-top: 18px;
+
+    .button {
+      min-height: 62px;
+      padding: 14px 16px;
+      font-size: 13px;
+    }
+  }
+
+  .tf-dialog {
+    padding: 28px 20px 22px;
+
+    h2 {
+      font-size: 25px;
+    }
+  }
+}

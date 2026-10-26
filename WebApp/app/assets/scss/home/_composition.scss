@@ -1,0 +1,202 @@
+@use "../abstracts" as *;
+
+// Секция «Единая световая композиция»: фото с интерактивными метками +
+// трёхшаговый текст слева.
+
+.composition-section {
+  // Наследует отступы .section, но сверху секция плотнее прижата к предыдущей.
+  padding-top: 68px;
+}
+
+.composition-card {
+  display: grid;
+  grid-template-columns: 1.12fr 0.88fr;
+  min-height: 620px;
+  border: 1px solid $line;
+  border-radius: 24px;
+  background: linear-gradient(145deg, #0a2743, $blue);
+  box-shadow: $shadow;
+  overflow: hidden;
+}
+
+.composition-photo {
+  position: relative;
+  min-width: 0;
+  min-height: 620px;
+  overflow: hidden;
+
+  img {
+    @include cover;
+    filter: brightness(0.87) contrast(1.01) saturate(0.92);
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 62%, rgba(6, 24, 44, 0.93));
+    pointer-events: none;
+  }
+}
+
+.photo-pin {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid rgba(85, 206, 245, 0.58);
+  border-radius: 999px;
+  background: rgba(4, 19, 34, 0.87);
+  font-size: 13px;
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0, 0.2, 1),
+    box-shadow 0.35s ease,
+    border-color 0.35s ease,
+    background 0.35s ease;
+  cursor: pointer;
+
+  &::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: $cyan-light;
+    box-shadow: 0 0 16px $cyan;
+    transition:
+      transform 0.35s ease,
+      box-shadow 0.35s ease;
+  }
+
+  &:hover,
+  &.pin-active {
+    transform: scale(1.08) translateY(-2px);
+    border-color: $cyan-light;
+    background: rgba(4, 19, 34, 0.95);
+    box-shadow: 0 0 18px rgba(85, 206, 245, 0.5);
+
+    &::before {
+      transform: scale(1.25);
+      box-shadow: 0 0 20px $cyan-light;
+    }
+  }
+}
+
+.pin-roof {
+  top: 16%;
+  left: 19%;
+}
+
+.pin-facade {
+  top: 44%;
+  left: 63%;
+}
+
+.pin-terrace {
+  bottom: 14%;
+  left: 46%;
+}
+
+.composition-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 64px 58px;
+
+  > .section-title {
+    font-size: clamp(42px, 3.3vw, 56px);
+  }
+
+  > p {
+    margin: 22px 0 0;
+    color: #abc2d3;
+    font-size: 18px;
+  }
+}
+
+.architecture-list {
+  margin: 30px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 17px;
+
+  li {
+    display: grid;
+    grid-template-columns: 38px 1fr;
+    gap: 14px;
+
+    > span {
+      padding-top: 5px;
+      border-top: 1px solid $cyan;
+      color: $cyan-light;
+      font-size: 12px;
+    }
+  }
+
+  strong {
+    display: block;
+  }
+
+  p {
+    margin: 4px 0 0;
+    color: $muted;
+    font-size: 13px;
+  }
+}
+
+// ─── Адаптив ────────────────────────────────────────────────────────────────
+@include down("tablet") {
+  .composition-card {
+    grid-template-columns: 1fr;
+  }
+
+  .composition-photo {
+    min-height: 560px;
+
+    &::after {
+      background: linear-gradient(transparent 74%, rgba(6, 24, 44, 0.88));
+    }
+  }
+}
+
+@include down("phone") {
+  .composition-card {
+    width: calc(100% - 24px);
+  }
+
+  .composition-photo {
+    min-height: 400px;
+  }
+
+  .photo-pin {
+    padding: 7px 9px;
+    font-size: 11px;
+  }
+
+  .pin-roof {
+    top: 12%;
+    left: 8%;
+  }
+
+  .pin-facade {
+    top: 43%;
+    left: 58%;
+  }
+
+  .pin-terrace {
+    bottom: 12%;
+    left: 32%;
+  }
+
+  .composition-copy {
+    padding: 38px 24px;
+
+    > .section-title {
+      font-size: 38px;
+    }
+  }
+}

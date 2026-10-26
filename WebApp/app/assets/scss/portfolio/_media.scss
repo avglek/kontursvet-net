@@ -1,4 +1,4 @@
-@use '../abstracts/media' as *;
+@use '../abstracts' as *;
 
 @include upto-1040 {
   .benefit-grid { grid-template-columns: repeat(2, 1fr); }

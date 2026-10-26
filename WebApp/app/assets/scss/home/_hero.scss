@@ -1,0 +1,603 @@
+@use "../abstracts" as *;
+
+// Экран-герой: двухслойное видео, кинематографичный оверлей, HUD-панели.
+
+.cinematic-hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 860px;
+  max-height: 980px;
+  height: 100vh;
+  background-color: $deep;
+  border-bottom: 1px solid rgba(109, 177, 219, 0.2);
+  overflow: hidden;
+}
+
+// ─── Видеосцена ─────────────────────────────────────────────────────────────
+.hero-video-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: $deep;
+  overflow: hidden;
+}
+
+// Размытый задний слой закрывает чёрные полосы по краям от 16:9.
+.hero-video-ambient {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  z-index: 1;
+  width: 120%;
+  height: 120%;
+  object-fit: cover;
+  filter: blur(52px) brightness(0.38) saturate(1.28);
+  opacity: 0.65;
+  transform: scale(1.08);
+  pointer-events: none;
+}
+
+// Чистое основное видео — никогда не кадрируется.
+.hero-video-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.hero-video-main {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: contrast(1.03) brightness(0.98);
+  pointer-events: auto;
+}
+
+// Появляется, если браузер заблокировал автовоспроизведение.
+.hero-video-start {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 6;
+  transform: translate(-50%, -50%);
+  padding: 14px 20px;
+  min-height: 48px;
+  border: 1px solid $cyan-light;
+  border-radius: 999px;
+  background: rgba(4, 17, 31, 0.92);
+  color: $ice;
+  font: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+
+  &[hidden] {
+    display: none;
+  }
+
+  &:focus-visible {
+    @include focus-ring(3px, 4px);
+  }
+}
+
+// ─── Оверлей поверх видео ────────────────────────────────────────────────────
+.cinematic-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    // затемнение слева для читаемости типографики
+    linear-gradient(90deg, rgba(2, 7, 14, 0.92) 0%, rgba(2, 7, 14, 0.8) 32%, rgba(2, 7, 14, 0.35) 58%, transparent 78%),
+    // приземление к фону секции
+    linear-gradient(0deg, $deep 0%, rgba(2, 7, 14, 0.72) 16%, transparent 36%),
+    // затемнение под шапкой
+    linear-gradient(180deg, rgba(2, 7, 14, 0.75) 0%, rgba(2, 7, 14, 0.2) 15%, transparent 28%);
+}
+
+// ─── Передний план ──────────────────────────────────────────────────────────
+.cinematic-content {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 100px 36px 48px;
+  box-sizing: border-box;
+}
+
+.cinematic-top-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.cinematic-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 1px solid rgba(85, 206, 245, 0.4);
+  border-radius: 999px;
+  @include glass(rgba(4, 19, 34, 0.85), 12px);
+  color: $cyan-light;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  &::before {
+    content: '';
+    @include glow-dot();
+  }
+}
+
+.cinematic-coords {
+  color: $muted;
+  font-family: monospace;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+}
+
+.cinematic-title {
+  max-width: 920px;
+  margin: 0 0 20px;
+  font-family: $font-head;
+  letter-spacing: -0.04em;
+  text-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
+}
+
+.title-eyebrow-accent {
+  display: block;
+  margin-bottom: 4px;
+  font-size: clamp(28px, 3.2vw, 48px);
+  font-weight: 600;
+  line-height: 1.1;
+  background: linear-gradient(135deg, $cyan-light 0%, $cyan 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.title-main {
+  display: block;
+  color: $ice;
+  font-size: clamp(38px, 4.6vw, 70px);
+  font-weight: 700;
+  line-height: 1.02;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+.title-line-1,
+.title-line-2 {
+  display: inline;
+}
+
+.cinematic-lead {
+  max-width: 650px;
+  margin: 0 0 30px;
+  color: #c4d7e5;
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.6;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+}
+
+// ─── Нижняя строка: кнопки + HUD ────────────────────────────────────────────
+.cinematic-bottom-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 32px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(109, 177, 219, 0.22);
+}
+
+.cinematic-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+
+  .button-primary {
+    padding: 15px 30px;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 8px 25px rgba(22, 175, 231, 0.35);
+    transition: all 0.25s ease;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(85, 206, 245, 0.5);
+    }
+  }
+
+  .button-ghost {
+    padding: 15px 22px;
+    font-size: 14px;
+  }
+}
+
+.cinematic-hud-group {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 14px;
+}
+
+// ─── HUD управления видео ───────────────────────────────────────────────────
+.video-nav-hud {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 6px 14px 6px 16px;
+  border: 1px solid rgba(109, 177, 219, 0.35);
+  border-radius: 999px;
+  @include glass(rgba(4, 17, 31, 0.88), 14px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
+}
+
+.video-badge-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e2f1fc;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.video-pulse-dot {
+  @include glow-dot();
+  animation: videoDotPulse 2s infinite ease-in-out;
+}
+
+@keyframes videoDotPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+.video-time-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 10px;
+  border-left: 1px solid rgba(109, 177, 219, 0.25);
+  border-right: 1px solid rgba(109, 177, 219, 0.25);
+}
+
+.video-time-display {
+  min-width: 78px;
+  color: #8bb0c9;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.video-hud-progress-track {
+  width: 46px;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(109, 177, 219, 0.25);
+  overflow: hidden;
+}
+
+.video-hud-progress {
+  width: 0;
+  height: 100%;
+  border-radius: 2px;
+  background: $cyan-light;
+  box-shadow: 0 0 6px $cyan-light;
+  transition: width 0.25s linear;
+}
+
+.video-hud-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.video-hud-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid rgba(109, 177, 219, 0.3);
+  border-radius: 50%;
+  background: rgba(10, 32, 53, 0.7);
+  color: $muted;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: $cyan-light;
+    border-color: rgba(85, 206, 245, 0.6);
+    background: rgba(85, 206, 245, 0.15);
+    transform: scale(1.05);
+  }
+}
+
+// ─── HUD преимуществ ────────────────────────────────────────────────────────
+.cinematic-stats {
+  display: flex;
+  gap: 24px;
+  padding: 14px 22px;
+  border: 1px solid rgba(109, 177, 219, 0.25);
+  border-radius: 14px;
+  @include glass(rgba(6, 24, 44, 0.82), 14px);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+}
+
+.cinematic-stat-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  &:not(:last-child)::after {
+    @include vertical-divider;
+  }
+}
+
+.cinematic-stat-tag {
+  margin-bottom: 2px;
+  color: $cyan-light;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.cinematic-stat-title {
+  margin-bottom: 3px;
+  color: $ice;
+  font-family: $font-head;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.cinematic-stat-desc {
+  max-width: 170px;
+  color: $muted;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+// ─── Адаптив ────────────────────────────────────────────────────────────────
+@include down('laptop-lg') {
+  .cinematic-hero {
+    height: auto;
+    max-height: none;
+    min-height: auto;
+    padding-top: 80px;
+  }
+
+  .cinematic-content {
+    padding: 60px 24px 36px;
+  }
+
+  .cinematic-bottom-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+  }
+
+  .cinematic-hud-group {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .video-nav-hud {
+    align-self: flex-start;
+  }
+
+  .cinematic-stats {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .cinematic-stat-item:not(:last-child)::after {
+    display: none;
+  }
+
+  .cinematic-stat-desc {
+    max-width: none;
+  }
+}
+
+@include down('mobile') {
+  .cinematic-hero {
+    min-height: 100svh;
+    padding-top: 74px;
+  }
+
+  .hero-video-ambient {
+    filter: blur(36px) brightness(0.4);
+    opacity: 0.8;
+  }
+
+  .hero-video-main {
+    object-fit: contain;
+  }
+
+  .cinematic-overlay {
+    background:
+      linear-gradient(180deg, rgba(3, 10, 18, 0.45) 0%, rgba(3, 10, 18, 0.2) 28%, rgba(3, 10, 18, 0.88) 72%, $night 100%),
+      linear-gradient(90deg, rgba(3, 10, 18, 0.75) 0%, rgba(3, 10, 18, 0.3) 60%, transparent 100%);
+  }
+
+  .cinematic-content {
+    padding: 36px 18px 24px;
+  }
+
+  .title-eyebrow-accent {
+    font-size: 22px;
+    line-height: 1.15;
+  }
+
+  .title-line-1,
+  .title-line-2 {
+    display: block;
+  }
+
+  .title-main {
+    font-size: 30px;
+    line-height: 1.1;
+  }
+
+  .cinematic-lead {
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .cinematic-actions {
+    flex-direction: column;
+    width: 100%;
+
+    .button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  .cinematic-stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+
+  .video-nav-hud {
+    position: static;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    margin-top: 14px;
+    padding: 8px 12px;
+    box-sizing: border-box;
+  }
+
+  .video-time-wrap {
+    padding: 0 6px;
+  }
+
+  .video-time-display {
+    min-width: auto;
+    font-size: 10px;
+  }
+}
+
+// На мобильных фильм получает собственную полноширинную рамку 16:9.
+@include down('mobile') {
+  .cinematic-hero {
+    min-height: 0;
+    justify-content: flex-start;
+    padding-top: 80px;
+  }
+
+  .hero-video-stage {
+    position: relative;
+    inset: auto;
+    flex: none;
+    height: auto;
+    aspect-ratio: 16 / 9;
+  }
+
+  .hero-video-ambient {
+    display: none;
+  }
+
+  .hero-video-main {
+    object-fit: contain;
+    filter: none;
+  }
+
+  .cinematic-overlay {
+    display: none;
+  }
+
+  .cinematic-content {
+    padding-top: 24px;
+    background: linear-gradient($deep, $night);
+  }
+
+  .cinematic-top-meta {
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .cinematic-title {
+    margin-bottom: 16px;
+  }
+
+  .video-hud-btn {
+    flex: none;
+    width: 44px;
+    height: 44px;
+  }
+
+  .video-nav-hud {
+    margin-top: 0;
+  }
+}
+
+@include down('phone-xs') {
+  .cinematic-content {
+    padding: 28px 14px 20px;
+  }
+
+  .title-eyebrow-accent {
+    font-size: 19px;
+  }
+
+  .title-main {
+    font-size: 26px;
+    line-height: 1.12;
+  }
+
+  .cinematic-lead {
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .cinematic-actions .button {
+    padding: 13px 16px;
+    font-size: 14px;
+  }
+
+  .video-badge-indicator {
+    font-size: 11px;
+  }
+
+  .video-hud-progress-track {
+    display: none;
+  }
+}

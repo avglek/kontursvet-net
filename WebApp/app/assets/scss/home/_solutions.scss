@@ -1,0 +1,108 @@
+@use "../abstracts" as *;
+
+// Секция «Форматы оформления»: четыре карточки направлений.
+
+.services-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.service-card {
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+  min-height: 340px;
+  border: 1px solid $line;
+  border-radius: $radius-tile;
+  background: linear-gradient(145deg, $panel, #071a2e);
+  overflow: hidden;
+  transition:
+    transform 0.35s cubic-bezier(0.2, 0, 0.2, 1),
+    border-color 0.35s ease,
+    box-shadow 0.35s ease;
+
+  &:hover {
+    border-color: rgba(85, 206, 245, 0.35);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+
+    .service-media img {
+      transform: scale(1.04);
+    }
+  }
+}
+
+.service-media {
+  min-width: 0;
+  overflow: hidden;
+
+  img {
+    @include cover;
+    filter: brightness(0.81) saturate(0.9);
+    transition: transform 0.65s cubic-bezier(0.2, 0, 0.2, 1);
+  }
+}
+
+.service-body {
+  display: flex;
+  flex-direction: column;
+  padding: 34px;
+
+  h3 {
+    margin: 0 0 13px;
+    font: 600 26px/1.13 $font-head;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    margin: 0 0 23px;
+    color: #aec5d5;
+    font-size: 15px;
+  }
+
+  a {
+    align-self: flex-start;
+    margin-top: auto;
+    color: $cyan-light;
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+.service-number {
+  margin-bottom: 17px;
+  color: #6f91aa;
+  font-size: 12px;
+  letter-spacing: 0.13em;
+}
+
+// ─── Адаптив ────────────────────────────────────────────────────────────────
+@include down('desktop') {
+  .services-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .service-card {
+    min-height: 330px;
+  }
+}
+
+@include down('tablet') {
+  .service-card {
+    grid-template-columns: 1fr;
+  }
+
+  .service-media {
+    height: 340px;
+  }
+}
+
+@include down('phone') {
+  .service-media {
+    height: 280px;
+  }
+
+  .service-body {
+    padding: 28px 24px;
+  }
+}

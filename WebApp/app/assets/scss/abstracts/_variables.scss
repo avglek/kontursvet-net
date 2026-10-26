@@ -1,11 +1,62 @@
-// ==============================
-// 📱 Breakpoints
-// ==============================
+// ============================================================
+// Дизайн-токены «КонтурСвет» (SCSS-переменные).
+// Единый источник правды для всего проекта.
+// ============================================================
+
+// ─── Палитра ────────────────────────────────────────────────────────────────
+$night: #04111f; // основной фон
+$blue: #06182c; // фон секций-панелей
+$blue-soft: #0a223b;
+$panel: #0b2743;
+$panel-2: #0d2d4d;
+$deep: #02070e; // самый тёмный слой (герой, оверлеи)
+$night-2: #03101d; // подложка футера / светлых полос
+$night-3: #071d33; // низ градиента страницы
+
+$cyan: #16afe7;
+$cyan-light: #55cef5;
+$cyan-deep: #119fdb;
+$cyan-bright: #35c1ef;
+$ice: #f1f7fb;
+$muted: #9fb7ca;
+$muted-2: #7596b0;
+
+// Полупрозрачные обводки и разделители
+$line: rgba(109, 177, 219, 0.22);
+$line-strong: rgba(109, 177, 219, 0.42);
+$separator: rgba(130, 191, 226, 0.08);
+$separator-strong: rgba(130, 191, 226, 0.12);
+
+$shadow: 0 28px 75px rgba(0, 0, 0, 0.28);
+
+// ─── Типографика ────────────────────────────────────────────────────────────
+$font-body:
+  'Open Sans', 'Open Sans Fallback: BlinkMacSystemFont',
+  'Open Sans Fallback: Segoe UI', 'Open Sans Fallback: Helvetica Neue',
+  'Open Sans Fallback: Arial', 'Open Sans Fallback: Noto Sans', 'Segoe UI',
+  sans-serif;
+$font-head: 'Inter Display', 'Open Sans', sans-serif;
+
+// ─── Сетки и отступы ────────────────────────────────────────────────────────
+$container-width: 1380px;
+$header-height: 84px;
+$header-height-tablet: 74px;
+$section-gap: 108px;
+$radius-card: 18px;
+$radius-tile: 20px;
+
+// ─── Брейкпоинты (max-width) ────────────────────────────────────────────────
 $breakpoints: (
-  'xs':  380px,
-  'sm':  480px,
-  'md':  560px,
-  'lg':  820px,
-  'xl':  1040px,
-  'xxl': 1200px,
+  'phone-xs': 375px,
+  'phone-sm': 380px,
+  'phone-md': 540px,
+  'phone': 560px,
+  'mobile': 640px,
+  'compare': 700px,
+  'tablet-sm': 768px,
+  'tablet': 820px,
+  'contact': 900px,
+  'laptop': 1040px,
+  'laptop-lg': 1080px,
+  'desktop': 1200px,
 );

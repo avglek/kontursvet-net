@@ -1,0 +1,122 @@
+@use "../abstracts" as *;
+
+// Секция «Кейсы»: два больших разворота «фото + факты».
+
+.cases-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.case-card {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  min-width: 0;
+  min-height: 540px;
+  border: 1px solid $line;
+  border-radius: 22px;
+  background: linear-gradient(145deg, #0b2947, #071a2e);
+  overflow: hidden;
+}
+
+.case-photo {
+  min-width: 0;
+  min-height: 540px;
+
+  img {
+    @include cover;
+    filter: brightness(0.76) saturate(0.9);
+  }
+}
+
+.case-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 42px 35px;
+
+  h3 {
+    margin: 10px 0 19px;
+    font: 600 34px/1.1 $font-head;
+    letter-spacing: -0.025em;
+  }
+
+  ul {
+    margin: 0 0 24px;
+    padding-left: 19px;
+    color: #adc4d4;
+    font-size: 15px;
+  }
+
+  li {
+    margin: 7px 0;
+  }
+
+  a {
+    margin-top: auto;
+    color: $cyan-light;
+    font-size: 14px;
+    font-weight: 600;
+  }
+}
+
+.case-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+
+  span {
+    padding: 7px 10px;
+    border: 1px solid $line-strong;
+    border-radius: 999px;
+    color: #bce5f5;
+    font-size: 12px;
+  }
+}
+
+// ─── Адаптив ────────────────────────────────────────────────────────────────
+@include down('desktop') {
+  .cases-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .case-card {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@include down('tablet') {
+  .case-card {
+    grid-template-columns: 1fr;
+  }
+
+  .case-photo {
+    min-height: 430px;
+  }
+}
+
+@include down('phone') {
+  .cases-grid {
+    width: calc(100% - 8px);
+    margin-inline: auto;
+  }
+
+  .case-photo {
+    min-height: 340px;
+  }
+
+  .case-body {
+    padding: 32px 24px;
+
+    h3 {
+      font-size: 31px;
+    }
+  }
+}
+
+@include down('phone-sm') {
+  .case-body h3 {
+    font-size: 29px;
+  }
+}

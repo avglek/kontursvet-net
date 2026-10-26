@@ -1,0 +1,184 @@
+@use "../abstracts" as *;
+
+// Галерея проектов: сетка карточек, карточка-featured, кнопка «Смотреть портфолио».
+
+.project-grid {
+  display: grid;
+  grid-template-rows: 300px 300px;
+  grid-template-columns: 1.35fr 0.82fr 0.82fr;
+  gap: 16px;
+}
+
+.project-card {
+  position: relative;
+  min-width: 0;
+  border: 1px solid $line;
+  border-radius: 14px;
+  background: #061727;
+  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.14);
+  overflow: hidden;
+
+  img {
+    @include cover;
+    filter: brightness(0.86) saturate(0.92);
+    transition: transform 0.65s cubic-bezier(0.2, 0, 0.2, 1);
+    will-change: transform;
+  }
+
+  &:hover {
+    img {
+      filter: brightness(0.95);
+      transform: scale(1.035);
+    }
+  }
+
+  &-featured {
+    grid-row: 1 / 3;
+  }
+}
+
+.project-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(transparent 47%, rgba(2, 12, 22, 0.92));
+  pointer-events: none;
+}
+
+.project-caption {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  right: 24px;
+  z-index: 2;
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease;
+
+  strong {
+    display: block;
+    font: 600 22px/1.2 $font-head;
+  }
+
+  span {
+    display: block;
+    margin-top: 4px;
+    color: #b4c8d7;
+    font-size: 14px;
+  }
+}
+
+// ─── Карточка-призыв открыть портфолио ──────────────────────────────────────
+.portfolio-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 46px;
+  margin-top: 22px;
+  padding: 30px 34px;
+  border: 1px solid rgba(22, 175, 231, 0.34);
+  border-radius: 18px;
+  background: linear-gradient(
+    120deg,
+    rgba(12, 48, 80, 0.96),
+    rgba(5, 24, 43, 0.96)
+  );
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.16);
+  transition:
+    transform 0.25s,
+    border-color 0.25s,
+    box-shadow 0.25s;
+
+  &:hover {
+    border-color: rgba(71, 204, 255, 0.72);
+    transform: translateY(-2px);
+    box-shadow: 0 22px 64px rgba(0, 0, 0, 0.24);
+
+    .portfolio-entry-action b {
+      transform: translate(4px);
+    }
+  }
+}
+
+.portfolio-entry-copy {
+  h3 {
+    margin: 8px 0;
+    font: 600 clamp(25px, 2.3vw, 36px)/1.08 $font-head;
+    letter-spacing: -0.025em;
+  }
+
+  p {
+    margin: 0;
+    max-width: 620px;
+    color: $muted;
+  }
+}
+
+.portfolio-entry-stats {
+  display: flex;
+  gap: 28px;
+  white-space: nowrap;
+  color: #bbcfdd;
+
+  span {
+    display: grid;
+  }
+
+  strong {
+    color: #fff;
+    font: 600 30px/1 $font-head;
+  }
+}
+
+.portfolio-entry-action {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 14px 18px;
+  border: 1px solid $cyan;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 600;
+  white-space: nowrap;
+
+  b {
+    color: $cyan-light;
+    font-size: 20px;
+    transition: transform 0.2s;
+  }
+}
+
+// ─── Адаптив ────────────────────────────────────────────────────────────────
+@include down("desktop") {
+  .project-grid {
+    grid-template-rows: 340px 240px 240px;
+    grid-template-columns: 1.2fr 1fr;
+  }
+
+  .project-card-featured {
+    grid-area: 1 / 1 / 2 / 3;
+  }
+}
+
+@include down("tablet") {
+  .project-grid {
+    display: grid;
+    grid-template-rows: 380px 240px 240px;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .project-card-featured {
+    grid-column: 1 / 3;
+  }
+}
+
+@include down("phone") {
+  .project-grid {
+    display: grid;
+    grid-template-rows: 340px repeat(4, 230px);
+    grid-template-columns: 1fr;
+  }
+
+  .project-card-featured {
+    grid-column: auto;
+  }
+}
