@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import { includedItems } from '~/data/content';
-</script>
-
 <template>
   <section class="section included-section">
     <div class="container">
@@ -30,3 +26,7 @@ import { includedItems } from '~/data/content';
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { includedItems } from '~/data/content';
+</script>

@@ -1,18 +1,3 @@
-<script setup lang="ts">
-import { portfolioStats, projects, type Project } from '~/data/content';
-
-const { openLightbox } = useLightbox();
-const router = useRouter();
-
-const openImage = (project: Project) => {
-  if (project.id) {
-    router.push('/portfolio/' + project.id);
-  } else {
-    openLightbox(project.image);
-  }
-};
-</script>
-
 <template>
   <section class="section" id="projects">
     <div class="container">
@@ -76,3 +61,18 @@ const openImage = (project: Project) => {
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { portfolioStats, projects, type Project } from '~/data/content';
+
+const { openLightbox } = useLightbox();
+const router = useRouter();
+
+const openImage = (project: Project) => {
+  if (project.id) {
+    router.push('/portfolio/' + project.id);
+  } else {
+    openLightbox(project.image);
+  }
+};
+</script>

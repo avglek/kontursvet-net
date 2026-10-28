@@ -1,36 +1,3 @@
-<script setup lang="ts">
-const { openLightbox } = useModals();
-
-const photo = {
-  src: "/images/home/006.webp",
-  alt: "Дом с оформленной кровлей, фасадом и террасой",
-};
-
-const pins = [
-  { name: "roof", label: "Кровля" },
-  { name: "facade", label: "Фасад" },
-  { name: "terrace", label: "Терраса" },
-];
-
-const steps = [
-  {
-    number: "01",
-    title: "Читаем архитектуру",
-    text: "Определяем главные линии дома и точки акцента.",
-  },
-  {
-    number: "02",
-    title: "Строим сценарий",
-    text: "Соединяем контур, бахрому и локальные решения.",
-  },
-  {
-    number: "03",
-    title: "Собираем образ",
-    text: "Дом и территория работают как одна композиция.",
-  },
-];
-</script>
-
 <template>
   <section class="section composition-section">
     <div class="container composition-card">
@@ -72,3 +39,36 @@ const steps = [
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+const { openLightbox } = useModals();
+
+const photo = {
+  src: "/images/home/006.webp",
+  alt: "Дом с оформленной кровлей, фасадом и террасой",
+};
+
+const pins = [
+  { name: "roof", label: "Кровля" },
+  { name: "facade", label: "Фасад" },
+  { name: "terrace", label: "Терраса" },
+];
+
+const steps = [
+  {
+    number: "01",
+    title: "Читаем архитектуру",
+    text: "Определяем главные линии дома и точки акцента.",
+  },
+  {
+    number: "02",
+    title: "Строим сценарий",
+    text: "Соединяем контур, бахрому и локальные решения.",
+  },
+  {
+    number: "03",
+    title: "Собираем образ",
+    text: "Дом и территория работают как одна композиция.",
+  },
+];
+</script>

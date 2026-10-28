@@ -1,10 +1,3 @@
-<script setup lang="ts">
-import { valueSteps } from '~/data/content';
-
-// Первый шаг подсвечен по умолчанию, как в исходном макете.
-const activeStep = ref('01');
-</script>
-
 <template>
   <section class="value-section" aria-labelledby="value-title">
     <div class="container value-layout">
@@ -53,3 +46,10 @@ const activeStep = ref('01');
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { valueSteps } from '~/data/content';
+
+// Первый шаг подсвечен по умолчанию, как в исходном макете.
+const activeStep = ref('01');
+</script>

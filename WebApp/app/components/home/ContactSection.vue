@@ -1,51 +1,3 @@
-<script setup lang="ts">
-import { ref, computed } from "vue";
-
-const phone = ref("");
-const fileInput = ref<HTMLInputElement | null>(null);
-const photo = ref<File | null>(null);
-const submitted = ref(false);
-
-const {
-  dragOver,
-  openPicker,
-  onKeydown,
-  onDragEnter,
-  onDragOver,
-  onDragLeave,
-  onDrop,
-  onChange,
-  reset,
-} = useImageDrop({
-  input: fileInput,
-  validate: (file) => validatePhoto(file, 25),
-  onFile: (file) => {
-    photo.value = file;
-  },
-});
-
-const previewName = computed(() =>
-  photo.value ? `✓ Выбран файл: ${photo.value.name}` : "",
-);
-
-function onSubmit(event: Event) {
-  event.preventDefault();
-  submitted.value = true;
-}
-
-function onReset() {
-  reset();
-  phone.value = "";
-  submitted.value = false;
-}
-
-const advantages = [
-  "Бесплатная визуализация подсветки по фото вашего дома",
-  "Официальный договор и гарантия 1 год на монтаж и оборудование",
-  "Монтаж за 1–2 дня без повреждения и сверления кровли",
-];
-</script>
-
 <template>
   <section class="final-cta" id="contact" aria-labelledby="contact-title">
     <div class="container final-layout">
@@ -79,14 +31,15 @@ const advantages = [
         </div>
       </div>
 
-      <div class="final-form-card" id="inline-lead-card">
-        <div class="form-card-badge">Оценка стоимости</div>
-        <h3 class="form-card-title">Отправить фото на расчёт</h3>
-        <p class="form-card-subtitle">
-          Прикрепите фото дома или участка для точной сметы
-        </p>
+      <NuxtLink to="/lead">
+        <div class="final-form-card" id="inline-lead-card">
+          <div class="form-card-badge">Оценка стоимости</div>
+          <h3 class="form-card-title">Отправить фото на расчёт</h3>
+          <p class="form-card-subtitle">
+            Прикрепите фото дома или участка для точной сметы
+          </p>
 
-        <form
+          <!-- <form
           v-if="!submitted"
           class="inline-lead-form"
           id="inline-lead-form"
@@ -167,8 +120,57 @@ const advantages = [
           >
             Отправить ещё одно фото
           </button>
+        </div> -->
         </div>
-      </div>
+      </NuxtLink>
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { ref, computed } from 'vue';
+
+const phone = ref('');
+const fileInput = ref<HTMLInputElement | null>(null);
+const photo = ref<File | null>(null);
+const submitted = ref(false);
+
+const {
+  dragOver,
+  openPicker,
+  onKeydown,
+  onDragEnter,
+  onDragOver,
+  onDragLeave,
+  onDrop,
+  onChange,
+  reset,
+} = useImageDrop({
+  input: fileInput,
+  validate: (file) => validatePhoto(file, 25),
+  onFile: (file) => {
+    photo.value = file;
+  },
+});
+
+const previewName = computed(() =>
+  photo.value ? `✓ Выбран файл: ${photo.value.name}` : '',
+);
+
+function onSubmit(event: Event) {
+  event.preventDefault();
+  submitted.value = true;
+}
+
+function onReset() {
+  reset();
+  phone.value = '';
+  submitted.value = false;
+}
+
+const advantages = [
+  'Бесплатная визуализация подсветки по фото вашего дома',
+  'Официальный договор и гарантия 1 год на монтаж и оборудование',
+  'Монтаж за 1–2 дня без повреждения и сверления кровли',
+];
+</script>

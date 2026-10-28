@@ -1,97 +1,3 @@
-<script setup lang="ts">
-const { surface, range, surfaceStyle, rangeValue, valueText, animate } =
-  useTransformation();
-
-const beforeSrc = "/images/home/transformation/before.png";
-const afterSrc = "/images/home/transformation/after.png";
-
-const calculatorDialog = ref<HTMLDialogElement | null>(null);
-const photoDialog = ref<HTMLDialogElement | null>(null);
-
-const photoFileInput = ref<HTMLInputElement | null>(null);
-const phoneInput = ref<HTMLInputElement | null>(null);
-const phone = ref("");
-const place = ref("");
-const previewUrl = ref<string | null>(null);
-const fileName = ref("");
-const feedback = ref("");
-const feedbackIsError = ref(false);
-
-function openDialog(dialog: HTMLDialogElement | null) {
-  if (!dialog) return;
-  dialog.showModal();
-  document.documentElement.style.overflow = "hidden";
-}
-
-function onDialogClose() {
-  document.documentElement.style.overflow = "";
-}
-
-const {
-  dragOver,
-  error: fileError,
-  openPicker,
-  onKeydown,
-  onDragEnter,
-  onDragOver,
-  onDragLeave,
-  onDrop,
-  onChange,
-  reset: resetFile,
-} = useImageDrop({
-  input: photoFileInput,
-  validate: validatePhoto,
-  onFile: (file) => {
-    if (previewUrl.value) URL.revokeObjectURL(previewUrl.value);
-
-    if (!file) {
-      previewUrl.value = null;
-      fileName.value = "";
-      feedback.value = "";
-      feedbackIsError.value = false;
-      return;
-    }
-
-    previewUrl.value = URL.createObjectURL(file);
-    fileName.value = file.name;
-    feedback.value = "Фотография выбрана локально. Файл не отправлен.";
-    feedbackIsError.value = false;
-  },
-});
-
-watch(fileError, (message) => {
-  if (message) {
-    feedback.value = message;
-    feedbackIsError.value = true;
-  }
-});
-
-function onSubmit(event: Event) {
-  event.preventDefault();
-
-  const digits = phoneInput.value?.value.replace(/\D/g, "") ?? "";
-  if (!photoFileInput.value?.files.length || digits.length < 10) {
-    feedback.value =
-      "Выберите фотографию и укажите телефон минимум из 10 цифр.";
-    feedbackIsError.value = true;
-    return;
-  }
-
-  feedback.value = "Поля заполнены. Это демонстрация: заявка не отправлена.";
-  feedbackIsError.value = false;
-}
-
-function revokePreview() {
-  if (previewUrl.value) URL.revokeObjectURL(previewUrl.value);
-}
-
-onMounted(() => window.addEventListener("pagehide", revokePreview));
-onBeforeUnmount(() => {
-  window.removeEventListener("pagehide", revokePreview);
-  revokePreview();
-});
-</script>
-
 <template>
   <section id="transformation" class="tf-section" aria-labelledby="tf-title">
     <div class="container">
@@ -167,29 +73,19 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="tf-actions">
-        <a
-          class="button button-primary tf-primary"
-          href="#"
-          data-tf-calculator
-          @click.prevent="openDialog(calculatorDialog)"
-        >
+        <NuxtLink class="button button-primary tf-primary" to="/calculator">
           Рассчитать стоимость и подобрать подсветку
           <span aria-hidden="true">↗</span>
-        </a>
-        <button
-          class="button tf-secondary"
-          type="button"
-          data-tf-photo
-          @click="openDialog(photoDialog)"
-        >
+        </NuxtLink>
+        <NuxtLink class="button tf-secondary" to="/lead">
           Отправить фото для бесплатной визуализации
           <span aria-hidden="true">↗</span>
-        </button>
+        </NuxtLink>
       </div>
     </div>
   </section>
 
-  <dialog
+  <!-- <dialog
     ref="calculatorDialog"
     class="tf-dialog"
     aria-labelledby="tf-calc-title"
@@ -311,5 +207,99 @@ onBeforeUnmount(() => {
         Проверить заполнение <span aria-hidden="true">→</span>
       </button>
     </form>
-  </dialog>
+  </dialog> -->
 </template>
+
+<script setup lang="ts">
+const { surface, range, surfaceStyle, rangeValue, valueText, animate } =
+  useTransformation();
+
+const beforeSrc = '/images/home/transformation/before.png';
+const afterSrc = '/images/home/transformation/after.png';
+
+const calculatorDialog = ref<HTMLDialogElement | null>(null);
+const photoDialog = ref<HTMLDialogElement | null>(null);
+
+const photoFileInput = ref<HTMLInputElement | null>(null);
+const phoneInput = ref<HTMLInputElement | null>(null);
+const phone = ref('');
+const place = ref('');
+const previewUrl = ref<string | null>(null);
+const fileName = ref('');
+const feedback = ref('');
+const feedbackIsError = ref(false);
+
+// function openDialog(dialog: HTMLDialogElement | null) {
+//   if (!dialog) return;
+//   dialog.showModal();
+//   document.documentElement.style.overflow = 'hidden';
+// }
+
+// function onDialogClose() {
+//   document.documentElement.style.overflow = '';
+// }
+
+const {
+  dragOver,
+  error: fileError,
+  openPicker,
+  onKeydown,
+  onDragEnter,
+  onDragOver,
+  onDragLeave,
+  onDrop,
+  onChange,
+  reset: resetFile,
+} = useImageDrop({
+  input: photoFileInput,
+  validate: validatePhoto,
+  onFile: (file) => {
+    if (previewUrl.value) URL.revokeObjectURL(previewUrl.value);
+
+    if (!file) {
+      previewUrl.value = null;
+      fileName.value = '';
+      feedback.value = '';
+      feedbackIsError.value = false;
+      return;
+    }
+
+    previewUrl.value = URL.createObjectURL(file);
+    fileName.value = file.name;
+    feedback.value = 'Фотография выбрана локально. Файл не отправлен.';
+    feedbackIsError.value = false;
+  },
+});
+
+watch(fileError, (message) => {
+  if (message) {
+    feedback.value = message;
+    feedbackIsError.value = true;
+  }
+});
+
+function onSubmit(event: Event) {
+  event.preventDefault();
+
+  const digits = phoneInput.value?.value.replace(/\D/g, '') ?? '';
+  if (!photoFileInput.value?.files?.length || digits.length < 10) {
+    feedback.value =
+      'Выберите фотографию и укажите телефон минимум из 10 цифр.';
+    feedbackIsError.value = true;
+    return;
+  }
+
+  feedback.value = 'Поля заполнены. Это демонстрация: заявка не отправлена.';
+  feedbackIsError.value = false;
+}
+
+function revokePreview() {
+  if (previewUrl.value) URL.revokeObjectURL(previewUrl.value);
+}
+
+onMounted(() => window.addEventListener('pagehide', revokePreview));
+onBeforeUnmount(() => {
+  window.removeEventListener('pagehide', revokePreview);
+  revokePreview();
+});
+</script>

@@ -1,9 +1,3 @@
-<script setup lang="ts">
-import { cases } from '@/data/content';
-
-const { openLightbox } = useModals();
-</script>
-
 <template>
   <section class="section" id="cases">
     <div class="container">
@@ -49,3 +43,9 @@ const { openLightbox } = useModals();
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { cases } from '@/data/content';
+
+const { openLightbox } = useModals();
+</script>

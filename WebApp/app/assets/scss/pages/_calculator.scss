@@ -17,7 +17,6 @@
   --calc-radius: 18px;
 
   // ==================== БАЗА ====================
-  //font-family: Inter, Arial, sans-serif;
   font-family: 'Segoe UI', Arial, sans-serif;
   color: #e6f2ff;
   background:
@@ -48,56 +47,6 @@
 
   a {
     color: inherit;
-  }
-
-  // ==================== ХЕДЕР ====================
-  .site-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    max-width: 1640px;
-    margin: auto;
-    padding: 26px 34px 18px;
-  }
-
-  .brand {
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .brand-mark {
-    width: 35px;
-    height: 35px;
-    border: 2px solid #75aaff;
-    border-radius: 10px;
-    transform: rotate(45deg);
-    box-shadow: 0 0 22px #3982f655;
-  }
-
-  .brand-text strong {
-    display: block;
-    font-size: 20px;
-    letter-spacing: 0.19em;
-    line-height: 1.2;
-  }
-
-  .brand-text small {
-    display: block;
-    color: var(--calc-muted);
-    font-size: 10px;
-    letter-spacing: 0.29em;
-    margin-top: 3px;
-  }
-
-  .header-note {
-    font-size: 12px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #8ba5c4;
-    text-align: right;
   }
 
   // ==================== ИНТРО ====================

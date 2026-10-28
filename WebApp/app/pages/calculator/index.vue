@@ -1,7 +1,9 @@
 <template>
-  <div class="calculator-page">
-    <HouseCalculator />
-  </div>
+  <main id="top">
+    <div class="calculator-page has-header-offset">
+      <HouseCalculator />
+    </div>
+  </main>
 </template>
 
 <script lang="ts" setup>

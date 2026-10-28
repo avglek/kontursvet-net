@@ -1,7 +1,3 @@
-<script setup lang="ts">
-import { processSteps } from '~/data/content';
-</script>
-
 <template>
   <section class="section process-section" id="process">
     <div class="container">
@@ -31,3 +27,7 @@ import { processSteps } from '~/data/content';
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import { processSteps } from '~/data/content';
+</script>

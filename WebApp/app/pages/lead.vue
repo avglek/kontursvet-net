@@ -1,5 +1,5 @@
 <template>
-  <main id="top">
+  <main id="top" class="has-header-offset">
     <FormLeadCard />
   </main>
 </template>

@@ -170,6 +170,15 @@
   }
 }
 
+// ─── Отступ для страниц, контент которых не должен уходить под фиксированную шапку ───
+.has-header-offset {
+  padding-top: $header-height;
+
+  @include down('tablet') {
+    padding-top: $header-height-tablet;
+  }
+}
+
 @include down('tablet') {
   .nav-row {
     height: $header-height-tablet;

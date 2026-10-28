@@ -1,21 +1,3 @@
-<script setup lang="ts">
-const { openLead } = useModals();
-const {
-  mainVideo,
-  ambientVideo,
-  playing,
-  status,
-  timeText,
-  progress,
-  toggleLabel,
-  play,
-  toggle,
-} = useHeroVideo();
-
-const videoSrc = "/video/hero-showreel-hd-silent.mp4";
-const posterSrc = "/video/hero-poster-hd.webp";
-</script>
-
 <template>
   <section class="cinematic-hero" aria-labelledby="hero-title">
     <!-- Двухслойная видеосцена: размытое свечение + чистое видео 16:9 -->
@@ -170,3 +152,21 @@ const posterSrc = "/video/hero-poster-hd.webp";
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+const { openLead } = useModals();
+const {
+  mainVideo,
+  ambientVideo,
+  playing,
+  status,
+  timeText,
+  progress,
+  toggleLabel,
+  play,
+  toggle,
+} = useHeroVideo();
+
+const videoSrc = "/video/hero-showreel-hd-silent.mp4";
+const posterSrc = "/video/hero-poster-hd.webp";
+</script>
