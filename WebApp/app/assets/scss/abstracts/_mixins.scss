@@ -9,7 +9,7 @@
 // ─── Медиазапрос «не шире» значения из $breakpoints либо произвольной ширины ─
 @mixin down($size) {
   // prettier-ignore
-  $width: if(map.has-key($breakpoints, $size), map.get($breakpoints, $size), $size);
+  $width: if(sass(map.has-key($breakpoints, $size)): map.get($breakpoints, $size); else: $size);
   @media (max-width: $width) {
     @content;
   }

@@ -1,9 +1,23 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
+  // Nuxt использует project references: каждый контекст (app / server / shared / node)
+  // описан в своём генерируемом конфиге внутри .nuxt/.
+  // nuxt.config.ts, server/ и shared/ относятся к node/server/shared-контекстам,
+  // поэтому ссылаться только на tsconfig.app.json недостаточно — файлы вне app/
+  // не попадали ни в один проект, и TS брал их как «inferred» без типов Node.
   "files": [],
   "references": [
     {
       "path": "./.nuxt/tsconfig.app.json"
+    },
+    {
+      "path": "./.nuxt/tsconfig.server.json"
+    },
+    {
+      "path": "./.nuxt/tsconfig.shared.json"
+    },
+    {
+      "path": "./.nuxt/tsconfig.node.json"
     }
   ]
 }

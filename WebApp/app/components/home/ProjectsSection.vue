@@ -1,7 +1,16 @@
 <script setup lang="ts">
-import { portfolioStats, projects } from '~/data/content';
+import { portfolioStats, projects, type Project } from '~/data/content';
 
-const { openLightbox, openNotice } = useModals();
+const { openLightbox } = useLightbox();
+const router = useRouter();
+
+const openImage = (project: Project) => {
+  if (project.id) {
+    router.push('/portfolio/' + project.id);
+  } else {
+    openLightbox(project.image);
+  }
+};
 </script>
 
 <template>
@@ -9,9 +18,7 @@ const { openLightbox, openNotice } = useModals();
     <div class="container">
       <div class="section-head">
         <div>
-          <div class="eyebrow">
-            Реальные объекты
-          </div>
+          <div class="eyebrow">Реальные объекты</div>
           <h2 class="section-title">
             Свет, который меняет архитектуру<span class="glow-line" />
           </h2>
@@ -35,8 +42,8 @@ const { openLightbox, openNotice } = useModals();
             :style="{ objectPosition: project.position }"
             loading="lazy"
             decoding="async"
-            @click="openLightbox(project.image, project.alt)"
-          >
+            @click="openImage(project)"
+          />
           <div class="project-shade" />
           <div class="project-caption">
             <strong>{{ project.title }}</strong>
@@ -45,28 +52,27 @@ const { openLightbox, openNotice } = useModals();
         </article>
       </div>
 
-      <a
-        class="portfolio-entry"
-        href="#"
-        data-modal="portfolio"
-        @click.prevent="openNotice('portfolio')"
-      >
+      <NuxtLink class="portfolio-entry" to="/portfolio">
         <div class="portfolio-entry-copy">
           <span class="eyebrow">Полное онлайн-портфолио</span>
           <h3>Смотрите проекты подробно</h3>
           <p>
-            Задача, объём работ, сроки и полная фотосерия каждого
-            реализованного объекта.
+            Задача, объём работ, сроки и полная фотосерия каждого реализованного
+            объекта.
           </p>
         </div>
         <div class="portfolio-entry-stats">
-          <span><strong>{{ portfolioStats.cases }}</strong> кейсов</span>
-          <span><strong>{{ portfolioStats.photos }}</strong> фотография</span>
+          <span
+            ><strong>{{ portfolioStats.cases }}</strong> кейсов</span
+          >
+          <span
+            ><strong>{{ portfolioStats.photos }}</strong> фотография</span
+          >
         </div>
         <span class="portfolio-entry-action">
           Открыть портфолио <b aria-hidden="true">→</b>
         </span>
-      </a>
+      </NuxtLink>
     </div>
   </section>
 </template>
