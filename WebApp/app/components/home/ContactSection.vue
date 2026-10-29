@@ -23,11 +23,11 @@
         </div>
 
         <div class="contact-direct-call">
-          <a
+          <!-- <a
             href="tel:+79650473553"
             class="button button-ghost button-call-direct"
             >Позвонить Александру →</a
-          >
+          > -->
         </div>
       </div>
 

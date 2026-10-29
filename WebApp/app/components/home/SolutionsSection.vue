@@ -27,7 +27,7 @@
               :style="{ objectPosition: service.position }"
               loading="lazy"
               decoding="async"
-              @click="openLightbox(service.image, service.alt)"
+              @click="openLightbox(service.image)"
             />
           </div>
           <div class="service-body">
@@ -42,7 +42,7 @@
 </template>
 
 <script setup lang="ts">
-import { services } from "~/data/content";
+import { services } from '~/data/content';
 
-const { openLightbox } = useModals();
+const { openLightbox } = useLightbox();
 </script>

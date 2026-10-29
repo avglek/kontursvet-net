@@ -60,15 +60,10 @@
 
       <div class="cinematic-bottom-bar">
         <div class="cinematic-actions">
-          <a
-            class="button button-primary"
-            href="#"
-            data-modal="lead"
-            @click.prevent="openLead"
-          >
+          <NuxtLink class="button button-primary" to="/lead">
             Отправить фото для оценки
             <span aria-hidden="true">→</span>
-          </a>
+          </NuxtLink>
           <a class="button button-ghost" href="#projects">
             Смотреть проекты <span aria-hidden="true">↓</span>
           </a>
@@ -154,10 +149,8 @@
 </template>
 
 <script setup lang="ts">
-const { openLead } = useModals();
+
 const {
-  mainVideo,
-  ambientVideo,
   playing,
   status,
   timeText,
@@ -167,6 +160,6 @@ const {
   toggle,
 } = useHeroVideo();
 
-const videoSrc = "/video/hero-showreel-hd-silent.mp4";
-const posterSrc = "/video/hero-poster-hd.webp";
+const videoSrc = '/video/hero-showreel-hd-silent.mp4';
+const posterSrc = '/video/hero-poster-hd.webp';
 </script>

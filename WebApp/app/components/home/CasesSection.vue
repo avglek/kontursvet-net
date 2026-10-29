@@ -21,7 +21,7 @@
               :alt="item.alt"
               loading="lazy"
               decoding="async"
-              @click="openLightbox(item.image, item.alt)"
+              @click="openLightbox(item.image)"
             />
           </div>
           <div class="case-body">
@@ -47,5 +47,5 @@
 <script setup lang="ts">
 import { cases } from '@/data/content';
 
-const { openLightbox } = useModals();
+const { openLightbox } = useLightbox();
 </script>

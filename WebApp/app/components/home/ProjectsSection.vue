@@ -1,4 +1,5 @@
 <template>
+  <div v-if="isLoading"><Spinner :is-overlay="true" /></div>
   <section class="section" id="projects">
     <div class="container">
       <div class="section-head">
@@ -48,10 +49,12 @@
         </div>
         <div class="portfolio-entry-stats">
           <span
-            ><strong>{{ portfolioStats.cases }}</strong> кейсов</span
+            ><strong>{{ quantityCaseStringRef![0] }}</strong
+            >{{ quantityCaseStringRef![1] }}</span
           >
           <span
-            ><strong>{{ portfolioStats.photos }}</strong> фотография</span
+            ><strong>{{ quantityCasePhotosRef![0] }}</strong
+            >{{ quantityCasePhotosRef![1] }}</span
           >
         </div>
         <span class="portfolio-entry-action">
@@ -63,10 +66,15 @@
 </template>
 
 <script setup lang="ts">
-import { portfolioStats, projects, type Project } from '~/data/content';
+import { projects, type Project } from '~/data/content';
 
 const { openLightbox } = useLightbox();
 const router = useRouter();
+
+const quantityCaseStringRef = ref<string[]>();
+const quantityCasePhotosRef = ref<string[]>();
+const isLoading = ref<boolean>(true);
+const error = ref<string | null>(null);
 
 const openImage = (project: Project) => {
   if (project.id) {
@@ -75,4 +83,18 @@ const openImage = (project: Project) => {
     openLightbox(project.image);
   }
 };
+
+onMounted(async () => {
+  try {
+    const { quantityCaseString, quantityCasePhotos } = await useCounters();
+    {
+      quantityCaseStringRef.value = quantityCaseString.split(' ');
+      quantityCasePhotosRef.value = quantityCasePhotos.split(' ');
+    }
+  } catch (err) {
+    error.value = err instanceof Error ? err.message : 'Неизвестная ошибка';
+  } finally {
+    isLoading.value = false;
+  }
+});
 </script>
