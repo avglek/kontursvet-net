@@ -255,5 +255,5 @@ export const navLinks = [
 
 export const portfolioStats = {
   cases: 7,
-  photos: 41,
+  photos: 40,
 };

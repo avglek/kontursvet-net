@@ -11,16 +11,22 @@
       <button
         class="mobile-toggle"
         type="button"
-        @click="onMobileClick()"
+        aria-controls="main-navigation"
         :aria-expanded="isOpenMenu ? 'true' : 'false'"
+        @click="toggleMenu()"
       >
         <span></span><span></span>
       </button>
+      <!--
+        Навигация всегда в DOM: видимость на мобильном управляется CSS
+        (.nav-links { display: none } / .nav-links.is-open { display: flex }).
+        Без v-if — нет расхождения SSR и клиента (hydration mismatch).
+      -->
       <nav
         id="main-navigation"
         class="nav-links"
+        :class="{ 'is-open': isOpenMenu }"
         aria-label="Основная навигация"
-        v-if="isOpenMenu || !isMobileScreen"
         @click="closeMenu()"
       >
         <NuxtLink href="/#projects">Проекты</NuxtLink
@@ -44,24 +50,19 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useMediaQuery, onClickOutside } from '@vueuse/core';
-const isOpenMenu = ref(false);
-const menuRef = ref(null);
-const isMobileScreen = useMediaQuery('(max-width: 820px)');
+import { onClickOutside } from '@vueuse/core';
 
-const onMobileClick = () => {
+const isOpenMenu = ref(false);
+const menuRef = ref<HTMLElement | null>(null);
+
+const toggleMenu = () => {
   isOpenMenu.value = !isOpenMenu.value;
 };
 
+// На десктопе класс is-open не влияет на видимость, поэтому закрывать можно всегда.
 const closeMenu = () => {
-  if (isMobileScreen) {
-    isOpenMenu.value = false;
-  }
+  isOpenMenu.value = false;
 };
 
-onClickOutside(menuRef, () => {
-  if (isOpenMenu.value) {
-    isOpenMenu.value = false;
-  }
-});
+onClickOutside(menuRef, closeMenu);
 </script>
