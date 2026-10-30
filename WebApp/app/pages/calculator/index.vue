@@ -8,28 +8,32 @@
 
 <script lang="ts" setup>
 import HouseCalculator from '~/components/calculator/HouseCalculator.vue';
-// definePageMeta({ layout: false });
+import { buildPageHead } from '~/utils/seo';
 
-const canonicalUrl = 'https://www.kontursvet.spb.ru/calculator';
+const head = buildPageHead({
+  title: 'Калькулятор освещения дома',
+  description:
+    'Конфигуратор света: выберите флекс-неон, бахрому или сосульки, укажите метраж и получите предварительную стоимость оформления дома.',
+  path: '/calculator',
+  image: {
+    url: 'https://www.kontursvet.spb.ru/images/calculator/house-base.webp',
+    width: 1448,
+    height: 1086,
+    alt: 'Дом с контурной подсветкой — конфигуратор КонтурСвет',
+  },
+});
 
 useHead({
-  title: 'Конфигуратор освещения — примерьте свет на дом',
-  meta: [
+  ...head,
+  // LCP: база сцены грузится до генерации SVG-оверлеев
+  link: [
+    ...head.link,
     {
-      name: 'description',
-      content:
-        'Выберите материалы, укажите метраж и соберите предварительную комплектацию светового оформления дома.',
+      rel: 'preload' as const,
+      as: 'image' as const,
+      type: 'image/webp' as const,
+      href: '/images/calculator/house-base.webp',
     },
-    { property: 'og:title', content: 'Конфигуратор освещения — КонтурСвет' },
-    {
-      property: 'og:description',
-      content:
-        'Выберите материалы, укажите метраж и соберите предварительную комплектацию светового оформления дома.',
-    },
-    { property: 'og:url', content: canonicalUrl },
-    { property: 'og:type', content: 'website' },
-    { name: 'robots', content: 'noindex, follow' },
   ],
-  link: [{ rel: 'canonical', href: canonicalUrl }],
 });
 </script>

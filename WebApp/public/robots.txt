@@ -1,8 +1,5 @@
 User-agent: *
 Disallow: /admin
-Disallow: /admin/
-Disallow: /search/
-Disallow: /*?*
-Disallow: /*?
+Disallow: /search
 
 Sitemap: https://www.kontursvet.spb.ru/sitemap.xml

@@ -34,10 +34,6 @@ export default defineNuxtConfig({
         { property: 'og:site_name', content: 'КонтурСвет' },
       ],
       link: [
-        {
-          rel: 'canonical',
-          href: 'https://www.kontursvet.spb.ru',
-        },
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         {
           rel: 'apple-touch-icon',
