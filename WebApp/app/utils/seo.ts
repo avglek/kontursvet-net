@@ -45,7 +45,13 @@ export type PageSeoInput = {
  * Собирает meta-теги соцсетей (Open Graph + Twitter Card) и canonical.
  * Возвращает готовый объект для useHead.
  */
-export function buildPageHead(input: PageSeoInput) {
+import type { ResolvableMeta, ResolvableLink } from '@unhead/vue';
+
+export function buildPageHead(input: PageSeoInput): {
+  title: string;
+  meta: ResolvableMeta[];
+  link: ResolvableLink[];
+} {
   const url = pageUrl(input.path ?? '/');
   // Переопределение картинки полностью заменяет дефолт: размеры из дефолта
   // не должны доставаться, если og:image указывает на другой файл.
@@ -58,7 +64,7 @@ export function buildPageHead(input: PageSeoInput) {
       }
     : { ...DEFAULT_OG_IMAGE };
 
-  const meta: Array<{ property?: string; name?: string; content: string }> = [
+  const meta: ResolvableMeta[] = [
     { name: 'description', content: input.description },
     // Open Graph
     { property: 'og:type', content: input.type ?? 'website' },
@@ -90,7 +96,7 @@ export function buildPageHead(input: PageSeoInput) {
   return {
     title: input.title,
     meta,
-    link: [{ rel: 'canonical' as const, href: url }],
+    link: [{ rel: 'canonical', href: url }],
   };
 }
 

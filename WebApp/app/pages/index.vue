@@ -24,21 +24,21 @@ const head = buildPageHead({
 });
 
 useHead({
-  ...head,
+  title: head.title,
+  meta: head.meta,
+  link: [
+    { rel: 'canonical', href: head.link?.[0]?.href ?? '/' },
+    {
+      rel: 'preload',
+      as: 'image',
+      type: 'image/webp',
+      href: '/video/hero-poster-hd.webp',
+    },
+  ],
   script: [
     {
       type: 'application/ld+json',
       innerHTML: JSON.stringify(buildLocalBusinessSchema()),
-    },
-  ],
-  // LCP: постер героя грузится до видео
-  link: [
-    ...head.link,
-    {
-      rel: 'preload' as const,
-      as: 'image' as const,
-      type: 'image/webp' as const,
-      href: '/video/hero-poster-hd.webp',
     },
   ],
 });
