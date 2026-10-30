@@ -6,6 +6,7 @@
 # ============================================================
 
 # ---------- Этап сборки (SDK) ----------
+# libgssapi-krb5-2 уже входит в SDK-образ, отдельно ставить её здесь не нужно.
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
@@ -21,6 +22,9 @@ RUN dotnet publish Kontursvet.Api.csproj -c Release -o /app/publish /p:UseAppHos
 # ---------- Этап рантайма (прод) ----------
 FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS runtime
 WORKDIR /app
+
+# GSSAPI для Negotiate-аутентификации (MAX API)
+RUN apt-get update && apt-get install -y --no-install-recommends libgssapi-krb5-2 && rm -rf /var/lib/apt/lists/*
 
 # Общая папка загрузок/статики (монтируется volume'ом в compose)
 ENV Storage__LocalRoot=/data \
