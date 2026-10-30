@@ -21,6 +21,7 @@
           <CalculatorScene
             :active-overlays="visibleOverlays"
             @layer-ref="onLayerRef"
+            @ready="onSceneReady"
           />
 
           <div class="scene-caption">
@@ -106,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import {
   CONFIG,
   PRODUCTS,
@@ -173,6 +174,13 @@ function onLayerRef(id: string, el: SVGElement | null) {
   registerLayer(id, el);
 }
 
+// Подготавливаем слои после загрузки всех SVG из файлов
+function onSceneReady() {
+  prepareAllLayers();
+  // Первичная синхронизация на случай, если state уже не пуст (SSR-hydration)
+  for (const mid of MOTION_IDS) sync(mid, visibleOverlays.value.has(mid));
+}
+
 // Синхронизируем видимость при изменении state
 watch(
   visibleOverlays,
@@ -208,16 +216,9 @@ async function handleReplay() {
   if (!ok) return;
 }
 
-// После маунта — загрузить прайс и подготовить слои
+// После маунта — загрузить прайс
 onMounted(async () => {
   // Прайс не должен блокировать отрисовку визуализации — грузим параллельно
-  const pricesReady = fetchProducts();
-
-  await nextTick();
-  prepareAllLayers();
-  // Первичная синхронизация на случай, если state уже не пуст (SSR-hydration)
-  for (const mid of MOTION_IDS) sync(mid, visibleOverlays.value.has(mid));
-
-  await pricesReady;
+  await fetchProducts();
 });
 </script>

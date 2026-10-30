@@ -49,12 +49,20 @@
         </div>
         <div class="portfolio-entry-stats">
           <span
-            ><strong>{{ quantityCaseStringRef![0] }}</strong
-            >{{ quantityCaseStringRef![1] }}</span
+            ><strong>{{
+              quantityCaseStringRef ? quantityCaseStringRef[0] : '0'
+            }}</strong
+            >{{
+              quantityCaseStringRef ? quantityCaseStringRef[1] : 'кейсов'
+            }}</span
           >
           <span
-            ><strong>{{ quantityCasePhotosRef![0] }}</strong
-            >{{ quantityCasePhotosRef![1] }}</span
+            ><strong>{{
+              quantityCasePhotosRef ? quantityCasePhotosRef[0] : '0'
+            }}</strong
+            >{{
+              quantityCasePhotosRef ? quantityCasePhotosRef[1] : 'кадров'
+            }}</span
           >
         </div>
         <span class="portfolio-entry-action">
@@ -88,8 +96,11 @@ onMounted(async () => {
   try {
     const { quantityCaseString, quantityCasePhotos } = await useCounters();
     {
-      quantityCaseStringRef.value = quantityCaseString.split(' ');
-      quantityCasePhotosRef.value = quantityCasePhotos.split(' ');
+      console.log(quantityCaseString, quantityCasePhotos);
+      if (quantityCasePhotos && quantityCaseString) {
+        quantityCaseStringRef.value = quantityCaseString.split(' ');
+        quantityCasePhotosRef.value = quantityCasePhotos.split(' ');
+      }
     }
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Неизвестная ошибка';

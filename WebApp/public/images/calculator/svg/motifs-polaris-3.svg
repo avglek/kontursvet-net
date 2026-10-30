@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1448" height="1086" viewBox="0 0 1448 1086" data-generated-from="geometry.json" data-geometry-version="0.5.0" data-status="calibrated">
+  <title>КонтурСвет — motifs-polaris</title>
+  <desc>Transparent overlay generated from the active shared geometry for house-base.webp.</desc>
+  <defs>
+    <filter id="flexGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
+    <filter id="bulbGlow" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="3.2"/></filter>
+    <filter id="strandGlow" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation=".7"/></filter>
+    <filter id="motifGlow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="2.8"/></filter>
+    <g id="ksSnowflake" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(0)"><path d="M0 0V-34 M0-13L-7-20 M0-13L7-20 M0-23L-6-29 M0-23L6-29"/></g><g transform="rotate(60)"><path d="M0 0V-34 M0-13L-7-20 M0-13L7-20 M0-23L-6-29 M0-23L6-29"/></g><g transform="rotate(120)"><path d="M0 0V-34 M0-13L-7-20 M0-13L7-20 M0-23L-6-29 M0-23L6-29"/></g><g transform="rotate(180)"><path d="M0 0V-34 M0-13L-7-20 M0-13L7-20 M0-23L-6-29 M0-23L6-29"/></g><g transform="rotate(240)"><path d="M0 0V-34 M0-13L-7-20 M0-13L7-20 M0-23L-6-29 M0-23L6-29"/></g><g transform="rotate(300)"><path d="M0 0V-34 M0-13L-7-20 M0-13L7-20 M0-23L-6-29 M0-23L6-29"/></g><circle cx="0" cy="0" r="3.2"/></g>
+    <symbol id="ksPolaris" viewBox="-34 -34 408 508" overflow="visible" fill="none" stroke="#F3FAFF" style="fill:none;mix-blend-mode:normal">
+  <title>Полярис, архитектурная световая фигура</title>
+  <desc>Четыре плавно вогнутые стороны, светящаяся трубка без заливки, мягкий холодно-белый ореол.</desc>
+  <defs>
+    <filter id="polaris-far-glow" x="-70%" y="-70%" width="240%" height="240%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="13"/>
+    </filter>
+    <filter id="polaris-near-glow" x="-45%" y="-45%" width="190%" height="190%" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="4.2"/>
+    </filter>
+    <linearGradient id="polaris-tube" x1="14" y1="20" x2="329" y2="420" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#E3F8FF"/>
+      <stop offset=".45" stop-color="#FDFEFF"/>
+      <stop offset=".77" stop-color="#C7E9FF"/>
+      <stop offset="1" stop-color="#FFFFFF"/>
+    </linearGradient>
+  </defs>
+  <!-- Single continuous flexible tube; it is not a filled star. -->
+  <g stroke-linejoin="round" stroke-linecap="round">
+    <path fill="none" d="M 170 20 C 160 115, 96 197, 14 208 C 91 218, 174 315, 181 420 C 175 315, 248 222, 329 220 C 251 201, 178 119, 170 20 Z" stroke="#8DCEFF" stroke-width="29" opacity=".58" filter="url(#polaris-far-glow)"/>
+    <path fill="none" d="M 170 20 C 160 115, 96 197, 14 208 C 91 218, 174 315, 181 420 C 175 315, 248 222, 329 220 C 251 201, 178 119, 170 20 Z" stroke="#A9E4FF" stroke-width="15" opacity=".86" filter="url(#polaris-near-glow)"/>
+    <path fill="none" d="M 170 20 C 160 115, 96 197, 14 208 C 91 218, 174 315, 181 420 C 175 315, 248 222, 329 220 C 251 201, 178 119, 170 20 Z" stroke="#78ADD5" stroke-width="9" opacity=".82"/>
+    <path fill="none" d="M 170 20 C 160 115, 96 197, 14 208 C 91 218, 174 315, 181 420 C 175 315, 248 222, 329 220 C 251 201, 178 119, 170 20 Z" stroke="#F3FAFF" stroke-width="7.2"/>
+    <path fill="none" d="M 170 20 C 160 115, 96 197, 14 208 C 91 218, 174 315, 181 420 C 175 315, 248 222, 329 220 C 251 201, 178 119, 170 20 Z" stroke="#F3FAFF" stroke-width="3.3" opacity=".97"/>
+  </g>
+</symbol>
+  </defs>
+  <g id="motifs-polaris"><g data-anchor-id="polaris-main-turn-corner" data-render="supplied-polaris-svg" transform="translate(1219 241) scale(0.19437 0.2046) translate(-170 -20)"><use href="#ksPolaris" x="-34" y="-34" width="408" height="508" overflow="visible"/></g></g>
+</svg>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1448" height="1086" viewBox="0 0 1448 1086" data-generated-from="geometry.json" data-geometry-version="0.5.0" data-status="calibrated">
+  <title>КонтурСвет — roof-flex-cold</title>
+  <desc>Transparent overlay generated from the active shared geometry for house-base.webp.</desc>
+  <defs>
+    <filter id="flexGlow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
+    <filter id="bulbGlow" x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="3.2"/></filter>
+    <filter id="strandGlow" x="-150%" y="-150%" width="400%" height="400%"><feGaussianBlur stdDeviation=".7"/></filter>
+    <filter id="motifGlow" x="-80%" y="-80%" width="260%" height="260%"><feGaussianBlur stdDeviation="2.8"/></filter>
+    <g id="ksSnowflake" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><g transform="rotate(0)"><path d="M0 0V-34 M0-13L-7-20 M0-13L7-20 M0-23L-6-29 M0-23L6-29"/></g><g transform="rotate(60)"><path d="M0 0V-34 M0-13L-7-20 M0-13L7-20 M0-23L-6-29 M0-23L6-29"/></g><g transform="rotate(120)"><path d="M0 0V-34 M0-13L-7-20 M0-13L7-20 M0-23L-6-29 M0-23L6-29"/></g><g transform="rotate(180)"><path d="M0 0V-34 M0-13L-7-20 M0-13L7-20 M0-23L-6-29 M0-23L6-29"/></g><g transform="rotate(240)"><path d="M0 0V-34 M0-13L-7-20 M0-13L7-20 M0-23L-6-29 M0-23L6-29"/></g><g transform="rotate(300)"><path d="M0 0V-34 M0-13L-7-20 M0-13L7-20 M0-23L-6-29 M0-23L6-29"/></g><circle cx="0" cy="0" r="3.2"/></g>
+    
+  </defs>
+  <g id="roof-flex-cold"><g data-geometry-id="main-front-eave" data-mount="above-fringe-carrier">
+      <path d="M 209 407.8 L 384 380.8 L 608 344.8 L 807 312.8 L 1024 281.8 L 1216 256.8" fill="none" stroke="#e6f7ff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" opacity=".27" filter="url(#flexGlow)"/>
+      <path d="M 209 407.8 L 384 380.8 L 608 344.8 L 807 312.8 L 1024 281.8 L 1216 256.8" fill="none" stroke="#e6f7ff" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M 209 407.8 L 384 380.8 L 608 344.8 L 807 312.8 L 1024 281.8 L 1216 256.8" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity=".62"/>
+    </g><g data-geometry-id="main-right-eave" data-mount="above-fringe-carrier">
+      <path d="M 1216 256.8 L 1282 347.8 L 1368 459.8" fill="none" stroke="#e6f7ff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" opacity=".27" filter="url(#flexGlow)"/>
+      <path d="M 1216 256.8 L 1282 347.8 L 1368 459.8" fill="none" stroke="#e6f7ff" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M 1216 256.8 L 1282 347.8 L 1368 459.8" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity=".62"/>
+    </g><g data-geometry-id="porch-gable-eave" data-mount="above-fringe-carrier">
+      <path d="M 431 612.8 L 596 518.8 L 754 590.8 L 773 588.8 L 833 608.8" fill="none" stroke="#e6f7ff" stroke-width="13" stroke-linecap="round" stroke-linejoin="round" opacity=".27" filter="url(#flexGlow)"/>
+      <path d="M 431 612.8 L 596 518.8 L 754 590.8 L 773 588.8 L 833 608.8" fill="none" stroke="#e6f7ff" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M 431 612.8 L 596 518.8 L 754 590.8 L 773 588.8 L 833 608.8" fill="none" stroke="#ffffff" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" opacity=".62"/>
+    </g></g>
+</svg>

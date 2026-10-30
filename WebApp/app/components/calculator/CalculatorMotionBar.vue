@@ -15,9 +15,9 @@
         type="button"
         :aria-pressed="staticOn"
         :disabled="reducedMotion"
-        @click="emit('toggle-static')"
+        @click="staticClickHandler()"
       >
-        Статично
+        {{ onStatic ? 'Анимация' : 'Статично' }}
       </button>
     </div>
   </div>
@@ -32,8 +32,15 @@ defineProps<{
   statusText: string;
 }>();
 
+const onStatic = ref<boolean>(false);
+
 const emit = defineEmits<{
   replay: [];
   'toggle-static': [];
 }>();
+
+const staticClickHandler = () => {
+  onStatic.value = !onStatic.value;
+  emit('toggle-static');
+};
 </script>

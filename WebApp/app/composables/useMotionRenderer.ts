@@ -1,5 +1,5 @@
-import { ref, readonly, onMounted, onUnmounted } from "vue";
-import { MOTION_IDS } from "~/utils/calculator.config";
+import { ref, readonly, onMounted, onUnmounted } from 'vue';
+import { MOTION_IDS } from '~/utils/calculator.config';
 
 export function useMotionRenderer() {
   const layers = new Map<string, SVGElement>();
@@ -20,53 +20,53 @@ export function useMotionRenderer() {
 
   function prepareColdTwinkles(id: string, root: SVGElement): number {
     const existing = [
-      ...root.querySelectorAll<SVGGElement>(".cold-twinkle-led"),
+      ...root.querySelectorAll<SVGGElement>('.cold-twinkle-led'),
     ];
     if (!existing.length) return 0;
 
     const occupied = existing.map((g) => {
-      const c = g.querySelector("circle")!;
-      return [Number(c.getAttribute("cx")), Number(c.getAttribute("cy"))] as [
+      const c = g.querySelector('circle')!;
+      return [Number(c.getAttribute('cx')), Number(c.getAttribute('cy'))] as [
         number,
         number,
       ];
     });
     const filter =
-      existing[0]?.querySelector("circle")?.getAttribute("filter") || "";
+      existing[0]?.querySelector('circle')?.getAttribute('filter') || '';
     const baseColor =
-      id === "eaves-fringe-warm-twinkle" ? "#ffd39a" : "#e6f7ff";
+      id === 'eaves-fringe-warm-twinkle' ? '#ffd39a' : '#e6f7ff';
     const baseBulbs = [
-      ...root.querySelectorAll<SVGCircleElement>("[data-geometry-id] > circle"),
+      ...root.querySelectorAll<SVGCircleElement>('[data-geometry-id] > circle'),
     ].filter(
       (c) =>
-        c.getAttribute("fill") === baseColor && c.getAttribute("r") === "1.9",
+        c.getAttribute('fill') === baseColor && c.getAttribute('r') === '1.9',
     );
 
-    const ns = "http://www.w3.org/2000/svg";
+    const ns = 'http://www.w3.org/2000/svg';
     let added = 0;
     for (let i = 7; i < baseBulbs.length && added < 10; i += 13) {
       const b = baseBulbs[i];
-      const x = Number(b?.getAttribute("cx"));
-      const y = Number(b?.getAttribute("cy"));
+      const x = Number(b?.getAttribute('cx'));
+      const y = Number(b?.getAttribute('cy'));
       if (occupied.some(([ox, oy]) => Math.hypot(x - ox, y - oy) < 30))
         continue;
 
-      const g = document.createElementNS(ns, "g");
-      g.setAttribute("class", "cold-twinkle-led prototype-cold-led");
-      g.setAttribute("opacity", ".14");
+      const g = document.createElementNS(ns, 'g');
+      g.setAttribute('class', 'cold-twinkle-led prototype-cold-led');
+      g.setAttribute('opacity', '.14');
       const specs: [number, string, string, boolean][] = [
-        [17, "#a7d5ff", ".72", true],
-        [4.7, "#d7f1ff", "1", false],
-        [1.8, "#ffffff", "1", false],
+        [17, '#a7d5ff', '.72', true],
+        [4.7, '#d7f1ff', '1', false],
+        [1.8, '#ffffff', '1', false],
       ];
       for (const [r, fill, op, glow] of specs) {
-        const dot = document.createElementNS(ns, "circle");
-        dot.setAttribute("cx", String(x));
-        dot.setAttribute("cy", String(y));
-        dot.setAttribute("r", String(r));
-        dot.setAttribute("fill", fill);
-        dot.setAttribute("opacity", op);
-        if (glow && filter) dot.setAttribute("filter", filter);
+        const dot = document.createElementNS(ns, 'circle');
+        dot.setAttribute('cx', String(x));
+        dot.setAttribute('cy', String(y));
+        dot.setAttribute('r', String(r));
+        dot.setAttribute('fill', fill);
+        dot.setAttribute('opacity', op);
+        if (glow && filter) dot.setAttribute('filter', filter);
         g.append(dot);
       }
       b?.parentElement?.append(g);
@@ -75,53 +75,99 @@ export function useMotionRenderer() {
     }
 
     for (const g of existing) {
-      const [glow, core, center] = g.querySelectorAll("circle");
-      glow?.setAttribute("r", "17");
-      glow?.setAttribute("fill", "#a7d5ff");
-      glow?.setAttribute("opacity", ".72");
-      core?.setAttribute("r", "4.7");
-      core?.setAttribute("fill", "#d7f1ff");
-      center?.setAttribute("r", "1.8");
+      const [glow, core, center] = g.querySelectorAll('circle');
+      glow?.setAttribute('r', '17');
+      glow?.setAttribute('fill', '#a7d5ff');
+      glow?.setAttribute('opacity', '.72');
+      core?.setAttribute('r', '4.7');
+      core?.setAttribute('fill', '#d7f1ff');
+      center?.setAttribute('r', '1.8');
     }
-    return root.querySelectorAll(".cold-twinkle-led").length;
+    return root.querySelectorAll('.cold-twinkle-led').length;
   }
 
+  // Импульс обязан оставаться внутри трубки сосульки: его радиусы и ход
+  // ограничиваются геометрией дропа (data-x / data-top / data-bottom).
+  const ICICLE_CORE_R = 2.6;
+  const ICICLE_GLOW_R = 5.6;
+  // Ширина светящейся трубки в SVG (stroke-width glow-пути) = окно клипа
+  const ICICLE_TUBE_WIDTH = 5.2;
+
   function prepareIcicleChases(id: string, root: SVGElement): number {
-    if (id !== "melting-icicles") return 0;
+    if (id !== 'melting-icicles') return 0;
+    const ns = 'http://www.w3.org/2000/svg';
     const filterId = root.querySelector('filter[id$="-bulbGlow"]')?.id;
 
+    let defs = root.querySelector('defs');
+    if (!defs) {
+      defs = document.createElementNS(ns, 'defs');
+      root.prepend(defs);
+    }
+
+    let seq = 0;
     for (const core of [
       ...root.querySelectorAll<SVGCircleElement>(
         'circle[r="1.6"][opacity=".15"]',
       ),
     ]) {
-      const next = core.nextElementSibling;
-      const end = Number(next?.getAttribute("cy")) - 3;
-      if (!Number.isFinite(end)) continue;
+      const drop = core.closest<SVGGElement>('.icicle-drop');
+      if (!drop) continue;
+      const x = Number(drop.dataset.x);
+      const top = Number(drop.dataset.top);
+      const bottom = Number(drop.dataset.bottom);
+      if (!Number.isFinite(x) || !Number.isFinite(top)) continue;
 
-      core.classList.add("icicle-pulse");
-      core.dataset.endY = String(end);
-      core.setAttribute("r", "3.2");
-      core.setAttribute("opacity", "0");
+      const length = bottom - top;
+      if (!Number.isFinite(bottom) || length <= 0) continue;
+
+      // Окно отсечки — капсула ровно со светящуюся трубку сосульки
+      const clipId = `icicle-bounds-${seq++}`;
+      const clipPath = document.createElementNS(ns, 'clipPath');
+      clipPath.setAttribute('id', clipId);
+      const bounds = document.createElementNS(ns, 'rect');
+      bounds.setAttribute('x', String(x - ICICLE_TUBE_WIDTH / 2));
+      bounds.setAttribute('y', String(top));
+      bounds.setAttribute('width', String(ICICLE_TUBE_WIDTH));
+      bounds.setAttribute('height', String(length));
+      bounds.setAttribute('rx', String(ICICLE_TUBE_WIDTH / 2));
+      clipPath.append(bounds);
+      defs.append(clipPath);
+
+      // Ход импульса с отступом от обоих концов трубки
+      const pad = Math.min(3, length / 6);
+      const startY = top + pad;
+      const endY = bottom - pad;
+
+      core.classList.add('icicle-pulse');
+      core.setAttribute('r', String(ICICLE_CORE_R));
+      core.setAttribute('cy', String(startY));
+      core.setAttribute('opacity', '0');
 
       const glow = core.cloneNode(false) as SVGCircleElement;
-      glow.classList.remove("icicle-pulse");
-      glow.classList.add("icicle-pulse-glow");
-      glow.setAttribute("r", "8");
-      if (filterId) glow.setAttribute("filter", `url(#${filterId})`);
+      glow.classList.remove('icicle-pulse');
+      glow.classList.add('icicle-pulse-glow');
+      glow.setAttribute('r', String(ICICLE_GLOW_R));
+      if (filterId) glow.setAttribute('filter', `url(#${filterId})`);
 
-      core.parentElement?.insertBefore(glow, core);
+      core.dataset.endY = String(endY);
+
+      // glow + core живут в клип-группе: фильтр считается до отсечки,
+      // поэтому свечение упирается в границы сосульки, а не наружу
+      const track = document.createElementNS(ns, 'g');
+      track.setAttribute('clip-path', `url(#${clipId})`);
+      drop.insertBefore(track, core);
+      track.append(glow, core);
     }
-    return root.querySelectorAll(".icicle-pulse").length;
+    return root.querySelectorAll('.icicle-pulse').length;
   }
 
   function prepareAllLayers() {
     for (const [id, root] of layers) {
-      if (id === "eaves-fringe-warm-twinkle") {
+      if (id === 'eaves-fringe-warm-twinkle') {
         coldTwinkleCount.warm = prepareColdTwinkles(id, root);
-      } else if (id === "eaves-fringe-cold-twinkle") {
+      } else if (id === 'eaves-fringe-cold-twinkle') {
         coldTwinkleCount.cold = prepareColdTwinkles(id, root);
-      } else if (id === "melting-icicles") {
+      } else if (id === 'melting-icicles') {
         icicleCount = prepareIcicleChases(id, root);
       }
     }
@@ -147,8 +193,8 @@ export function useMotionRenderer() {
     liveMotion.get(id)!.clear();
     const svg = layers.get(id);
     if (svg) {
-      svg.classList.remove("visible");
-      svg.setAttribute("hidden", "");
+      svg.classList.remove('visible');
+      svg.setAttribute('hidden', '');
     }
     activeMotion.value.delete(id);
     activeMotion.value = new Set(activeMotion.value);
@@ -157,7 +203,7 @@ export function useMotionRenderer() {
   function twinkleMotion(id: string) {
     const root = layers.get(id);
     if (!root) return;
-    [...root.querySelectorAll<SVGGElement>(".cold-twinkle-led")].forEach(
+    [...root.querySelectorAll<SVGGElement>('.cold-twinkle-led')].forEach(
       (led, i) => {
         const durations = [2600, 3300, 2900, 3700, 3100, 3500, 2800];
         const duration = durations[i % 7];
@@ -173,7 +219,7 @@ export function useMotionRenderer() {
               { opacity: 0.14, offset: 0.65 },
               { opacity: 0.14, offset: 1 },
             ],
-            { duration, delay: phase, iterations: Infinity, easing: "linear" },
+            { duration, delay: phase, iterations: Infinity, easing: 'linear' },
           ),
         );
       },
@@ -184,27 +230,27 @@ export function useMotionRenderer() {
     const root = layers.get(id);
     if (!root) return;
     for (const column of root.querySelectorAll<SVGGElement>(
-      "[data-geometry-id]",
+      '[data-geometry-id]',
     )) {
-      const wire = column.querySelector("path");
+      const wire = column.querySelector('path');
       if (!wire) continue;
-      const wireOpacity = Number(wire.getAttribute("opacity") || 1);
+      const wireOpacity = Number(wire.getAttribute('opacity') || 1);
       track(
         id,
         wire.animate([{ opacity: 0 }, { opacity: wireOpacity }], {
           duration: 260,
           delay: entranceDelay,
-          easing: "ease-out",
-          fill: "both",
+          easing: 'ease-out',
+          fill: 'both',
         }),
       );
-      const bulbs = [...column.querySelectorAll<SVGCircleElement>("circle")];
-      const ys = bulbs.map((b) => Number(b.getAttribute("cy")));
+      const bulbs = [...column.querySelectorAll<SVGCircleElement>('circle')];
+      const ys = bulbs.map((b) => Number(b.getAttribute('cy')));
       const minY = Math.min(...ys);
       const maxY = Math.max(...ys);
       bulbs.forEach((b) => {
-        const y = Number(b.getAttribute("cy"));
-        const target = Number(b.getAttribute("opacity") || 1);
+        const y = Number(b.getAttribute('cy'));
+        const target = Number(b.getAttribute('opacity') || 1);
         const delay =
           entranceDelay +
           90 +
@@ -214,8 +260,8 @@ export function useMotionRenderer() {
           b.animate([{ opacity: 0 }, { opacity: target }], {
             duration: 130,
             delay,
-            easing: "ease-out",
-            fill: "both",
+            easing: 'ease-out',
+            fill: 'both',
           }),
         );
       });
@@ -226,26 +272,26 @@ export function useMotionRenderer() {
     const root = layers.get(id);
     if (!root) return;
     const bulbs = [
-      ...root.querySelectorAll<SVGCircleElement>("[data-geometry-id] circle"),
+      ...root.querySelectorAll<SVGCircleElement>('[data-geometry-id] circle'),
     ];
     const positions = [
       ...new Set(
-        bulbs.map((b) => `${b.getAttribute("cx")}:${b.getAttribute("cy")}`),
+        bulbs.map((b) => `${b.getAttribute('cx')}:${b.getAttribute('cy')}`),
       ),
     ];
     const step = Math.min(22, 1000 / Math.max(1, positions.length - 1));
     bulbs.forEach((b) => {
-      const key = `${b.getAttribute("cx")}:${b.getAttribute("cy")}`;
+      const key = `${b.getAttribute('cx')}:${b.getAttribute('cy')}`;
       const delay = entranceDelay + Math.round(positions.indexOf(key) * step);
       track(
         id,
         b.animate(
-          [{ opacity: 0 }, { opacity: Number(b.getAttribute("opacity") || 1) }],
+          [{ opacity: 0 }, { opacity: Number(b.getAttribute('opacity') || 1) }],
           {
             duration: 130,
             delay,
-            easing: "ease-out",
-            fill: "both",
+            easing: 'ease-out',
+            fill: 'both',
           },
         ),
       );
@@ -256,9 +302,9 @@ export function useMotionRenderer() {
     const root = layers.get(id);
     if (!root) return;
 
-    [...root.querySelectorAll<SVGCircleElement>(".icicle-pulse")].forEach(
+    [...root.querySelectorAll<SVGCircleElement>('.icicle-pulse')].forEach(
       (core, i) => {
-        const start = Number(core.getAttribute("cy"));
+        const start = Number(core.getAttribute('cy'));
         const end = Number(core.dataset.endY);
         if (!Number.isFinite(start) || !Number.isFinite(end)) return;
 
@@ -280,7 +326,7 @@ export function useMotionRenderer() {
             id,
             node.animate(
               [
-                { opacity: 0, transform: "translateY(0px)", offset: 0 },
+                { opacity: 0, transform: 'translateY(0px)', offset: 0 },
                 {
                   opacity: peak,
                   transform: `translateY(${dy * 0.55}px)`,
@@ -292,7 +338,7 @@ export function useMotionRenderer() {
                 duration,
                 delay: phase,
                 iterations: Infinity,
-                easing: "linear",
+                easing: 'linear',
               },
             ),
           );
@@ -306,32 +352,32 @@ export function useMotionRenderer() {
     const svg = layers.get(id);
     if (!svg) return;
 
-    svg.removeAttribute("hidden");
-    svg.classList.add("visible");
+    svg.removeAttribute('hidden');
+    svg.classList.add('visible');
     activeMotion.value.add(id);
     activeMotion.value = new Set(activeMotion.value);
 
     if (staticMotion()) return;
 
-    if (id === "vertical-thread") verticalMotion(id, delay);
-    else if (id === "belt-light") beltMotion(id, delay);
+    if (id === 'vertical-thread') verticalMotion(id, delay);
+    else if (id === 'belt-light') beltMotion(id, delay);
     else
       track(
         id,
         svg.animate([{ opacity: 0 }, { opacity: 1 }], {
           duration: entranceDuration,
           delay,
-          easing: "ease-in-out",
-          fill: "both",
+          easing: 'ease-in-out',
+          fill: 'both',
         }),
       );
 
     if (
-      id === "eaves-fringe-warm-twinkle" ||
-      id === "eaves-fringe-cold-twinkle"
+      id === 'eaves-fringe-warm-twinkle' ||
+      id === 'eaves-fringe-cold-twinkle'
     )
       twinkleMotion(id);
-    if (id === "melting-icicles") icicleMotion(id);
+    if (id === 'melting-icicles') icicleMotion(id);
   }
 
   function sync(id: string, shouldShow: boolean) {
@@ -357,8 +403,8 @@ export function useMotionRenderer() {
       if (!svg) return Promise.resolve();
       const fade = svg.animate([{ opacity: 1 }, { opacity: 0 }], {
         duration: 500,
-        easing: "ease-in-out",
-        fill: "forwards",
+        easing: 'ease-in-out',
+        fill: 'forwards',
       });
       replayFades.add(fade);
       return fade.finished.catch(() => {});
@@ -376,17 +422,17 @@ export function useMotionRenderer() {
       if (
         (
           [
-            "eaves-fringe-warm",
-            "eaves-fringe-cold",
-            "eaves-fringe-warm-twinkle",
-            "eaves-fringe-cold-twinkle",
-            "melting-icicles",
+            'eaves-fringe-warm',
+            'eaves-fringe-cold',
+            'eaves-fringe-warm-twinkle',
+            'eaves-fringe-cold-twinkle',
+            'melting-icicles',
           ] as string[]
         ).includes(id)
       )
         delay = 250;
-      else if (id === "vertical-thread") delay = 500;
-      else if (id.startsWith("motifs-")) delay = 750;
+      else if (id === 'vertical-thread') delay = 500;
+      else if (id.startsWith('motifs-')) delay = 750;
       startMotion(id, delay, 720);
     }
     replayBusy = false;
@@ -411,13 +457,13 @@ export function useMotionRenderer() {
   };
 
   onMounted(() => {
-    mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     reducedMotion.value = mq.matches;
-    mq.addEventListener("change", onMqChange);
+    mq.addEventListener('change', onMqChange);
   });
 
   onUnmounted(() => {
-    mq?.removeEventListener("change", onMqChange);
+    mq?.removeEventListener('change', onMqChange);
     cancelReplay();
     for (const set of liveMotion.values()) for (const a of set) a.cancel();
   });

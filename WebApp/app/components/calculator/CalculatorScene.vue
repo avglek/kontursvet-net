@@ -14,15 +14,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
-import { buildOverlaySvg } from '~/utils/overlay-renderer';
+import { nextTick, onMounted, ref } from 'vue';
+import { loadAllOverlays } from '~/utils/svg-loader';
 import { MOTION_IDS } from '~/utils/calculator.config';
-import geometryRaw from '~/data/geometry.json';
-import type { Geometry } from '~/types/geometry';
-
-const POLARIS_URL = '/images/calculator/motifs/polaris.png';
-
-const geometry = geometryRaw as unknown as Geometry;
 
 const props = defineProps<{
   activeOverlays: Set<string>;
@@ -30,6 +24,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'layer-ref': [id: string, el: SVGElement | null];
+  ready: [];
 }>();
 
 // Префиксуем id внутри SVG, чтобы `<defs>` разных слоёв не конфликтовали
@@ -40,26 +35,22 @@ function prefixIds(svg: string, prefix: string): string {
     .replace(/href="#([^"]+)"/g, (_, id) => `href="#${prefix}-${id}"`);
 }
 
-// Генерируем SVG один раз (чистая функция, можно и на сервере)
-const overlayMarkup = computed<Record<string, string>>(() => {
-  const out: Record<string, string> = {};
-  for (const id of MOTION_IDS) {
-    const m = id.match(/^(.*)-(\d+)$/);
-    const baseId = m ? m[1]! : id;
-    const anchorIndex = m ? Number(m[2]) - 1 : undefined;
-    const raw = buildOverlaySvg(baseId, geometry, {
-      polarisImageUrl: POLARIS_URL,
-      anchorIndex,
-      layerId: id,
-    });
-    out[id] = prefixIds(raw, id);
-  }
-  return out;
-});
+// SVG-разметка загружается из файлов (public/images/calculator/svg/)
+const overlayMarkup = ref<Record<string, string>>({});
 
 const sceneEl = ref<HTMLDivElement | null>(null);
 
-onMounted(() => {
+onMounted(async () => {
+  const raw = await loadAllOverlays(MOTION_IDS);
+
+  const out: Record<string, string> = {};
+  for (const [id, markup] of Object.entries(raw)) {
+    out[id] = prefixIds(markup, id);
+  }
+  overlayMarkup.value = out;
+
+  await nextTick();
+
   if (!sceneEl.value) return;
   for (const id of MOTION_IDS) {
     const el = sceneEl.value.querySelector<SVGElement>(
@@ -67,6 +58,7 @@ onMounted(() => {
     );
     emit('layer-ref', id, el);
   }
+  emit('ready');
 });
 </script>
 
