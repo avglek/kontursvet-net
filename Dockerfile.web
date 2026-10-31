@@ -20,6 +20,12 @@ COPY WebApp/ ./
 ARG NUXT_PUBLIC_API_BASE=""
 ENV NUXT_PUBLIC_API_BASE=$NUXT_PUBLIC_API_BASE
 
+# ID счётчика Яндекс Метрики зашивается в runtimeConfig собранного бандла.
+# Может быть задан и позже — в environment контейнера (Nitro переопределяет
+# runtimeConfig по той же переменной). Пусто — метрика работает заглушкой.
+ARG NUXT_PUBLIC_YANDEX_METRIKA_ID=""
+ENV NUXT_PUBLIC_YANDEX_METRIKA_ID=$NUXT_PUBLIC_YANDEX_METRIKA_ID
+
 RUN npm run build
 
 # ---------- Этап рантайма (прод, Nitro node-server) ----------

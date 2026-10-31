@@ -120,7 +120,6 @@ import { type IModalLeadPanel } from '~/types/CardView.ts';
 import { ref } from 'vue';
 import { vMaska } from 'maska/vue';
 import { useLeads } from '~/composables/useLeads';
-import { useMetrika } from '~/composables/useMetrika';
 import { storeToRefs } from 'pinia';
 
 const form: ILeadForm = reactive({
@@ -145,7 +144,9 @@ const leadStore = useLeadStore();
 //const {estimate} = storeToRefs(leadStore);
 form.estimate = leadStore.estimate;
 
-const metrika = useMetrika();
+// Цели Яндекс Метрики: API модуля @rkaliev/nuxt-yandex-metrika (автоимпорт).
+// В dev и без id счётчика — заглушка, вызовы ничего не отправляют.
+const metrika = useYandexMetrika();
 
 const handleModalClose = () => {
   isModalView.value = false;

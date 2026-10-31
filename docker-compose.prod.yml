@@ -36,6 +36,8 @@ services:
       target: runtime
       args:
         NUXT_PUBLIC_API_BASE: ${NUXT_PUBLIC_API_BASE:-}
+        # Значение по умолчанию для runtimeConfig внутри образа
+        NUXT_PUBLIC_YANDEX_METRIKA_ID: ${NUXT_PUBLIC_YANDEX_METRIKA_ID:-}
     image: kontursvet-net-web:prod
     container_name: kontursvet-net-web
     restart: unless-stopped
