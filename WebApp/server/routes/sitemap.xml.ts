@@ -19,6 +19,8 @@ const staticUrls: StaticUrl[] = [
   { path: '/', priority: 1.0, changefreq: 'weekly' },
   { path: '/portfolio', priority: 0.9, changefreq: 'weekly' },
   { path: '/calculator', priority: 0.8, changefreq: 'monthly' },
+  // Правовая страница: обновляется редко, приоритет минимальный
+  { path: '/privacy', priority: 0.3, changefreq: 'yearly' },
 ];
 
 interface ApiCardView {

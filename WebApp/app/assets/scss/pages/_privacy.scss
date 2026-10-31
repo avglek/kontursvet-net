@@ -1,0 +1,174 @@
+@use '../abstracts' as *;
+
+// ============================================================
+// Страница «Политика конфиденциальности». Скоуп .privacy-page,
+// типографика — на токенах дизайн-системы главной.
+// ============================================================
+
+.privacy-page {
+  display: block;
+  padding: 46px 0 96px;
+  color: $ice;
+}
+
+.privacy-head {
+  max-width: 860px;
+}
+
+.privacy-title {
+  margin: 14px 0 0;
+  font: 700 clamp(34px, 3.4vw, 54px)/1.06 $font-head;
+  letter-spacing: -0.035em;
+}
+
+.privacy-lead {
+  max-width: 720px;
+  margin: 18px 0 0;
+  color: $muted;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+.privacy-updated {
+  margin: 16px 0 0;
+  color: $muted-2;
+  font-size: 14px;
+}
+
+// ─── Оглавление ─────────────────────────────────────────────────────────────
+.privacy-toc {
+  max-width: 860px;
+  margin: 34px 0 0;
+  padding: 22px 26px;
+  border: 1px solid $line;
+  border-radius: $radius-card;
+  background: rgba(11, 39, 67, 0.5);
+
+  ol {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: toc;
+  }
+
+  li {
+    counter-increment: toc;
+    font-size: 15px;
+  }
+
+  a {
+    display: inline-flex;
+    gap: 10px;
+    color: $muted;
+    text-decoration: none;
+    transition: color 0.2s;
+
+    // Номер раздела берём из счётчика, чтобы не дублировать его в разметке
+    &::before {
+      content: counter(toc, decimal-leading-zero);
+      color: $cyan-light;
+      font-variant-numeric: tabular-nums;
+    }
+
+    &:hover {
+      color: $cyan-bright;
+    }
+  }
+}
+
+// ─── Разделы ────────────────────────────────────────────────────────────────
+.privacy-section {
+  max-width: 860px;
+  margin-top: 46px;
+  scroll-margin-top: #{$header-height + 24px};
+
+  h2 {
+    margin: 0 0 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid $separator-strong;
+    font: 700 clamp(21px, 1.7vw, 26px)/1.25 $font-head;
+    letter-spacing: -0.02em;
+  }
+
+  p {
+    margin: 0 0 12px;
+    color: rgba(241, 247, 251, 0.86);
+    font-size: 16px;
+    line-height: 1.65;
+  }
+
+  ul {
+    display: grid;
+    gap: 10px;
+    margin: 4px 0 12px;
+    padding: 0;
+    list-style: none;
+    counter-reset: item;
+  }
+
+  li {
+    position: relative;
+    padding-left: 24px;
+    color: rgba(241, 247, 251, 0.86);
+    font-size: 16px;
+    line-height: 1.6;
+    counter-increment: item;
+
+    &::before {
+      position: absolute;
+      top: 9px;
+      left: 0;
+      content: '';
+      @include glow-dot(6px);
+    }
+  }
+}
+
+// ─── Пометка о черновике и возврат ─────────────────────────────────────────
+.privacy-draft {
+  max-width: 860px;
+  margin: 54px 0 0;
+  padding: 16px 20px;
+  border: 1px dashed rgba(85, 206, 245, 0.5);
+  border-radius: 12px;
+  color: $cyan-light;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.privacy-back {
+  margin: 28px 0 0;
+
+  a {
+    color: $cyan-light;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+      color: $cyan-bright;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+}
+
+@include down('tablet') {
+  .privacy-page {
+    padding: 30px 0 72px;
+  }
+
+  .privacy-lead {
+    font-size: 16px;
+  }
+
+  .privacy-toc {
+    padding: 18px 20px;
+  }
+
+  .privacy-section {
+    margin-top: 38px;
+    scroll-margin-top: #{$header-height-tablet + 20px};
+  }
+}

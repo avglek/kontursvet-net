@@ -131,7 +131,8 @@
               <span class="cinematic-stat-tag">Технология</span>
               <span class="cinematic-stat-title">Аккуратный монтаж</span>
               <span class="cinematic-stat-desc"
-                >Алюминиевый профиль без сверления кровли</span
+                >Алюминиевый профиль для неона, эстетичное крепление
+                гирлянд</span
               >
             </div>
             <div class="cinematic-stat-item">
@@ -149,16 +150,8 @@
 </template>
 
 <script setup lang="ts">
-
-const {
-  playing,
-  status,
-  timeText,
-  progress,
-  toggleLabel,
-  play,
-  toggle,
-} = useHeroVideo();
+const { playing, status, timeText, progress, toggleLabel, play, toggle } =
+  useHeroVideo();
 
 const videoSrc = '/video/hero-showreel-hd-silent.mp4';
 const posterSrc = '/video/hero-poster-hd.webp';

@@ -8,5 +8,16 @@
       "title": "Oops... Error.",
       "message": "Please try submitting your request later."
     }
+  },
+  "cookieConsent": {
+    "title": "Cookies and Yandex Metrika",
+    "text": "The site uses cookies to work properly and — only after you agree — Yandex Metrika with Webvisor, which records page views, clicks and actions on the page. Without your consent the counter sends nothing.",
+    "link": "Privacy policy",
+    "accept": "Accept",
+    "decline": "Decline"
+  },
+  "footer": {
+    "privacy": "Privacy policy",
+    "cookieSettings": "Cookie settings"
   }
 }

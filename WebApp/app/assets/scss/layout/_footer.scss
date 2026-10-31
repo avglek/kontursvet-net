@@ -30,6 +30,24 @@
   }
 }
 
+// Ссылки в подвале (политика, настройки cookie) — второстепенное действие,
+// поэтому выглядят как подчёркнутый текст, а не кнопки.
+.footer-nav-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: right;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+
+  &:hover {
+    color: $cyan-light;
+  }
+}
+
 @include down('tablet') {
   .footer-row {
     flex-wrap: wrap;
@@ -37,6 +55,10 @@
     p {
       text-align: left;
     }
+  }
+
+  .footer-nav-link {
+    text-align: left;
   }
 }
 

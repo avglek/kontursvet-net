@@ -12,13 +12,18 @@
  * модуль складывает в очередь window.ym — хит страницы входа не теряется.
  * Опция defer: true у счётчика не даёт ему отправить собственный hit, так что
  * страница считается ровно один раз.
+ *
+ * Модуль работает с requireConsent: true, поэтому все вызовы до согласия
+ * отбрасываются, а не ставятся в очередь. Старт счётчика здесь — по
+ * сохранённому или только что данному согласию из useCookieConsent.
  */
 export default defineNuxtPlugin((nuxtApp) => {
   const metrika = useYandexMetrika();
   const router = useRouter();
+  const { choice } = useCookieConsent();
 
-  /** Админ-панель (/admin, /admin/...) в статистику не попадает. */
-  const isTracked = (path: string) => !/(^|\/)admin(\/|$)/.test(path);
+  /** Публичные страницы: админ-панель в статистику не попадает. */
+  const isTracked = (path: string) => !isAdminPath(path);
 
   let lastSent: string | undefined;
 
@@ -28,6 +33,21 @@ export default defineNuxtPlugin((nuxtApp) => {
     lastSent = route.fullPath;
     metrika.hit(route.fullPath, { title: document.title });
   };
+
+  // Согласие дано раньше — запускаем счётчик до рендера страницы, чтобы
+  // первый хит (page:finish ниже) уже прошёл.
+  if (loadCookieConsent() === 'granted') {
+    metrika.grantConsent();
+  }
+
+  // Ответ дан сейчас через баннер: запускаем счётчик и досылаем хит текущей
+  // страницы — до согласия он был бы отброшен.
+  watch(choice, (value) => {
+    if (value !== 'granted') return;
+    metrika.grantConsent();
+    lastSent = void 0;
+    sendHit();
+  });
 
   // Хук срабатывает и на начальном входе, и на каждой клиентской навигации,
   // поэтому закрывает и первый просмотр, и последующие переходы.

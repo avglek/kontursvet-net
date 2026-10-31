@@ -56,13 +56,18 @@ export default defineNuxtConfig({
   ],
 
   // Яндекс Метрика подключается только этим модулем: он грузит tag.js и
-  // инициализирует счётчик, сам добавляет <noscript>-пиксель (noJS: true по
-  // умолчанию). В dev и при пустом id работает mock-заглушкой — ничего не шлётся.
+  // инициализирует счётчик. В dev и при пустом id работает mock-заглушкой —
+  // ничего не шлётся.
   yandexMetrika: {
     // ID счётчика из NUXT_PUBLIC_YANDEX_METRIKA_ID (см. .env.example)
     id: process.env.NUXT_PUBLIC_YANDEX_METRIKA_ID || '',
     // Вебвизор: записи сессий и тепловые карты
     webvisor: true,
+    // До согласия из баннера (app/components/CookieConsent.vue) tag.js не
+    // загружается и ничего не отправляется. При requireConsent модуль сам
+    // отказывается и от <noscript>-пикселя — он не ставит cookie в обход
+    // согласия, поэтому noJS здесь включать не нужно.
+    requireConsent: true,
     // Автоотслеживание выключено: модуль считает все маршруты подряд, а визиты
     // в /admin/** в статистике не нужны. Хиты по публичным страницам отправляет
     // app/plugins/metrika-hits.client.ts через useYandexMetrika().hit().
