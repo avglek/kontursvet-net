@@ -9,6 +9,23 @@
       "message": "Please try submitting your request later."
     }
   },
+  "callback": {
+    "kicker": "Free · no obligations",
+    "title": "Request a call back",
+    "text": "Leave your name and phone number — we will call you back during business hours, answer questions about lighting and prepare a preliminary estimate.",
+    "nameLabel": "Name",
+    "namePlaceholder": "How should we address you",
+    "phoneLabel": "Phone",
+    "phonePlaceholder": "+7(999)000-00-00",
+    "submit": "Request a call",
+    "submitting": "Sending…",
+    "close": "Close",
+    "privacy": "By clicking the button you agree to the processing of your personal data for follow-up contact.",
+    "phoneError": "Enter the phone number in full, e.g. +7(999)000-00-00",
+    "error": "Could not send the request. Please try again a little later.",
+    "successTitle": "Request received",
+    "successText": "We will call the number you provided during business hours."
+  },
   "cookieConsent": {
     "title": "Cookies and Yandex Metrika",
     "text": "The site uses cookies to work properly and — only after you agree — Yandex Metrika with Webvisor, which records page views, clicks and actions on the page. Without your consent the counter sends nothing.",

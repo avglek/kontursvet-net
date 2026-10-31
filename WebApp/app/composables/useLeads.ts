@@ -12,6 +12,13 @@ interface LeadForm {
   estimate: string;
 }
 
+// Поля формы обратного звонка — только контакты.
+interface CallbackForm {
+  name: string;
+  phoneDigital: string;
+  phoneFormat: string;
+}
+
 interface LeadAttachmentPayload {
   filename: string;
   url: string;
@@ -85,5 +92,21 @@ export const useLeads = () => {
     return api.post<{ id: number }>(sendUrl, payload);
   };
 
-  return { sendLead, uploadFile };
+  /**
+   * Заявка на обратный звонок: из контактов только имя и телефон,
+   * в текст добавляется пометка, чтобы менеджер видел тип обращения.
+   */
+  const sendCallback = async (form: CallbackForm) =>
+    sendLead(
+      {
+        ...form,
+        home: '',
+        location: '',
+        message: 'Заказ обратного звонка',
+        estimate: '',
+      },
+      [],
+    );
+
+  return { sendLead, sendCallback, uploadFile };
 };

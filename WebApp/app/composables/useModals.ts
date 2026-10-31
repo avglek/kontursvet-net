@@ -4,7 +4,10 @@
 
 export type NoticeKind = 'portfolio' | 'calc';
 
-export const NOTICE_CONTENT: Record<NoticeKind, { title: string, text: string }> = {
+export const NOTICE_CONTENT: Record<
+  NoticeKind,
+  { title: string; text: string }
+> = {
   portfolio: {
     title: 'Полное портфолио проектов',
     text: 'Все 5 ключевых реализованных объектов (Гатчина, Васкелово, Репино, Всеволожск, Flex neon) представлены в интерактивной галерее ниже на странице.',
@@ -20,6 +23,7 @@ export function useModals() {
   const lightboxAlt = useState<string>('modal:lightbox-alt', () => '');
   const isLightboxOpen = useState<boolean>('modal:lightbox', () => false);
   const isLeadOpen = useState<boolean>('modal:lead', () => false);
+  const isCallbackOpen = useState<boolean>('modal:callback', () => false);
   const noticeKind = useState<NoticeKind | ''>('modal:notice', () => '');
 
   const noticeContent = computed(() =>
@@ -27,7 +31,11 @@ export function useModals() {
   );
 
   const isAnyOpen = computed(
-    () => isLightboxOpen.value || isLeadOpen.value || noticeKind.value !== '',
+    () =>
+      isLightboxOpen.value ||
+      isLeadOpen.value ||
+      isCallbackOpen.value ||
+      noticeKind.value !== '',
   );
 
   function openLightbox(src: string, alt = 'Фотография проекта') {
@@ -49,6 +57,15 @@ export function useModals() {
     isLeadOpen.value = false;
   }
 
+  // Модалка «Заказать обратный звонок» — её открывает плавающая кнопка.
+  function openCallback() {
+    isCallbackOpen.value = true;
+  }
+
+  function closeCallback() {
+    isCallbackOpen.value = false;
+  }
+
   function openNotice(kind: NoticeKind) {
     noticeKind.value = kind;
   }
@@ -60,6 +77,7 @@ export function useModals() {
   function closeAll() {
     closeLightbox();
     closeLead();
+    closeCallback();
     closeNotice();
   }
 
@@ -68,6 +86,7 @@ export function useModals() {
     lightboxAlt,
     isLightboxOpen,
     isLeadOpen,
+    isCallbackOpen,
     noticeKind,
     noticeContent,
     isAnyOpen,
@@ -75,6 +94,8 @@ export function useModals() {
     closeLightbox,
     openLead,
     closeLead,
+    openCallback,
+    closeCallback,
     openNotice,
     closeNotice,
     closeAll,

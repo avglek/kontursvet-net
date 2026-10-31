@@ -10,6 +10,8 @@
     <HomeCasesSection />
     <HomeProcessSection />
     <HomeContactSection />
+    <!-- Плавающая кнопка заявки поверх контента, справа снизу -->
+    <HomeFloatingLeadButton />
   </main>
 </template>
 

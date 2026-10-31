@@ -4,6 +4,8 @@
     <slot />
     <Footer />
     <ImageLightbox />
+    <!-- Диалог обратного звонка: открывается плавающей кнопкой (useModals) -->
+    <FormCallbackModal />
   </div>
 </template>
 
