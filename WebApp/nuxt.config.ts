@@ -153,6 +153,12 @@ export default defineNuxtConfig({
       process.env.NUXT_API_INTERNAL_BASE || 'http://localhost:5136',
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '',
+      privacy: {
+        fio: '',
+        inn: '',
+        ogrnip: '',
+        email: '',
+      },
     },
   },
 
