@@ -5,8 +5,8 @@
 // но ниже баннера cookie (z-index 900), шапки (1000) и модалок (1200+).
 
 $offset: 20px; // отступ от края окна
-// Примерная высота баннера согласия на десктопе (текст + отступы).
-$consent-height: 176px;
+// Примерная высота компактного баннера согласия на десктопе (~90px + отступы).
+$consent-height: 110px;
 
 .floating-lead {
   position: fixed;
@@ -67,7 +67,7 @@ $consent-height: 176px;
 
 @include down('tablet') {
   .floating-lead--lifted {
-    bottom: $offset + 244px; // баннер перестроился в колонку с кнопками
+    bottom: $offset + $consent-height; // компактный баннер той же высоты
   }
 }
 
@@ -83,7 +83,7 @@ $consent-height: 176px;
   }
 
   .floating-lead--lifted {
-    bottom: 12px + 292px;
+    bottom: 12px + $consent-height;
   }
 }
 

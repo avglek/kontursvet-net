@@ -11,4 +11,10 @@
 
 <script lang="ts" setup></script>
 
-<style></style>
+<style lang="scss">
+// Баннер cookie-согласия прижат к нижнему краю и занимает ~90px.
+// Добавляем отступ снизу, чтобы кнопки отправки форм не перекрывались.
+main {
+  padding-bottom: 100px;
+}
+</style>

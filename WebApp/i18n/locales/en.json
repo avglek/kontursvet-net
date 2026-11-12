@@ -27,9 +27,8 @@
     "successText": "We will call the number you provided during business hours."
   },
   "cookieConsent": {
-    "title": "Cookies and Yandex Metrika",
-    "text": "The site uses cookies to work properly and — only after you agree — Yandex Metrika with Webvisor, which records page views, clicks and actions on the page. Without your consent the counter sends nothing.",
-    "link": "Privacy policy",
+    "text": "Cookies and Yandex Metrika with Webvisor — only with your consent.",
+    "link": "More info",
     "accept": "Accept",
     "decline": "Decline"
   },
