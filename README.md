@@ -45,7 +45,8 @@
 │   ├── Kontursvet.Domain/         # сущности, Result
 │   └── Kontursvet.Infrastructure/ # репозитории, MAX, JWT, хранилище, миграции
 ├── tests/
-│   └── Kontursvet.Application.Tests/  # xUnit
+│   ├── Kontursvet.Application.Tests/  # xUnit: Domain + обработчики Application (Moq)
+│   └── Kontursvet.Api.Tests/          # xUnit: Api/Infrastructure без БД и сети
 └── WebApp/                        # Nuxt 4 фронтенд
 ```
 
@@ -136,12 +137,37 @@ npm run docker:down:all
 # Сборка .NET-решения
 dotnet build Kontursvet.slnx
 
-# Запуск тестов
-dotnet test
+# Все тесты (оба тестовых проекта)
+dotnet test Kontursvet.slnx
+
+# Только один проект
+dotnet test tests/Kontursvet.Application.Tests
+dotnet test tests/Kontursvet.Api.Tests
+
+# Покрытие (отчёты в tests/*/TestResults/*/coverage.cobertura.xml)
+dotnet test Kontursvet.slnx --collect:"XPlat Code Coverage"
 
 # Продакшен-сборка фронтенда
 npm run build --prefix ./WebApp
 ```
+
+### Unit-тесты
+
+Тесты не требуют PostgreSQL, сети и фронтенда — их можно запускать в CI без окружения.
+
+| Проект                         | Тестов | Что покрыто                                                                                                                                                                                                                                                                 |
+| ------------------------------ | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Kontursvet.Application.Tests` | 189    | `Result` и сущности Domain; все обработчики Application (Moq-заглушки репозиториев/диспетчера/хранилища); маппинг DTO; `AddApplication` (регистрация и разрешение всех хендлеров)                                                                                           |
+| `Kontursvet.Api.Tests`         | 141    | `ResultExtensions` (маппинг `Result` → HTTP); `ProductionSecretsGuard`; `AdminUserSeeder`; `AddApiServices` (JWT/CORS/Swagger/JSON); `BCryptPasswordHasher`; `JwtTokenService`; `LocalFileStorage`; `NoOpMessageDispatcher`; `NpgsqlConnectionFactory`; `AddInfrastructure` |
+
+Покрытие строк исходного кода: `Domain` — 100%, `Application` — 99,6%, `Configuration` — 95,3%.
+
+Не покрывается намеренно — это интеграционная территория, требующая живой PostgreSQL или MAX:
+
+- `Kontursvet.Api/Endpoints/*` — маршруты и их обвязка (тесты через `WebApplicationFactory`);
+- `Kontursvet.Infrastructure/Repositories/*` — SQL через Dapper (тесты через Testcontainers);
+- `Kontursvet.Infrastructure/Messaging/MaxMessageDispatcher` — сетевой клиент SaaSoft.MAX.Bot;
+- `Program.cs` — композиция хоста.
 
 ## Загруженные файлы
 

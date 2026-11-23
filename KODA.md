@@ -63,7 +63,8 @@
 │   ├── Kontursvet.Domain/       # сущности, Result
 │   └── Kontursvet.Infrastructure/ # репозитории, MAX, JWT, хранилище, Migrations/
 ├── tests/
-│   └── Kontursvet.Application.Tests/  # xUnit (пока только заготовка)
+│   ├── Kontursvet.Application.Tests/  # xUnit + Moq: Domain и обработчики Application
+│   └── Kontursvet.Api.Tests/          # xUnit + Moq: Api/Infrastructure без БД и сети
 └── WebApp/                      # Nuxt 4 фронтенд (app/, i18n/, public/, nuxt.config.ts)
 ```
 
@@ -136,12 +137,30 @@ npm run dev:nuxt   # nuxt dev в ./WebApp
 # сборка .NET-решения
 dotnet build Kontursvet.slnx
 
-# запуск тестов (xUnit)
-dotnet test
+# запуск всех unit-тестов (330 тестов, xUnit + Moq, без БД и сети)
+dotnet test Kontursvet.slnx
+
+# покрытие (cobertura в tests/*/TestResults/<guid>/)
+dotnet test Kontursvet.slnx --collect:"XPlat Code Coverage"
 
 # продакшен-сборка фронтенда
 npm run build --prefix ./WebApp     # либо npm run build -w WebApp
 ```
+
+Два тестовых проекта:
+
+- **`Kontursvet.Application.Tests`** — Domain (`Result`, сущности) и все обработчики
+  Application на Moq-заглушках абстракций; плюс `DependencyInjectionTests` — проверка, что
+  `AddApplication()` регистрирует каждый хендлер как Scoped и что хендлеры разрешаются.
+- **`Kontursvet.Api.Tests`** — код `Api` и `Infrastructure`, не требующий PostgreSQL/сети:
+  `ResultExtensions` (маппинг `Result` → HTTP), `ProductionSecretsGuard`, `AdminUserSeeder`
+  (свои фейки репозитория/хешера/окружения), `AddApiServices` (JWT/CORS/Swagger/JSON),
+  `AddInfrastructure`, `BCryptPasswordHasher`, `JwtTokenService`, `LocalFileStorage`
+  (пишет в temp-каталог, `IDisposable`), `NoOpMessageDispatcher`, `NpgsqlConnectionFactory`.
+
+Не покрывается намеренно (интеграционная территория): `Api/Endpoints/*`,
+`Infrastructure/Repositories/*` (Dapper + SQL), `MaxMessageDispatcher` (клиент MAX),
+`Program.cs`.
 
 ## Запуск в Docker (nginx + два режима)
 
@@ -232,6 +251,21 @@ volume `uploads`) + один из `docker-compose.prod.yml` / `docker-compose.de
 - Секреты (JWT, токен MAX, строка подключения) задавать в `appsettings`/переменных окружения,
   не коммитить продакшен-значения.
 
+### Тесты (бэкенд)
+
+- Unit-тесты не должны требовать PostgreSQL, сети или фронтенда — прогон `dotnet test Kontursvet.slnx`
+  работает на чистой машине. Для зависимостей от абстракций — Moq (`Mock.Of<T>()` или `Mock<T>`),
+  для репозитория/хешера/окружения в `Api.Tests` допускаются собственные фейки (`Fake*`-вложенные классы).
+- Новый обработчик Application — обязательно добавить в `HandlerTypes` в
+  `tests/Kontursvet.Application.Tests/DependencyInjectionTests.cs`, иначе тест
+  `AddApplication_RegistersExactlyTheHandlerSet_NothingElse` не даст забыть регистрацию.
+- Тесты `ProductionSecretsGuard` и `AddApiServices` собирают конфиг через
+  `ConfigurationBuilder().AddInMemoryCollection(...)` — не читать `appsettings*.json`.
+- Тесты, пишущие на диск (`LocalFileStorage`), создают temp-каталог в конструкторе и удаляют его
+  в `Dispose`; класс помечен `IDisposable`.
+- Покрытие намеренно не гонится за 100%: эндпоинты, Dapper-репозитории и `MaxMessageDispatcher`
+  относятся к интеграционной территории и в unit-тестах не проверяются.
+
 ### TypeScript / фронтенд
 
 - Форматирование по `.prettierrc`: отступ 2 пробела, одинарные кавычки, точка с запятой.
@@ -262,8 +296,11 @@ volume `uploads`) + один из `docker-compose.prod.yml` / `docker-compose.de
 - `GalleryEndpoints` реализован, но **не подключён** в `Program.cs` (нет вызова `MapGalleryEndpoints()`).
 - В `SendLeadHandler` сохранение лида в БД закомментировано — сейчас выполняется только
   отправка в MAX (best-effort).
+- `Kontursvet.Application.Common.ValidationExtensions` — неиспользуемый internal-класс,
+  не покрывается тестами, не влияет на логику.
 - `MaxMessageDispatcher` содержит тестовый токен/`ChatId` в `appsettings.Development.json` —
   не использовать в проде.
+- Покрытие unit-тестами: `Domain` — 100%, `Application` — 99,6%, `Configuration` — 95,3%.
 - Папки `bin/`, `obj/`, `node_modules/`, `.nuxt/`, `.output/` — артефакты сборки, не редактировать.
 - `Program.cs` подключает `UseStaticFiles` с `PhysicalFileProvider(<ContentRoot>/wwwroot)` —
   папка `wwwroot` должна существовать, иначе приложение упадёт на старте. В Docker она пустая
