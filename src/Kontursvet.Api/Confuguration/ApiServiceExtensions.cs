@@ -1,3 +1,4 @@
+using Kontursvet.Api.Services;
 using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -31,6 +32,9 @@ public static class ApiServiceExtensions
             });
 
         services.AddAuthorization();
+
+        // Посев начального администратора из переменных окружения
+        services.AddHostedService<AdminUserSeeder>();
 
 
         services.AddEndpointsApiExplorer();

@@ -40,4 +40,12 @@ public sealed class AdminUserRepository(IDbConnectionFactory factory) : IAdminUs
         return await db.ExecuteScalarAsync<long>(
             new CommandDefinition(sql, user, cancellationToken: ct));
     }
+
+    public async Task<bool> AnyAsync(CancellationToken ct)
+    {
+        using var db = factory.Create();
+        const string sql = "SELECT EXISTS (SELECT 1 FROM admin_users);";
+        return await db.ExecuteScalarAsync<bool>(
+            new CommandDefinition(sql, cancellationToken: ct));
+    }
 }

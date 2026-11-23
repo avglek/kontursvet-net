@@ -44,6 +44,8 @@ services:
       Jwt__Audience: ${JWT_AUDIENCE:-kontursvet-admin}
       Max__Token: ${MAX_TOKEN:-}
       Max__ChatId: ${MAX_CHAT_ID:-}
+      Admin__Username: ${ADMIN_USERNAME:-admin}
+      Admin__Password: ${ADMIN_PASSWORD:-}
     volumes:
       - ./src:/src
       - nuget-cache:/root/.nuget/packages

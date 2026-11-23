@@ -21,6 +21,8 @@ services:
       Jwt__Audience: ${JWT_AUDIENCE:-kontursvet-admin}
       Max__Token: ${MAX_TOKEN:?MAX_TOKEN must be set in .env}
       Max__ChatId: ${MAX_CHAT_ID:?MAX_CHAT_ID must be set in .env}
+      Admin__Username: ${ADMIN_USERNAME:-admin}
+      Admin__Password: ${ADMIN_PASSWORD:-}
     volumes:
       - uploads:/data
     depends_on:

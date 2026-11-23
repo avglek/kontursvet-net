@@ -126,7 +126,9 @@ npm run dev:nuxt   # nuxt dev в ./WebApp
 - API: `http://localhost:5136`, Swagger — `http://localhost:5136/swagger`, health — `/health`.
 - Nuxt dev: `http://localhost:3000` (проксирует `/api/**` и `/uploads/**` на `:5136`; цель
   прокси настраивается переменной `NUXT_API_PROXY_TARGET`, по умолчанию `http://localhost:5136`).
-- Учётка администратора по умолчанию (из миграции `002_admin_users.sql`): **admin / admin123** — заменить после первого входа.
+- Начальный администратор создаётся `AdminUserSeeder` (`Api/Services`) при первом запуске, если таблица
+  `admin_users` пуста: логин/пароль из `ADMIN_USERNAME`/`ADMIN_PASSWORD` (`.env`). В Development при пустом
+  `ADMIN_PASSWORD` используется fallback **admin / admin123**; в Production без `ADMIN_PASSWORD` запуск падает.
 
 ### Сборка и тесты
 

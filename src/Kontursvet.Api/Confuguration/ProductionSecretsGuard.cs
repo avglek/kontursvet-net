@@ -35,6 +35,7 @@ public static class ProductionSecretsGuard
         ValidatePostgresPassword(config, problems);
         ValidateMaxToken(config, problems);
         ValidateMaxChatId(config, problems);
+        ValidateAdminPassword(config, problems);
 
         if (problems.Count > 0)
         {
@@ -139,6 +140,26 @@ public static class ProductionSecretsGuard
         if (!long.TryParse(chatIdStr, out _))
         {
             problems.Add($"Max:ChatId не является корректным числом ('{chatIdStr}').");
+        }
+    }
+
+    private static void ValidateAdminPassword(IConfiguration config, List<string> problems)
+    {
+        var adminPassword = config["Admin:Password"];
+
+        // Пароль проверяется только если он задан (пустой = ещё нет админа, допустимо)
+        if (string.IsNullOrEmpty(adminPassword))
+            return;
+
+        if (adminPassword.Equals("admin123", StringComparison.OrdinalIgnoreCase))
+        {
+            problems.Add("Admin:Password совпадает с известным паролем по умолчанию ('admin123'). Задайте надёжный ADMIN_PASSWORD в .env.");
+            return;
+        }
+
+        if (adminPassword.Length < 8)
+        {
+            problems.Add($"Admin:Password слишком короткий ({adminPassword.Length} символов, минимум 8). Задайте надёжный ADMIN_PASSWORD в .env.");
         }
     }
 
