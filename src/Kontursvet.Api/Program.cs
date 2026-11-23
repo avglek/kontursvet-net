@@ -9,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 DefaultTypeMap.MatchNamesWithUnderscores = true;
 
+// Обязательная проверка production-секретов: в Production приложение не стартует с заглушками.
+ProductionSecretsGuard.EnsureProductionSecrets(builder.Configuration, builder.Environment);
+
 builder.Services
     .AddApplication()
     .AddInfrastructure(builder.Configuration)

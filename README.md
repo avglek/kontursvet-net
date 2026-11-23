@@ -27,23 +27,26 @@
 
 ```
 .
-├── Kontursvet.slnx              # решение (.NET)
-├── docker-compose.yml           # база: PostgreSQL 16 + сеть + общий volume uploads
-├── docker-compose.prod.yml      # прод: готовые образы api/web + nginx
-├── docker-compose.dev.yml       # отладка: dotnet watch + nuxt dev + nginx
-├── Dockerfile.api               # многоэтапная сборка API (build → runtime → dev)
-├── Dockerfile.web               # многоэтапная сборка Nuxt (build → runtime)
-├── docker/nginx/default.conf    # конфиг reverse-proxy
-├── .env.example                 # шаблон переменных окружения
-├── package.json                 # npm-скрипты оркестрации
+├── Kontursvet.slnx                # решение (.NET)
+├── docker-compose.yml             # база: PostgreSQL 16 + сеть + общий volume uploads
+├── docker-compose.prod.yml        # прод: готовые образы api/web + nginx
+├── docker-compose.dev.yml         # отладка: dotnet watch + nuxt dev + nginx
+├── docker/docker-compose-all.yml  # серверный слой: всё + traefik-маршрутизация
+├── Dockerfile.api                 # многоэтапная сборка API (build → runtime → dev)
+├── Dockerfile.web                 # многоэтапная сборка Nuxt (build → runtime)
+├── docker/nginx/default.conf      # конфиг reverse-proxy
+├── docker/config/                 # боевой compose + .env сервера (не в репозитории)
+├── docker/img/                    # готовые tar-архивы образов (не в репозитории)
+├── .env.example                   # шаблон переменных окружения
+├── package.json                   # npm-скрипты оркестрации
 ├── src/
-│   ├── Kontursvet.Api/          # Minimal API, эндпоинты, Program.cs
-│   ├── Kontursvet.Application/  # фичи (handlers), DTO, абстракции
-│   ├── Kontursvet.Domain/       # сущности, Result
+│   ├── Kontursvet.Api/            # Minimal API, эндпоинты, Program.cs
+│   ├── Kontursvet.Application/    # фичи (handlers), DTO, абстракции
+│   ├── Kontursvet.Domain/         # сущности, Result
 │   └── Kontursvet.Infrastructure/ # репозитории, MAX, JWT, хранилище, миграции
 ├── tests/
 │   └── Kontursvet.Application.Tests/  # xUnit
-└── WebApp/                      # Nuxt 4 фронтенд
+└── WebApp/                        # Nuxt 4 фронтенд
 ```
 
 ## Быстрый старт
@@ -86,36 +89,27 @@ npm run dev:api    # только API (dotnet watch)
 npm run dev:nuxt   # только Nuxt (nuxt dev)
 ```
 
-## Запуск в Docker
+## Запуск в Docker (режим отладки)
 
-### Настройка переменных окружения
-
-```bash
-cp .env.example .env
-# затем заполните значения в .env
-```
-
-Обязательные переменные: `POSTGRES_DB`, `POSTGRES_USER`, `POSTGRES_PASSWORD`, `JWT_SECRET_KEY` (≥32 символов), `MAX_TOKEN`, `MAX_CHAT_ID`.
-
-### Режимы
+Hot reload: `dotnet watch` + `nuxt dev`, исходники смонтированы в контейнеры.
 
 ```bash
-# ПРОДАКШЕН — готовые образы + nginx
-npm run docker:prod:up        # сборка и запуск
-npm run docker:prod:logs      # просмотр логов
-npm run docker:prod:down      # остановка
-
 # ОТЛАДКА — hot reload (dotnet watch + nuxt dev)
 npm run docker:dev:up         # запуск с монтированием исходников
+npm run docker:dev:build      # только сборка образов
 npm run docker:dev:down       # остановка
 
-# Полная остановка с удалением данных (ОСТОРОЖНО!)
+# Полная остановка с удалением данных (ОСТОРОЖНО! удалит pgdata и uploads)
 npm run docker:down:all
 ```
 
+Переменные окружения берутся из `.env` (шаблон — `.env.example`); в отладке допустимы dev-значения по умолчанию.
+
+> Продакшен-запуск описан в **[INSTALL_PROD.md](./INSTALL_PROD.md)**.
+
 ### Доступ к приложению
 
-После запуска (prod или dev) всё доступно на одном порту:
+После запуска (prod или dev) всё доступно на одном порту (в продакшене Swagger отключён):
 
 | Ресурс               | URL                                 |
 | -------------------- | ----------------------------------- |
@@ -123,6 +117,18 @@ npm run docker:down:all
 | Swagger (только Dev) | `http://localhost:8080/swagger`     |
 | Health-check         | `http://localhost:8080/health`      |
 | Загруженные файлы    | `http://localhost:8080/uploads/...` |
+
+## Продакшен
+
+Полная инструкция по подготовке секретов, сборке образов и развёртыванию — в **[INSTALL_PROD.md](./INSTALL_PROD.md)**.
+
+Коротко:
+
+1. `cp .env.example .env` и заполнить секреты (`JWT_SECRET_KEY`, `POSTGRES_PASSWORD`, `MAX_TOKEN`, `MAX_CHAT_ID`) — без них `docker compose` и API в среде `Production` не запустятся.
+2. `npm run docker:prod:up` — сборка образов и запуск за nginx, приложение на `http://localhost:8080`.
+3. Деплой на сервер: `npm run docker:save:api` / `docker:save:web` → перенос tar-архивов → `docker load` → `docker compose -f compose_new.yml up -d` (Traefik, `https://www.kontursvet.spb.ru`).
+
+В [INSTALL_PROD.md](./INSTALL_PROD.md) также: миграции на живой базе, бэкап volume'ов, откат/обновление и чек-лист по безопасности.
 
 ## Сборка и тесты
 

@@ -16,12 +16,12 @@ services:
       ASPNETCORE_ENVIRONMENT: Production
       ASPNETCORE_URLS: http://0.0.0.0:5136
       Storage__LocalRoot: /data
-      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=${POSTGRES_DB:-kontursvet};Username=${POSTGRES_USER:-kontursvet};Password=${POSTGRES_PASSWORD:-kontursvet}
-      Jwt__SecretKey: ${JWT_SECRET_KEY:-dev-secret-key-min-32-chars-long-change-in-prod-1234567890}
+      ConnectionStrings__Postgres: Host=postgres;Port=5432;Database=${POSTGRES_DB:-kontursvet};Username=${POSTGRES_USER:-kontursvet};Password=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env}
+      Jwt__SecretKey: ${JWT_SECRET_KEY:?JWT_SECRET_KEY must be set in .env}
       Jwt__Issuer: ${JWT_ISSUER:-kontursvet}
       Jwt__Audience: ${JWT_AUDIENCE:-kontursvet-admin}
-      Max__Token: ${MAX_TOKEN:-}
-      Max__ChatId: ${MAX_CHAT_ID:-}
+      Max__Token: ${MAX_TOKEN:?MAX_TOKEN must be set in .env}
+      Max__ChatId: ${MAX_CHAT_ID:?MAX_CHAT_ID must be set in .env}
     volumes:
       - uploads:/data
     depends_on:
