@@ -72,3 +72,36 @@ services:
       - web
     networks:
       - kontursvet-net
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: kontursvet-net-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-kontursvet}
+      POSTGRES_USER: ${POSTGRES_USER:-kontursvet}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kontursvet}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      # Миграции применяются при первой инициализации тома
+      - ./src/Kontursvet.Infrastructure/Migrations:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U ${POSTGRES_USER:-kontursvet} -d ${POSTGRES_DB:-kontursvet}',
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - kontursvet-net
+
+volumes:
+  pgdata:
+  # Общая папка загрузок/статики: пишет API, раздаёт nginx
+  uploads:
+
+networks:
+  kontursvet-net:
+    driver: bridge
