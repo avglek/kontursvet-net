@@ -65,7 +65,6 @@ services:
       - traefik.http.routers.dev.entrypoints=websecure
       - traefik.http.routers.dev.tls=true
 
-
   postgres:
     image: postgres:16-alpine
     container_name: kontursvet-net-postgres
@@ -74,8 +73,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-kontursvet}
       POSTGRES_USER: ${POSTGRES_USER:-kontursvet}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-kontursvet}
-    ports:
-      - '${POSTGRES_PORT:-5432}:5432'
     volumes:
       - pgdata:/var/lib/postgresql/data
       # Миграции применяются при первой инициализации тома
@@ -101,4 +98,3 @@ networks:
     driver: bridge
   proxy:
     external: true
-
